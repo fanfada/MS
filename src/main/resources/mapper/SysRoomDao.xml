@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.managersystem.dao.SysRoomDao">
+
+    <resultMap type="com.example.managersystem.entity.SysRoom" id="SysRoomMap">
+        <result property="roomId" column="room_id" jdbcType="INTEGER"/>
+        <result property="color" column="color" jdbcType="VARCHAR"/>
+        <result property="roomType" column="room_type" jdbcType="VARCHAR"/>
+        <result property="country" column="country" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="city" column="city" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="ownerId" column="owner_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SysRoomMap">
+        select room_id,
+               color,
+               room_type,
+               country,
+               province,
+               city,
+               address,
+               status,
+               create_time,
+               update_by,
+               update_time,
+               remark,
+               owner_id
+        from sys_room
+        where room_id = #{roomId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SysRoomMap">
+        select
+        room_id, color, room_type, country, province, city, address, status, create_time, update_by, update_time,
+        remark, owner_id
+        from sys_room
+        <where>
+            <if test="roomId != null">
+                and room_id = #{roomId}
+            </if>
+            <if test="color != null and color != ''">
+                and color = #{color}
+            </if>
+            <if test="roomType != null and roomType != ''">
+                and room_type = #{roomType}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+            <if test="ownerId != null">
+                and owner_id = #{ownerId}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from sys_room
+        <where>
+            <if test="roomId != null">
+                and room_id = #{roomId}
+            </if>
+            <if test="color != null and color != ''">
+                and color = #{color}
+            </if>
+            <if test="roomType != null and roomType != ''">
+                and room_type = #{roomType}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+            <if test="ownerId != null">
+                and owner_id = #{ownerId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="roomId" useGeneratedKeys="true">
+        insert into sys_room(color, room_type, country, province, city, address, status, create_time, update_by,
+                             update_time, remark, owner_id)
+        values (#{color}, #{roomType}, #{country}, #{province}, #{city}, #{address}, #{status}, #{createTime},
+                #{updateBy}, #{updateTime}, #{remark}, #{ownerId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="roomId" useGeneratedKeys="true">
+        insert into sys_room(color, room_type, country, province, city, address, status, create_time, update_by,
+        update_time, remark, owner_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.color}, #{entity.roomType}, #{entity.country}, #{entity.province}, #{entity.city},
+            #{entity.address}, #{entity.status}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime},
+            #{entity.remark}, #{entity.ownerId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="roomId" useGeneratedKeys="true">
+        insert into sys_room(color, room_type, country, province, city, address, status, create_time, update_by,
+        update_time, remark, owner_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.color}, #{entity.roomType}, #{entity.country}, #{entity.province}, #{entity.city},
+            #{entity.address}, #{entity.status}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime},
+            #{entity.remark}, #{entity.ownerId})
+        </foreach>
+        on duplicate key update
+        color = values(color),
+        room_type = values(room_type),
+        country = values(country),
+        province = values(province),
+        city = values(city),
+        address = values(address),
+        status = values(status),
+        create_time = values(create_time),
+        update_by = values(update_by),
+        update_time = values(update_time),
+        remark = values(remark),
+        owner_id = values(owner_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update sys_room
+        <set>
+            <if test="color != null and color != ''">
+                color = #{color},
+            </if>
+            <if test="roomType != null and roomType != ''">
+                room_type = #{roomType},
+            </if>
+            <if test="country != null and country != ''">
+                country = #{country},
+            </if>
+            <if test="province != null and province != ''">
+                province = #{province},
+            </if>
+            <if test="city != null and city != ''">
+                city = #{city},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="ownerId != null">
+                owner_id = #{ownerId},
+            </if>
+        </set>
+        where room_id = #{roomId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from sys_room
+        where room_id = #{roomId}
+    </delete>
+
+</mapper>
+

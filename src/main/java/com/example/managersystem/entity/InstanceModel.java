@@ -1,4 +1,4 @@
-package com.example.managersystem.model;
+package com.example.managersystem.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @author sunbo@cmss.chinamobile.com
+ * @author fanfada
  * @Date 2021/6/21 16:33
  */
 @Data

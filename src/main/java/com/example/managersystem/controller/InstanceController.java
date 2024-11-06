@@ -1,6 +1,6 @@
 package com.example.managersystem.controller;
 
-import com.example.managersystem.model.InstanceModel;
+import com.example.managersystem.entity.InstanceModel;
 import com.example.managersystem.service.InstanceModelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,11 @@
-package com.example.managersystem.mapper;
+package com.example.managersystem.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.managersystem.model.InstanceModel;
+import com.example.managersystem.entity.InstanceModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @author sunbo@cmss.chinamobile.com
+ * @author fanfada
  * @Date 2021/6/21 19:14
  */
 @Mapper
