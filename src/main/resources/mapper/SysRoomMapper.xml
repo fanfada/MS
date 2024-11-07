@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.managersystem.dao.SysRoomDao">
+<mapper namespace="com.example.managersystem.mapper.SysRoomMapper">
 
-    <resultMap type="com.example.managersystem.entity.SysRoom" id="SysRoomMap">
-        <result property="roomId" column="room_id" jdbcType="INTEGER"/>
+    <resultMap type="com.example.managersystem.domain.SysRoom" id="SysRoomMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="color" column="color" jdbcType="VARCHAR"/>
         <result property="roomType" column="room_type" jdbcType="VARCHAR"/>
         <result property="country" column="country" jdbcType="VARCHAR"/>
@@ -18,9 +18,9 @@
         <result property="ownerId" column="owner_id" jdbcType="INTEGER"/>
     </resultMap>
 
-    <!--查询单个-->
-    <select id="queryById" resultMap="SysRoomMap">
-        select room_id,
+    <!--查询所有-->
+    <select id="queryAll" resultMap="SysRoomMap">
+        select id,
                color,
                room_type,
                country,
@@ -34,18 +34,36 @@
                remark,
                owner_id
         from sys_room
-        where room_id = #{roomId}
+    </select>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SysRoomMap">
+        select id,
+               color,
+               room_type,
+               country,
+               province,
+               city,
+               address,
+               status,
+               create_time,
+               update_by,
+               update_time,
+               remark,
+               owner_id
+        from sys_room
+        where id = #{id}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="SysRoomMap">
         select
-        room_id, color, room_type, country, province, city, address, status, create_time, update_by, update_time,
-        remark, owner_id
+        id, color, room_type, country, province, city, address, status, create_time, update_by, update_time, remark,
+        owner_id
         from sys_room
         <where>
-            <if test="roomId != null">
-                and room_id = #{roomId}
+            <if test="id != null">
+                and id = #{id}
             </if>
             <if test="color != null and color != ''">
                 and color = #{color}
@@ -92,8 +110,8 @@
         select count(1)
         from sys_room
         <where>
-            <if test="roomId != null">
-                and room_id = #{roomId}
+            <if test="id != null">
+                and id = #{id}
             </if>
             <if test="color != null and color != ''">
                 and color = #{color}
@@ -135,14 +153,14 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="roomId" useGeneratedKeys="true">
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into sys_room(color, room_type, country, province, city, address, status, create_time, update_by,
                              update_time, remark, owner_id)
         values (#{color}, #{roomType}, #{country}, #{province}, #{city}, #{address}, #{status}, #{createTime},
                 #{updateBy}, #{updateTime}, #{remark}, #{ownerId})
     </insert>
 
-    <insert id="insertBatch" keyProperty="roomId" useGeneratedKeys="true">
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
         insert into sys_room(color, room_type, country, province, city, address, status, create_time, update_by,
         update_time, remark, owner_id)
         values
@@ -153,7 +171,7 @@
         </foreach>
     </insert>
 
-    <insert id="insertOrUpdateBatch" keyProperty="roomId" useGeneratedKeys="true">
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
         insert into sys_room(color, room_type, country, province, city, address, status, create_time, update_by,
         update_time, remark, owner_id)
         values
@@ -218,15 +236,14 @@
                 owner_id = #{ownerId},
             </if>
         </set>
-        where room_id = #{roomId}
+        where id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
         delete
         from sys_room
-        where room_id = #{roomId}
+        where id = #{id}
     </delete>
 
 </mapper>
-

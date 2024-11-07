@@ -1,4 +1,4 @@
-package com.example.managersystem.entity;
+package com.example.managersystem.domain;
 
 import java.util.Date;
 import java.io.Serializable;
@@ -6,15 +6,15 @@ import java.io.Serializable;
 /**
  * 房东信息表(SysOwner)实体类
  *
- * @author fanfada
- * @since 2024-11-06 16:18:21
+ * @author makejava
+ * @since 2024-11-07 12:36:55
  */
 public class SysOwner implements Serializable {
-    private static final long serialVersionUID = 471123020300426665L;
+    private static final long serialVersionUID = -10186319665297682L;
     /**
      * 房东ID
      */
-    private Integer ownerId;
+    private Integer id;
     /**
      * 联系方式
      */
@@ -49,12 +49,12 @@ public class SysOwner implements Serializable {
     private String remark;
 
 
-    public Integer getOwnerId() {
-        return ownerId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getPhone() {
@@ -122,4 +122,3 @@ public class SysOwner implements Serializable {
     }
 
 }
-

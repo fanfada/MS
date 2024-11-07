@@ -1,33 +1,31 @@
 package com.example.managersystem.service;
 
-import com.example.managersystem.entity.SysOwner;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import com.example.managersystem.domain.SysOwner;
+
+import java.util.List;
 
 /**
  * 房东信息表(SysOwner)表服务接口
  *
- * @author fanfada
- * @since 2024-11-06 16:18:25
+ * @author makejava
+ * @since 2024-11-07 12:36:54
  */
 public interface SysOwnerService {
 
     /**
-     * 通过ID查询单条数据
+     * 查询所有数据
      *
-     * @param ownerId 主键
-     * @return 实例对象
+     * @return 实例对象集合
      */
-    SysOwner queryById(Integer ownerId);
+    List<SysOwner> queryAll();
 
     /**
-     * 分页查询
+     * 通过ID查询单条数据
      *
-     * @param sysOwner    筛选条件
-     * @param pageRequest 分页对象
-     * @return 查询结果
+     * @param id 主键
+     * @return 实例对象
      */
-    Page<SysOwner> queryByPage(SysOwner sysOwner, PageRequest pageRequest);
+    SysOwner queryById(Integer id);
 
     /**
      * 新增数据
@@ -48,9 +46,9 @@ public interface SysOwnerService {
     /**
      * 通过主键删除数据
      *
-     * @param ownerId 主键
+     * @param id 主键
      * @return 是否成功
      */
-    boolean deleteById(Integer ownerId);
+    boolean deleteById(Integer id);
 
 }

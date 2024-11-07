@@ -1,40 +1,36 @@
 package com.example.managersystem.controller;
 
-import com.example.managersystem.entity.SysRoom;
+import com.example.managersystem.domain.SysRoom;
 import com.example.managersystem.service.SysRoomService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import javax.annotation.Resource;
 
 /**
  * 房屋信息表(SysRoom)表控制层
  *
- * @author fanfada
- * @since 2024-11-06 16:18:28
+ * @author makejava
+ * @since 2024-11-07 12:36:52
  */
-@Slf4j
 @RestController
-@RequestMapping("/sysRoom")
+@RequestMapping("sysRoom")
 public class SysRoomController {
     /**
      * 服务对象
      */
-    @Autowired
+    @Resource
     private SysRoomService sysRoomService;
 
     /**
-     * 分页查询
+     * 查询所有数据
      *
-     * @param sysRoom     筛选条件
-     * @param pageRequest 分页对象
-     * @return 查询结果
+     * @return 实例对象集合
      */
     @GetMapping
-    public ResponseEntity<Page<SysRoom>> queryByPage(SysRoom sysRoom, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.sysRoomService.queryByPage(sysRoom, pageRequest));
+    public ResponseEntity<List> queryAll() {
+        return ResponseEntity.ok(this.sysRoomService.queryAll());
     }
 
     /**
@@ -82,4 +78,3 @@ public class SysRoomController {
     }
 
 }
-

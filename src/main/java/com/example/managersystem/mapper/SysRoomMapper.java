@@ -1,37 +1,34 @@
-package com.example.managersystem.dao;
+package com.example.managersystem.mapper;
 
-import com.example.managersystem.entity.SysRoom;
-import org.apache.ibatis.annotations.Mapper;
+import com.example.managersystem.domain.SysRoom;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.data.domain.Pageable;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * 房屋信息表(SysRoom)表数据库访问层
  *
- * @author fanfada
- * @since 2024-11-06 16:18:28
+ * @author makejava
+ * @since 2024-11-07 12:36:52
  */
 @Mapper
-public interface SysRoomDao {
+public interface SysRoomMapper {
+
+    /**
+     * 查询所有数据
+     *
+     * @return 实例对象集合
+     */
+    List<SysRoom> queryAll();
 
     /**
      * 通过ID查询单条数据
      *
-     * @param roomId 主键
+     * @param id 主键
      * @return 实例对象
      */
-    SysRoom queryById(Integer roomId);
-
-    /**
-     * 查询指定行数据
-     *
-     * @param sysRoom  查询条件
-     * @param pageable 分页对象
-     * @return 对象列表
-     */
-    List<SysRoom> queryAllByLimit(SysRoom sysRoom, @Param("pageable") Pageable pageable);
+    SysRoom queryById(Integer id);
 
     /**
      * 统计总行数
@@ -77,10 +74,9 @@ public interface SysRoomDao {
     /**
      * 通过主键删除数据
      *
-     * @param roomId 主键
+     * @param id 主键
      * @return 影响行数
      */
-    int deleteById(Integer roomId);
+    int deleteById(Integer id);
 
 }
-

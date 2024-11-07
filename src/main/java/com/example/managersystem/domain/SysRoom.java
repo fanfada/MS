@@ -1,4 +1,4 @@
-package com.example.managersystem.entity;
+package com.example.managersystem.domain;
 
 import java.util.Date;
 import java.io.Serializable;
@@ -6,15 +6,15 @@ import java.io.Serializable;
 /**
  * 房屋信息表(SysRoom)实体类
  *
- * @author fanfada
- * @since 2024-11-06 16:18:28
+ * @author makejava
+ * @since 2024-11-07 12:36:53
  */
 public class SysRoom implements Serializable {
-    private static final long serialVersionUID = -30856462113598142L;
+    private static final long serialVersionUID = 503330822141613348L;
     /**
      * 房屋ID
      */
-    private Integer roomId;
+    private Integer id;
     /**
      * 红黑榜：推荐、不推荐、还行
      */
@@ -65,12 +65,12 @@ public class SysRoom implements Serializable {
     private Integer ownerId;
 
 
-    public Integer getRoomId() {
-        return roomId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getColor() {
@@ -170,4 +170,3 @@ public class SysRoom implements Serializable {
     }
 
 }
-

@@ -1,46 +1,36 @@
 package com.example.managersystem.controller;
 
-import com.example.managersystem.entity.SysOwner;
+import com.example.managersystem.domain.SysOwner;
 import com.example.managersystem.service.SysOwnerService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import javax.annotation.Resource;
 
 /**
  * 房东信息表(SysOwner)表控制层
  *
- * @author fanfada
- * @since 2024-11-06 16:18:14
+ * @author makejava
+ * @since 2024-11-07 12:36:54
  */
-@Slf4j
 @RestController
-@RequestMapping("/sysOwner")
+@RequestMapping("sysOwner")
 public class SysOwnerController {
     /**
      * 服务对象
      */
-    @Autowired
+    @Resource
     private SysOwnerService sysOwnerService;
 
-    @RequestMapping("/hello")
-    public String TestOutput(){
-        log.info("/hello");
-        return "Hey, superstar! Long time no see! Missed your face!";
-    }
-
     /**
-     * 分页查询
+     * 查询所有数据
      *
-     * @param sysOwner    筛选条件
-     * @param pageRequest 分页对象
-     * @return 查询结果
+     * @return 实例对象集合
      */
     @GetMapping
-    public ResponseEntity<Page<SysOwner>> queryByPage(SysOwner sysOwner, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.sysOwnerService.queryByPage(sysOwner, pageRequest));
+    public ResponseEntity<List> queryAll() {
+        return ResponseEntity.ok(this.sysOwnerService.queryAll());
     }
 
     /**
@@ -51,7 +41,6 @@ public class SysOwnerController {
      */
     @GetMapping("{id}")
     public ResponseEntity<SysOwner> queryById(@PathVariable("id") Integer id) {
-        log.info("/sysOwner/id");
         return ResponseEntity.ok(this.sysOwnerService.queryById(id));
     }
 
@@ -89,4 +78,3 @@ public class SysOwnerController {
     }
 
 }
-

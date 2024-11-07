@@ -1,33 +1,31 @@
 package com.example.managersystem.service;
 
-import com.example.managersystem.entity.SysRoom;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import com.example.managersystem.domain.SysRoom;
+
+import java.util.List;
 
 /**
  * 房屋信息表(SysRoom)表服务接口
  *
- * @author fanfada
- * @since 2024-11-06 16:18:29
+ * @author makejava
+ * @since 2024-11-07 12:36:52
  */
 public interface SysRoomService {
 
     /**
-     * 通过ID查询单条数据
+     * 查询所有数据
      *
-     * @param roomId 主键
-     * @return 实例对象
+     * @return 实例对象集合
      */
-    SysRoom queryById(Integer roomId);
+    List<SysRoom> queryAll();
 
     /**
-     * 分页查询
+     * 通过ID查询单条数据
      *
-     * @param sysRoom     筛选条件
-     * @param pageRequest 分页对象
-     * @return 查询结果
+     * @param id 主键
+     * @return 实例对象
      */
-    Page<SysRoom> queryByPage(SysRoom sysRoom, PageRequest pageRequest);
+    SysRoom queryById(Integer id);
 
     /**
      * 新增数据
@@ -48,9 +46,9 @@ public interface SysRoomService {
     /**
      * 通过主键删除数据
      *
-     * @param roomId 主键
+     * @param id 主键
      * @return 是否成功
      */
-    boolean deleteById(Integer roomId);
+    boolean deleteById(Integer id);
 
 }

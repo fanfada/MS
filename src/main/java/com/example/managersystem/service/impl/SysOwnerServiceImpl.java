@@ -1,48 +1,43 @@
 package com.example.managersystem.service.impl;
 
-import com.example.managersystem.entity.SysOwner;
-import com.example.managersystem.dao.SysOwnerDao;
+import com.example.managersystem.domain.SysOwner;
+import com.example.managersystem.mapper.SysOwnerMapper;
 import com.example.managersystem.service.SysOwnerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+
+import java.util.List;
+import javax.annotation.Resource;
 
 /**
  * 房东信息表(SysOwner)表服务实现类
  *
- * @author fanfada
- * @since 2024-11-06 16:18:25
+ * @author makejava
+ * @since 2024-11-07 12:36:54
  */
 @Service("sysOwnerService")
 public class SysOwnerServiceImpl implements SysOwnerService {
+    @Resource
+    private SysOwnerMapper sysOwnerMapper;
 
-    @Autowired
-    private SysOwnerDao sysOwnerDao;
+    /**
+     * 查询所有数据
+     *
+     * @return 实例对象集合
+     */
+    @Override
+    public List<SysOwner> queryAll() {
+        return this.sysOwnerMapper.queryAll();
+    }
 
     /**
      * 通过ID查询单条数据
      *
-     * @param ownerId 主键
+     * @param id 主键
      * @return 实例对象
      */
     @Override
-    public SysOwner queryById(Integer ownerId) {
-        return this.sysOwnerDao.queryById(ownerId);
-    }
-
-    /**
-     * 分页查询
-     *
-     * @param sysOwner    筛选条件
-     * @param pageRequest 分页对象
-     * @return 查询结果
-     */
-    @Override
-    public Page<SysOwner> queryByPage(SysOwner sysOwner, PageRequest pageRequest) {
-        long total = this.sysOwnerDao.count(sysOwner);
-        return new PageImpl<>(this.sysOwnerDao.queryAllByLimit(sysOwner, pageRequest), pageRequest, total);
+    public SysOwner queryById(Integer id) {
+        return this.sysOwnerMapper.queryById(id);
     }
 
     /**
@@ -53,7 +48,7 @@ public class SysOwnerServiceImpl implements SysOwnerService {
      */
     @Override
     public SysOwner insert(SysOwner sysOwner) {
-        this.sysOwnerDao.insert(sysOwner);
+        this.sysOwnerMapper.insert(sysOwner);
         return sysOwner;
     }
 
@@ -65,18 +60,18 @@ public class SysOwnerServiceImpl implements SysOwnerService {
      */
     @Override
     public SysOwner update(SysOwner sysOwner) {
-        this.sysOwnerDao.update(sysOwner);
-        return this.queryById(sysOwner.getOwnerId());
+        this.sysOwnerMapper.update(sysOwner);
+        return this.queryById(sysOwner.getId());
     }
 
     /**
      * 通过主键删除数据
      *
-     * @param ownerId 主键
+     * @param id 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer ownerId) {
-        return this.sysOwnerDao.deleteById(ownerId) > 0;
+    public boolean deleteById(Integer id) {
+        return this.sysOwnerMapper.deleteById(id) > 0;
     }
 }

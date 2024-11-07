@@ -1,37 +1,34 @@
-package com.example.managersystem.dao;
+package com.example.managersystem.mapper;
 
-import com.example.managersystem.entity.SysOwner;
-import org.apache.ibatis.annotations.Mapper;
+import com.example.managersystem.domain.SysOwner;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.data.domain.Pageable;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * 房东信息表(SysOwner)表数据库访问层
  *
- * @author fanfada
- * @since 2024-11-06 16:18:14
+ * @author makejava
+ * @since 2024-11-07 12:36:54
  */
 @Mapper
-public interface SysOwnerDao {
+public interface SysOwnerMapper {
+
+    /**
+     * 查询所有数据
+     *
+     * @return 实例对象集合
+     */
+    List<SysOwner> queryAll();
 
     /**
      * 通过ID查询单条数据
      *
-     * @param ownerId 主键
+     * @param id 主键
      * @return 实例对象
      */
-    SysOwner queryById(Integer ownerId);
-
-    /**
-     * 查询指定行数据
-     *
-     * @param sysOwner 查询条件
-     * @param pageable 分页对象
-     * @return 对象列表
-     */
-    List<SysOwner> queryAllByLimit(SysOwner sysOwner, @Param("pageable") Pageable pageable);
+    SysOwner queryById(Integer id);
 
     /**
      * 统计总行数
@@ -77,10 +74,9 @@ public interface SysOwnerDao {
     /**
      * 通过主键删除数据
      *
-     * @param ownerId 主键
+     * @param id 主键
      * @return 影响行数
      */
-    int deleteById(Integer ownerId);
+    int deleteById(Integer id);
 
 }
-
