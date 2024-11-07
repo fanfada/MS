@@ -112,11 +112,16 @@ public class SysOwnerServiceImpl implements SysOwnerService {
         } else if (sysOwner.getStatus().equals(1)) {
             throw new GlobalException("该实例已经删除");
         }
-        log.info("要删除的id: {}", id);
-        sysOwner.setUpdateTime(new Date());
-        sysOwner.setStatus(1);
-        this.sysOwnerMapper.update(sysOwner);
-        return true;
+        try {
+            log.info("要删除的sysOwner: {}", JsonUtil.toString(sysOwner));
+            sysOwner.setUpdateTime(new Date());
+            sysOwner.setStatus(1);
+            this.sysOwnerMapper.update(sysOwner);
+            return true;
+        } catch (Exception e) {
+            log.info("删除失败");
+            return false;
+        }
     }
 
     /**

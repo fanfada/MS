@@ -118,12 +118,13 @@ public class SysRoomServiceImpl implements SysRoomService {
         try {
             sysRoom.setUpdateTime(new Date());
             sysRoom.setStatus(1);
-            log.info("要删除的id: {}", id);
+            log.info("要删除的sysRoom: {}", JsonUtil.toString(sysRoom));
             this.sysRoomMapper.update(sysRoom);
+            return true;
         } catch (Exception e) {
             log.info("删除房屋信息失败：{}", e.getMessage());
         }
-        return true;
+        return false;
     }
 
     /**
