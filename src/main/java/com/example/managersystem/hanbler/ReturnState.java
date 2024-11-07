@@ -1,13 +1,3 @@
-/**
- * Copyright 2014 China Mobile. All Right Reserved
- * <p>
- * This file is owned by China Mobile and you may not use, modify, copy,
- * redistribute this file without written permissions.
- * <p>
- * These Terms of Use define legal use of this file, all updates, revisions,
- * substitutions for you. All rights not expressly granted to you are reserved
- * by China Mobile.
- */
 package com.example.managersystem.hanbler;
 
 /**

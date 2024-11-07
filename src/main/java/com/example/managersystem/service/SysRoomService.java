@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 房屋信息表(SysRoom)表服务接口
  *
- * @author makejava
+ * @author fanfada
  * @since 2024-11-07 12:36:52
  */
 public interface SysRoomService {
@@ -33,7 +33,7 @@ public interface SysRoomService {
      * @param sysRoom 实例对象
      * @return 实例对象
      */
-    SysRoom insert(SysRoom sysRoom);
+    Boolean insert(SysRoom sysRoom);
 
     /**
      * 修改数据
@@ -41,7 +41,7 @@ public interface SysRoomService {
      * @param sysRoom 实例对象
      * @return 实例对象
      */
-    SysRoom update(SysRoom sysRoom);
+    Boolean update(SysRoom sysRoom);
 
 
     /**

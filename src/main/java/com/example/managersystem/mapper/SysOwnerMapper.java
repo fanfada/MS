@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 房东信息表(SysOwner)表数据库访问层
  *
- * @author makejava
+ * @author fanfada
  * @since 2024-11-07 12:36:54
  */
 @Mapper

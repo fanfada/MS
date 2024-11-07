@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 房东信息表(SysOwner)表服务接口
  *
- * @author makejava
+ * @author fanfada
  * @since 2024-11-07 12:36:54
  */
 public interface SysOwnerService {
@@ -33,7 +33,7 @@ public interface SysOwnerService {
      * @param sysOwner 实例对象
      * @return 实例对象
      */
-    SysOwner insert(SysOwner sysOwner);
+    Boolean insert(SysOwner sysOwner);
 
     /**
      * 修改数据
@@ -41,7 +41,7 @@ public interface SysOwnerService {
      * @param sysOwner 实例对象
      * @return 实例对象
      */
-    SysOwner update(SysOwner sysOwner);
+    Boolean update(SysOwner sysOwner);
 
 
     /**

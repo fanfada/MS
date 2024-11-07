@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 /**
  * 房屋信息表(SysRoom)表控制层
  *
- * @author makejava
+ * @author fanfada
  * @since 2024-11-07 12:36:52
  */
 @Slf4j
@@ -32,7 +32,7 @@ public class SysRoomController {
      * @return 实例对象集合
      */
     @GetMapping
-    public ReturnMessage<List> queryAll() {
+    public ReturnMessage<List<SysRoom>> queryAll() {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.queryAll());
     }
 
@@ -54,7 +54,7 @@ public class SysRoomController {
      * @return 新增结果
      */
     @PostMapping
-    public ReturnMessage<SysRoom> add(SysRoom sysRoom) {
+    public ReturnMessage<Boolean> add(SysRoom sysRoom) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.insert(sysRoom));
     }
 
@@ -65,7 +65,7 @@ public class SysRoomController {
      * @return 编辑结果
      */
     @PutMapping
-    public ReturnMessage<SysRoom> edit(SysRoom sysRoom) {
+    public ReturnMessage<Boolean> edit(SysRoom sysRoom) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.update(sysRoom));
     }
 

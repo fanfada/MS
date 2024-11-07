@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 /**
  * 房东信息表(SysOwner)表服务实现类
  *
- * @author makejava
+ * @author fanfada
  * @since 2024-11-07 12:36:54
  */
 @Slf4j
@@ -51,7 +51,7 @@ public class SysOwnerServiceImpl implements SysOwnerService {
      * @return 实例对象
      */
     @Override
-    public SysOwner insert(SysOwner sysOwner) {
+    public Boolean insert(SysOwner sysOwner) {
         try {
             sysOwner.setCreateTime(new Date());
             sysOwner.setUpdateTime(new Date());
@@ -59,7 +59,7 @@ public class SysOwnerServiceImpl implements SysOwnerService {
         } catch (Exception e) {
             log.info("添加房东信息失败：{}", e.getMessage());
         }
-        return sysOwner;
+        return true;
     }
 
     /**
@@ -69,10 +69,14 @@ public class SysOwnerServiceImpl implements SysOwnerService {
      * @return 实例对象
      */
     @Override
-    public SysOwner update(SysOwner sysOwner) {
-        sysOwner.setUpdateTime(new Date());
-        this.sysOwnerMapper.update(sysOwner);
-        return this.queryById(sysOwner.getId());
+    public Boolean update(SysOwner sysOwner) {
+        try {
+            sysOwner.setUpdateTime(new Date());
+            this.sysOwnerMapper.update(sysOwner);
+        } catch (Exception e) {
+            log.info("编辑房东信息失败：{}", e.getMessage());
+        }
+        return true;
     }
 
     /**

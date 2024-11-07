@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 /**
  * 房东信息表(SysOwner)表控制层
  *
- * @author makejava
+ * @author fanfada
  * @since 2024-11-07 12:36:54
  */
 @Slf4j
@@ -32,7 +32,7 @@ public class SysOwnerController {
      * @return 实例对象集合
      */
     @GetMapping
-    public ReturnMessage<List> queryAll() {
+    public ReturnMessage<List<SysOwner>> queryAll() {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.queryAll());
     }
 
@@ -54,7 +54,7 @@ public class SysOwnerController {
      * @return 新增结果
      */
     @PostMapping
-    public ReturnMessage<SysOwner> add(SysOwner sysOwner) {
+    public ReturnMessage<Boolean> add(SysOwner sysOwner) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.insert(sysOwner));
     }
 
@@ -65,7 +65,7 @@ public class SysOwnerController {
      * @return 编辑结果
      */
     @PutMapping
-    public ReturnMessage<SysOwner> edit(SysOwner sysOwner) {
+    public ReturnMessage<Boolean> edit(SysOwner sysOwner) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.update(sysOwner));
     }
 

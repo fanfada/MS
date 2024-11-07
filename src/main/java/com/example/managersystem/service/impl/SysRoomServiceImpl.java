@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 /**
  * 房屋信息表(SysRoom)表服务实现类
  *
- * @author makejava
+ * @author fanfada
  * @since 2024-11-07 12:36:52
  */
 @Slf4j
@@ -51,9 +51,13 @@ public class SysRoomServiceImpl implements SysRoomService {
      * @return 实例对象
      */
     @Override
-    public SysRoom insert(SysRoom sysRoom) {
-        this.sysRoomMapper.insert(sysRoom);
-        return sysRoom;
+    public Boolean insert(SysRoom sysRoom) {
+        try {
+            this.sysRoomMapper.insert(sysRoom);
+        } catch (Exception e) {
+            log.info("添加房屋信息失败：{}", e.getMessage());
+        }
+        return true;
     }
 
     /**
@@ -63,9 +67,13 @@ public class SysRoomServiceImpl implements SysRoomService {
      * @return 实例对象
      */
     @Override
-    public SysRoom update(SysRoom sysRoom) {
-        this.sysRoomMapper.update(sysRoom);
-        return this.queryById(sysRoom.getId());
+    public Boolean update(SysRoom sysRoom) {
+        try {
+            this.sysRoomMapper.update(sysRoom);
+        } catch (Exception e) {
+            log.info("编辑房屋信息失败：{}", e.getMessage());
+        }
+        return true;
     }
 
     /**
@@ -81,9 +89,13 @@ public class SysRoomServiceImpl implements SysRoomService {
         } else if (sysRoom.getStatus().equals(1)) {
             throw new GlobalException("该实例已经删除");
         }
-        sysRoom.setUpdateTime(new Date());
-        sysRoom.setStatus(1);
-        this.sysRoomMapper.update(sysRoom);
+        try {
+            sysRoom.setUpdateTime(new Date());
+            sysRoom.setStatus(1);
+            this.sysRoomMapper.update(sysRoom);
+        } catch (Exception e) {
+            log.info("删除房屋信息失败：{}", e.getMessage());
+        }
         return true;
     }
 

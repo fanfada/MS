@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 房东信息表(SysOwner)实体类
  *
- * @author makejava
+ * @author fanfada
  * @since 2024-11-07 12:36:55
  */
 public class SysOwner implements Serializable {

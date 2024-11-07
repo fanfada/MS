@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * 房屋信息表(SysRoom)实体类
  *
- * @author makejava
+ * @author fanfada
  * @since 2024-11-07 12:36:53
  */
 public class SysRoom implements Serializable {
