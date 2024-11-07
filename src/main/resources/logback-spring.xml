@@ -31,7 +31,7 @@
               value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
 
     <property name="CONSOLE_LOG_PATTERN_NO_COLOR"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{requestId}] %c.%M | %F:%L | %m%n" />
+              value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%X{requestId}] %c.%M | %F:%L | %m%n" />
 
     <!--1. 输出到控制台-->
     <!-- 定义控制台日志输出的appender，class="ch.qos.logback.core.ConsoleAppender"表示使用Logback框架提供的ConsoleAppender类来输出日志到控制台 -->
@@ -43,7 +43,7 @@
         </filter>
         <encoder>
             <!-- ${CONSOLE_LOG_PATTERN}表示控制台日志输出格式，UTF-8表示编码格式 -->
-            <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+            <Pattern>${CONSOLE_LOG_PATTERN_NO_COLOR}</Pattern>
             <!-- 设置字符集 -->
             <charset>UTF-8</charset>
         </encoder>

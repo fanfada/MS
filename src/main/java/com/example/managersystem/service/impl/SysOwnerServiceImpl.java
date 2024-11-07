@@ -41,6 +41,7 @@ public class SysOwnerServiceImpl implements SysOwnerService {
                         .phone(SysOwner.getPhone())
                         .ownerType(SysOwner.getOwnerType())
                         .color(SysOwner.getColor())
+                        .remark(SysOwner.getRemark())
                         .build())
                 .collect(Collectors.toList());
     }
