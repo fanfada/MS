@@ -60,7 +60,7 @@ public class SysOwnerController {
      * @return 新增结果
      */
     @PostMapping
-    public ReturnMessage<Boolean> add(SysOwner sysOwner) {
+    public ReturnMessage<Boolean> add(@RequestBody SysOwner sysOwner) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.insert(sysOwner));
     }
 
@@ -71,7 +71,7 @@ public class SysOwnerController {
      * @return 编辑结果
      */
     @PutMapping
-    public ReturnMessage<Boolean> edit(SysOwner sysOwner) {
+    public ReturnMessage<Boolean> edit(@RequestBody SysOwner sysOwner) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.update(sysOwner));
     }
 

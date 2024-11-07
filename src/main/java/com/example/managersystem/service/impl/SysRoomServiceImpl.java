@@ -4,6 +4,7 @@ import com.example.managersystem.domain.SysRoom;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysRoomMapper;
 import com.example.managersystem.service.SysRoomService;
+import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,9 @@ public class SysRoomServiceImpl implements SysRoomService {
      */
     @Override
     public List<SysRoomVo> queryAll() {
-        List<SysRoom> sysOwnerList = this.sysRoomMapper.queryAll();
-        return sysOwnerList.stream()
+        List<SysRoom> sysRoomList = this.sysRoomMapper.queryAll();
+        log.info("所有房屋信息：{}", JsonUtil.toString(sysRoomList));
+        return sysRoomList.stream()
                 .map(SysRoom -> SysRoomVo.builder()
                         .id(SysRoom.getId())
                         .color(SysRoom.getColor())
@@ -55,7 +57,9 @@ public class SysRoomServiceImpl implements SysRoomService {
      */
     @Override
     public SysRoom queryById(Integer id) {
-        return this.sysRoomMapper.queryById(id);
+        SysRoom sysRoom = this.sysRoomMapper.queryById(id);
+        log.info("查询出的房屋信息：{}", JsonUtil.toString(sysRoom));
+        return sysRoom;
     }
 
     /**
@@ -70,11 +74,13 @@ public class SysRoomServiceImpl implements SysRoomService {
             sysRoom.setCreateTime(new Date());
             sysRoom.setUpdateTime(new Date());
             sysRoom.setStatus(0);
+            log.info("待添加数据sysRoom: {}", JsonUtil.toString(sysRoom));
             this.sysRoomMapper.insert(sysRoom);
+            return true;
         } catch (Exception e) {
             log.info("添加房屋信息失败：{}", e.getMessage());
         }
-        return true;
+        return false;
     }
 
     /**
@@ -87,11 +93,13 @@ public class SysRoomServiceImpl implements SysRoomService {
     public Boolean update(SysRoom sysRoom) {
         try {
             sysRoom.setUpdateTime(new Date());
+            log.info("待修改数据sysRoom: {}", JsonUtil.toString(sysRoom));
             this.sysRoomMapper.update(sysRoom);
+            return true;
         } catch (Exception e) {
             log.info("编辑房屋信息失败：{}", e.getMessage());
         }
-        return true;
+        return false;
     }
 
     /**
@@ -110,6 +118,7 @@ public class SysRoomServiceImpl implements SysRoomService {
         try {
             sysRoom.setUpdateTime(new Date());
             sysRoom.setStatus(1);
+            log.info("要删除的id: {}", id);
             this.sysRoomMapper.update(sysRoom);
         } catch (Exception e) {
             log.info("删除房屋信息失败：{}", e.getMessage());

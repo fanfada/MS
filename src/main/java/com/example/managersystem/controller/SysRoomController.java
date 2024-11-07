@@ -60,7 +60,7 @@ public class SysRoomController {
      * @return 新增结果
      */
     @PostMapping
-    public ReturnMessage<Boolean> add(SysRoom sysRoom) {
+    public ReturnMessage<Boolean> add(@RequestBody SysRoom sysRoom) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.insert(sysRoom));
     }
 
@@ -71,7 +71,7 @@ public class SysRoomController {
      * @return 编辑结果
      */
     @PutMapping
-    public ReturnMessage<Boolean> edit(SysRoom sysRoom) {
+    public ReturnMessage<Boolean> edit(@RequestBody SysRoom sysRoom) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.update(sysRoom));
     }
 
@@ -81,8 +81,8 @@ public class SysRoomController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ReturnMessage<Boolean> deleteById(Integer id) {
+    @GetMapping("/delete/{id}")
+    public ReturnMessage<Boolean> deleteById(@PathVariable(value = "id") Integer id) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.deleteByIdSoft(id));
     }
 

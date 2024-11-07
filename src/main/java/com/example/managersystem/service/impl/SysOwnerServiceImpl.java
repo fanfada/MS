@@ -4,6 +4,7 @@ import com.example.managersystem.domain.SysOwner;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysOwnerMapper;
 import com.example.managersystem.service.SysOwnerService;
+import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.vo.SysOwnerVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class SysOwnerServiceImpl implements SysOwnerService {
     @Override
     public List<SysOwnerVo> queryAll() {
         List<SysOwner> sysOwnerList = this.sysOwnerMapper.queryAll();
+        log.info("所有房东信息：{}", JsonUtil.toString(sysOwnerList));
         return sysOwnerList.stream()
                 .map(SysOwner -> SysOwnerVo.builder()
                         .id(SysOwner.getId())
@@ -51,7 +53,9 @@ public class SysOwnerServiceImpl implements SysOwnerService {
      */
     @Override
     public SysOwner queryById(Integer id) {
-        return this.sysOwnerMapper.queryById(id);
+        SysOwner sysOwner = this.sysOwnerMapper.queryById(id);
+        log.info("查询出的房东信息：{}", JsonUtil.toString(sysOwner));
+        return sysOwner;
     }
 
     /**
@@ -66,11 +70,13 @@ public class SysOwnerServiceImpl implements SysOwnerService {
             sysOwner.setCreateTime(new Date());
             sysOwner.setUpdateTime(new Date());
             sysOwner.setStatus(0);
+            log.info("待添加数据sysOwner: {}", JsonUtil.toString(sysOwner));
             this.sysOwnerMapper.insert(sysOwner);
+            return true;
         } catch (Exception e) {
             log.info("添加房东信息失败：{}", e.getMessage());
         }
-        return true;
+        return false;
     }
 
     /**
@@ -83,11 +89,13 @@ public class SysOwnerServiceImpl implements SysOwnerService {
     public Boolean update(SysOwner sysOwner) {
         try {
             sysOwner.setUpdateTime(new Date());
+            log.info("待修改数据sysOwner: {}", JsonUtil.toString(sysOwner));
             this.sysOwnerMapper.update(sysOwner);
+            return true;
         } catch (Exception e) {
             log.info("编辑房东信息失败：{}", e.getMessage());
         }
-        return true;
+        return false;
     }
 
     /**
@@ -103,6 +111,7 @@ public class SysOwnerServiceImpl implements SysOwnerService {
         } else if (sysOwner.getStatus().equals(1)) {
             throw new GlobalException("该实例已经删除");
         }
+        log.info("要删除的id: {}", id);
         sysOwner.setUpdateTime(new Date());
         sysOwner.setStatus(1);
         this.sysOwnerMapper.update(sysOwner);
