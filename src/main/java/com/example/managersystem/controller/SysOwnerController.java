@@ -1,8 +1,10 @@
 package com.example.managersystem.controller;
 
 import com.example.managersystem.domain.SysOwner;
+import com.example.managersystem.hanbler.ReturnMessage;
+import com.example.managersystem.hanbler.ReturnState;
 import com.example.managersystem.service.SysOwnerService;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import javax.annotation.Resource;
  * @author makejava
  * @since 2024-11-07 12:36:54
  */
+@Slf4j
 @RestController
 @RequestMapping("sysOwner")
 public class SysOwnerController {
@@ -29,8 +32,8 @@ public class SysOwnerController {
      * @return 实例对象集合
      */
     @GetMapping
-    public ResponseEntity<List> queryAll() {
-        return ResponseEntity.ok(this.sysOwnerService.queryAll());
+    public ReturnMessage<List> queryAll() {
+        return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.queryAll());
     }
 
     /**
@@ -40,8 +43,8 @@ public class SysOwnerController {
      * @return 单条数据
      */
     @GetMapping("{id}")
-    public ResponseEntity<SysOwner> queryById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(this.sysOwnerService.queryById(id));
+    public ReturnMessage<SysOwner> queryById(@PathVariable("id") Integer id) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.queryById(id));
     }
 
     /**
@@ -51,8 +54,8 @@ public class SysOwnerController {
      * @return 新增结果
      */
     @PostMapping
-    public ResponseEntity<SysOwner> add(SysOwner sysOwner) {
-        return ResponseEntity.ok(this.sysOwnerService.insert(sysOwner));
+    public ReturnMessage<SysOwner> add(SysOwner sysOwner) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.insert(sysOwner));
     }
 
     /**
@@ -62,19 +65,19 @@ public class SysOwnerController {
      * @return 编辑结果
      */
     @PutMapping
-    public ResponseEntity<SysOwner> edit(SysOwner sysOwner) {
-        return ResponseEntity.ok(this.sysOwnerService.update(sysOwner));
+    public ReturnMessage<SysOwner> edit(SysOwner sysOwner) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.update(sysOwner));
     }
 
     /**
      * 删除数据
      *
-     * @param id 主键
+     * @param id id
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Integer id) {
-        return ResponseEntity.ok(this.sysOwnerService.deleteById(id));
+    @GetMapping("/delete/{id}")
+    public ReturnMessage<Boolean> deleteById(@PathVariable(value = "id") Integer id) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.deleteByIdSoft(id));
     }
 
 }

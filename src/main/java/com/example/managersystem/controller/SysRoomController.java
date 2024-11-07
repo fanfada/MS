@@ -1,8 +1,10 @@
 package com.example.managersystem.controller;
 
 import com.example.managersystem.domain.SysRoom;
+import com.example.managersystem.hanbler.ReturnMessage;
+import com.example.managersystem.hanbler.ReturnState;
 import com.example.managersystem.service.SysRoomService;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import javax.annotation.Resource;
  * @author makejava
  * @since 2024-11-07 12:36:52
  */
+@Slf4j
 @RestController
 @RequestMapping("sysRoom")
 public class SysRoomController {
@@ -29,8 +32,8 @@ public class SysRoomController {
      * @return 实例对象集合
      */
     @GetMapping
-    public ResponseEntity<List> queryAll() {
-        return ResponseEntity.ok(this.sysRoomService.queryAll());
+    public ReturnMessage<List> queryAll() {
+        return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.queryAll());
     }
 
     /**
@@ -40,8 +43,8 @@ public class SysRoomController {
      * @return 单条数据
      */
     @GetMapping("{id}")
-    public ResponseEntity<SysRoom> queryById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(this.sysRoomService.queryById(id));
+    public ReturnMessage<SysRoom> queryById(@PathVariable("id") Integer id) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.queryById(id));
     }
 
     /**
@@ -51,8 +54,8 @@ public class SysRoomController {
      * @return 新增结果
      */
     @PostMapping
-    public ResponseEntity<SysRoom> add(SysRoom sysRoom) {
-        return ResponseEntity.ok(this.sysRoomService.insert(sysRoom));
+    public ReturnMessage<SysRoom> add(SysRoom sysRoom) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.insert(sysRoom));
     }
 
     /**
@@ -62,8 +65,8 @@ public class SysRoomController {
      * @return 编辑结果
      */
     @PutMapping
-    public ResponseEntity<SysRoom> edit(SysRoom sysRoom) {
-        return ResponseEntity.ok(this.sysRoomService.update(sysRoom));
+    public ReturnMessage<SysRoom> edit(SysRoom sysRoom) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.update(sysRoom));
     }
 
     /**
@@ -73,8 +76,8 @@ public class SysRoomController {
      * @return 删除是否成功
      */
     @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Integer id) {
-        return ResponseEntity.ok(this.sysRoomService.deleteById(id));
+    public ReturnMessage<Boolean> deleteById(Integer id) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.deleteByIdSoft(id));
     }
 
 }

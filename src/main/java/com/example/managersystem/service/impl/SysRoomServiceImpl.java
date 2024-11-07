@@ -1,10 +1,13 @@
 package com.example.managersystem.service.impl;
 
 import com.example.managersystem.domain.SysRoom;
+import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysRoomMapper;
 import com.example.managersystem.service.SysRoomService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 
@@ -14,6 +17,7 @@ import javax.annotation.Resource;
  * @author makejava
  * @since 2024-11-07 12:36:52
  */
+@Slf4j
 @Service("sysRoomService")
 public class SysRoomServiceImpl implements SysRoomService {
     @Resource
@@ -62,6 +66,25 @@ public class SysRoomServiceImpl implements SysRoomService {
     public SysRoom update(SysRoom sysRoom) {
         this.sysRoomMapper.update(sysRoom);
         return this.queryById(sysRoom.getId());
+    }
+
+    /**
+     * 通过主键删除数据:软删除
+     *
+     * @return 是否成功
+     */
+    public boolean deleteByIdSoft(Integer id) {
+        SysRoom sysRoom = this.queryById(id);
+        if (null == sysRoom) {
+            log.info("id = {} 不存在", id);
+            throw new GlobalException("该实例不存在");
+        } else if (sysRoom.getStatus().equals(1)) {
+            throw new GlobalException("该实例已经删除");
+        }
+        sysRoom.setUpdateTime(new Date());
+        sysRoom.setStatus(1);
+        this.sysRoomMapper.update(sysRoom);
+        return true;
     }
 
     /**

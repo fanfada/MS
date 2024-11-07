@@ -43,6 +43,15 @@ public interface SysRoomService {
      */
     SysRoom update(SysRoom sysRoom);
 
+
+    /**
+     * 软删除
+     *
+     * @param id
+     * @return
+     */
+    boolean deleteByIdSoft(Integer id);
+
     /**
      * 通过主键删除数据
      *
