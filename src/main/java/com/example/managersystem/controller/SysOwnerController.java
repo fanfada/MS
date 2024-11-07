@@ -17,13 +17,19 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("sysOwner")
+@RequestMapping("/sysOwner")
 public class SysOwnerController {
     /**
      * 服务对象
      */
     @Autowired
     private SysOwnerService sysOwnerService;
+
+    @RequestMapping("/hello")
+    public String TestOutput(){
+        log.info("/hello");
+        return "Hey, superstar! Long time no see! Missed your face!";
+    }
 
     /**
      * 分页查询

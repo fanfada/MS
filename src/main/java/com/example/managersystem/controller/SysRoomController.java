@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("sysRoom")
+@RequestMapping("/sysRoom")
 public class SysRoomController {
     /**
      * 服务对象
