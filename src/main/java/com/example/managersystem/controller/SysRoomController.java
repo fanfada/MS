@@ -1,9 +1,11 @@
 package com.example.managersystem.controller;
 
+import com.example.managersystem.common.PageResultBody;
 import com.example.managersystem.domain.SysRoom;
-import com.example.managersystem.hanbler.ReturnMessage;
-import com.example.managersystem.hanbler.ReturnState;
+import com.example.managersystem.common.ReturnMessage;
+import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.service.SysRoomService;
+import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +34,12 @@ public class SysRoomController {
      * @return 实例对象集合
      */
     @GetMapping
-    public ReturnMessage<List<SysRoom>> queryAll() {
-        return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.queryAll());
+    public ReturnMessage<PageResultBody<SysRoomVo>> queryAll() {
+        PageResultBody<SysRoomVo> pageResultBody = new PageResultBody<>();
+        List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll();
+        pageResultBody.setContent(sysRoomList);
+        pageResultBody.setTotal(sysRoomList.size());
+        return new ReturnMessage<>(ReturnState.OK, pageResultBody);
     }
 
     /**

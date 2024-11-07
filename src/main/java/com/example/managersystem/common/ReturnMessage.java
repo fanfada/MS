@@ -1,4 +1,4 @@
-package com.example.managersystem.hanbler;
+package com.example.managersystem.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

@@ -4,11 +4,13 @@ import com.example.managersystem.domain.SysRoom;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysRoomMapper;
 import com.example.managersystem.service.SysRoomService;
+import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 /**
@@ -29,8 +31,20 @@ public class SysRoomServiceImpl implements SysRoomService {
      * @return 实例对象集合
      */
     @Override
-    public List<SysRoom> queryAll() {
-        return this.sysRoomMapper.queryAll();
+    public List<SysRoomVo> queryAll() {
+        List<SysRoom> sysOwnerList = this.sysRoomMapper.queryAll();
+        return sysOwnerList.stream()
+                .map(SysRoom -> SysRoomVo.builder()
+                        .id(SysRoom.getId())
+                        .color(SysRoom.getColor())
+                        .roomType(SysRoom.getRoomType())
+                        .province(SysRoom.getProvince())
+                        .city(SysRoom.getCity())
+                        .address(SysRoom.getAddress())
+                        .remark(SysRoom.getRemark())
+                        .ownerId(SysRoom.getOwnerId())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -53,6 +67,9 @@ public class SysRoomServiceImpl implements SysRoomService {
     @Override
     public Boolean insert(SysRoom sysRoom) {
         try {
+            sysRoom.setCreateTime(new Date());
+            sysRoom.setUpdateTime(new Date());
+            sysRoom.setStatus(0);
             this.sysRoomMapper.insert(sysRoom);
         } catch (Exception e) {
             log.info("添加房屋信息失败：{}", e.getMessage());
@@ -69,6 +86,7 @@ public class SysRoomServiceImpl implements SysRoomService {
     @Override
     public Boolean update(SysRoom sysRoom) {
         try {
+            sysRoom.setUpdateTime(new Date());
             this.sysRoomMapper.update(sysRoom);
         } catch (Exception e) {
             log.info("编辑房屋信息失败：{}", e.getMessage());

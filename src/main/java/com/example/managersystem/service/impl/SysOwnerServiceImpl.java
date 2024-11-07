@@ -4,11 +4,13 @@ import com.example.managersystem.domain.SysOwner;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysOwnerMapper;
 import com.example.managersystem.service.SysOwnerService;
+import com.example.managersystem.vo.SysOwnerVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 /**
@@ -29,8 +31,16 @@ public class SysOwnerServiceImpl implements SysOwnerService {
      * @return 实例对象集合
      */
     @Override
-    public List<SysOwner> queryAll() {
-        return this.sysOwnerMapper.queryAll();
+    public List<SysOwnerVo> queryAll() {
+        List<SysOwner> sysOwnerList = this.sysOwnerMapper.queryAll();
+        return sysOwnerList.stream()
+                .map(SysOwner -> SysOwnerVo.builder()
+                        .id(SysOwner.getId())
+                        .phone(SysOwner.getPhone())
+                        .ownerType(SysOwner.getOwnerType())
+                        .color(SysOwner.getColor())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -55,6 +65,7 @@ public class SysOwnerServiceImpl implements SysOwnerService {
         try {
             sysOwner.setCreateTime(new Date());
             sysOwner.setUpdateTime(new Date());
+            sysOwner.setStatus(0);
             this.sysOwnerMapper.insert(sysOwner);
         } catch (Exception e) {
             log.info("添加房东信息失败：{}", e.getMessage());

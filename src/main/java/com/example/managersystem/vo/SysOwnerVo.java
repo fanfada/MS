@@ -1,9 +1,7 @@
-package com.example.managersystem.domain;
+package com.example.managersystem.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 
-import java.util.Date;
 import java.io.Serializable;
 
 /**
@@ -13,7 +11,7 @@ import java.io.Serializable;
  * @since 2024-11-07 12:36:55
  */
 @Builder
-public class SysOwner implements Serializable {
+public class SysOwnerVo implements Serializable {
     private static final long serialVersionUID = -10186319665297682L;
     /**
      * 房东ID
@@ -31,24 +29,6 @@ public class SysOwner implements Serializable {
      * 红黑榜：推荐、不推荐、还行
      */
     private String color;
-    /**
-     * 状态（0正常 1停用）
-     */
-    private Integer status;
-    /**
-     * 创建时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date createTime;
-    /**
-     * 更新者
-     */
-    private String updateBy;
-    /**
-     * 更新时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date updateTime;
     /**
      * 推荐或者不推荐理由
      */
@@ -87,37 +67,6 @@ public class SysOwner implements Serializable {
         this.color = color;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
     public String getRemark() {
         return remark;

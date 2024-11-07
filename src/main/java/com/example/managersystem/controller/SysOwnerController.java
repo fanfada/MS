@@ -1,9 +1,11 @@
 package com.example.managersystem.controller;
 
+import com.example.managersystem.common.PageResultBody;
 import com.example.managersystem.domain.SysOwner;
-import com.example.managersystem.hanbler.ReturnMessage;
-import com.example.managersystem.hanbler.ReturnState;
+import com.example.managersystem.common.ReturnMessage;
+import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.service.SysOwnerService;
+import com.example.managersystem.vo.SysOwnerVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +34,12 @@ public class SysOwnerController {
      * @return 实例对象集合
      */
     @GetMapping
-    public ReturnMessage<List<SysOwner>> queryAll() {
-        return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.queryAll());
+    public ReturnMessage<PageResultBody<SysOwnerVo>> queryAll() {
+        PageResultBody<SysOwnerVo> pageResultBody = new PageResultBody<>();
+        List<SysOwnerVo> sysOwnerList = this.sysOwnerService.queryAll();
+        pageResultBody.setContent(sysOwnerList);
+        pageResultBody.setTotal(sysOwnerList.size());
+        return new ReturnMessage<>(ReturnState.OK, pageResultBody);
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.example.managersystem.excepion;
 
-import com.example.managersystem.hanbler.ReturnMessage;
-import com.example.managersystem.hanbler.ReturnState;
+import com.example.managersystem.common.ReturnMessage;
+import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;

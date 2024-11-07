@@ -1,6 +1,7 @@
 package com.example.managersystem.service;
 
 import com.example.managersystem.domain.SysRoom;
+import com.example.managersystem.vo.SysRoomVo;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface SysRoomService {
      *
      * @return 实例对象集合
      */
-    List<SysRoom> queryAll();
+    List<SysRoomVo> queryAll();
 
     /**
      * 通过ID查询单条数据

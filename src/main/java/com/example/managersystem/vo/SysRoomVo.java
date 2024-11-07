@@ -1,9 +1,9 @@
-package com.example.managersystem.domain;
+package com.example.managersystem.vo;
 
 import lombok.Builder;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 房屋信息表(SysRoom)实体类
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @since 2024-11-07 12:36:53
  */
 @Builder
-public class SysRoom implements Serializable {
+public class SysRoomVo implements Serializable {
     private static final long serialVersionUID = 503330822141613348L;
     /**
      * 房屋ID
@@ -27,10 +27,6 @@ public class SysRoom implements Serializable {
      */
     private String roomType;
     /**
-     * 国家
-     */
-    private String country;
-    /**
      * 省份
      */
     private String province;
@@ -42,22 +38,6 @@ public class SysRoom implements Serializable {
      * 房屋地址
      */
     private String address;
-    /**
-     * 状态（0正常 1停用）
-     */
-    private Integer status;
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
-     * 更新者
-     */
-    private String updateBy;
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
     /**
      * 备注
      */
@@ -92,14 +72,6 @@ public class SysRoom implements Serializable {
         this.roomType = roomType;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public String getProvince() {
         return province;
     }
@@ -122,38 +94,6 @@ public class SysRoom implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     public String getRemark() {

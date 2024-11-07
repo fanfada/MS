@@ -1,6 +1,7 @@
 package com.example.managersystem.service;
 
 import com.example.managersystem.domain.SysOwner;
+import com.example.managersystem.vo.SysOwnerVo;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface SysOwnerService {
      *
      * @return 实例对象集合
      */
-    List<SysOwner> queryAll();
+    List<SysOwnerVo> queryAll();
 
     /**
      * 通过ID查询单条数据
