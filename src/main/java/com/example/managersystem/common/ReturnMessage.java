@@ -1,10 +1,13 @@
 package com.example.managersystem.common;
 
+import com.example.managersystem.util.UuidUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
 
 @ToString(exclude = "body")
 @Data
@@ -42,7 +45,7 @@ public class ReturnMessage<T> {
     private String requestId;
 
     public ReturnMessage() {
-
+        requestId = StringUtils.isNotBlank(MDC.get("requestId")) ? MDC.get("requestId") : UuidUtil.uuid();
     }
 
     public ReturnMessage(final ReturnState state) {
