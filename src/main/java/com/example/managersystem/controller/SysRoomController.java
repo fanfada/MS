@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @RestController
-@RequestMapping("sysRoom")
+@RequestMapping("/sysRoom")
 public class SysRoomController {
     /**
      * 服务对象

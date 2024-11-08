@@ -5,6 +5,7 @@ import com.example.managersystem.common.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.domain.SysUser;
 import com.example.managersystem.service.SysUserService;
+import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.vo.SysUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -22,7 +23,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @RestController
-@RequestMapping("sysUser")
+@RequestMapping("/sysUser")
 public class SysUserController {
     /**
      * 服务对象
@@ -55,6 +56,7 @@ public class SysUserController {
         SysUser sysUser = this.sysUserService.queryById(userId);
         SysUserVo sysUserVo = new SysUserVo();
         BeanUtils.copyProperties(sysUser, sysUserVo);
+        log.info("查询的用户信息sysUserVo：{}", JsonUtil.toString(sysUserVo));
         return new ReturnMessage<>(ReturnState.OK, sysUserVo);
     }
 
@@ -80,8 +82,6 @@ public class SysUserController {
     public ReturnMessage<Boolean> edit(@RequestBody SysUser sysUser) {
         return new ReturnMessage<>(ReturnState.OK, this.sysUserService.update(sysUser));
     }
-
-
 
     /**
      * 删除数据：软删除

@@ -60,7 +60,11 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public SysUser queryById(String userId) {
-        return this.sysUserMapper.queryById(userId);
+        SysUser sysUser = this.sysUserMapper.queryById(userId);
+        if (null == sysUser) {
+            throw new GlobalException(String.format("该用户%s不存在", userId));
+        }
+        return sysUser;
     }
 
     /**
@@ -101,11 +105,11 @@ public class SysUserServiceImpl implements SysUserService {
     public Boolean update(SysUser sysUser) {
         try {
             sysUser.setUpdateTime(new Date());
-            log.info("待修改数据sysRoom: {}", JsonUtil.toString(sysUser));
+            log.info("待修改数据sysUser: {}", JsonUtil.toString(sysUser));
             this.sysUserMapper.update(sysUser);
             return true;
         } catch (Exception e) {
-            log.info("编辑用户拒信息失败：{}", e.getMessage());
+            log.info("编辑用户信息失败：{}", e.getMessage());
         }
         return false;
     }
