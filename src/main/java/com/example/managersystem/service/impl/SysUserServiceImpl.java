@@ -55,6 +55,23 @@ public class SysUserServiceImpl implements SysUserService {
     /**
      * 通过ID查询单条数据
      *
+     * @param phonenumber 手机号
+     * @return 实例对象
+     */
+    public SysUser queryByPhone(String phonenumber){
+        SysUser sysUser = this.sysUserMapper.queryByPhone(phonenumber);
+        if (null == sysUser) {
+            throw new GlobalException(String.format("该用户%s不存在", phonenumber));
+        }
+        log.info("用户信息：{}", JsonUtil.toString(sysUser));
+        return sysUser;
+    }
+
+
+
+    /**
+     * 通过ID查询单条数据
+     *
      * @param userId 主键
      * @return 实例对象
      */

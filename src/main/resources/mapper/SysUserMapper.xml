@@ -41,6 +41,27 @@
         where del_flag = 0
     </select>
 
+    <!--根据手机号查询-->
+    <select id="queryByPhone" resultMap="SysUserMap">
+        select user_id,
+               user_name,
+               nick_name,
+               user_type,
+               email,
+               phonenumber,
+               sex,
+               password,
+               status,
+               del_flag,
+               login_date,
+               create_time,
+               update_by,
+               update_time,
+               remark
+        from sys_user
+        where phonenumber = #{phonenumber}
+          and del_flag = 0
+    </select>
     <!--查询单个-->
     <select id="queryById" resultMap="SysUserMap">
         select user_id,

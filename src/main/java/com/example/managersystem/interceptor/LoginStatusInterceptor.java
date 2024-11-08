@@ -1,6 +1,6 @@
 package com.example.managersystem.interceptor;
  
-import com.example.managersystem.annotation.AutoIdempotent;
+import com.example.managersystem.annotation.LoginStatusVerify;
 import com.example.managersystem.service.impl.TokenServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,11 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
 /**
- * 接口幂等性拦截器
+ * 登录状态校验拦截器
  */
 @Slf4j
 @Component
-public class ApiIdempotentInterceptor implements HandlerInterceptor {
+public class LoginStatusInterceptor implements HandlerInterceptor {
  
     @Autowired
     private TokenServiceImpl tokenService;
@@ -33,7 +33,7 @@ public class ApiIdempotentInterceptor implements HandlerInterceptor {
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
-        AutoIdempotent methodAnnotation = method.getAnnotation(AutoIdempotent.class);
+        LoginStatusVerify methodAnnotation = method.getAnnotation(LoginStatusVerify.class);
         if (methodAnnotation != null) {
             check(request);
         }

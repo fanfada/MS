@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Description 自动幂等注解
+ * @Description 登录状态校验注解
  */
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AutoIdempotent {
+public @interface LoginStatusVerify {
 
 }
 

@@ -1,5 +1,6 @@
 package com.example.managersystem.controller;
 
+import com.example.managersystem.annotation.LoginStatusVerify;
 import com.example.managersystem.common.PageResultBody;
 import com.example.managersystem.common.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
@@ -36,6 +37,7 @@ public class SysUserController {
      *
      * @return 实例对象集合
      */
+    @LoginStatusVerify
     @GetMapping
     public ReturnMessage<PageResultBody<SysUserVo>> queryAll() {
         PageResultBody<SysUserVo> pageResultBody = new PageResultBody<>();

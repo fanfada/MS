@@ -23,6 +23,6 @@ public class RedisController {
 
     @GetMapping("/genToken")
     public ReturnMessage<String> genToken(){
-        return new ReturnMessage<>(ReturnState.OK, this.tokenService.createToken());
+        return new ReturnMessage<>(ReturnState.OK, this.tokenService.createToken("test_key"));
     }
 }

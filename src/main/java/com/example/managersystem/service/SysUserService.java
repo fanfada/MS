@@ -20,6 +20,15 @@ public interface SysUserService {
      */
     List<SysUserVo> queryAll();
 
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param phonenumber 手机号
+     * @return 实例对象
+     */
+    SysUser queryByPhone(String phonenumber);
+
     /**
      * 通过ID查询单条数据
      *
