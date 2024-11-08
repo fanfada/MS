@@ -80,10 +80,12 @@ public class LoginController {
         SafeUser safeUser = (SafeUser) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
         SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
         if (!safeUser.getId().equals(sysUser.getUserId())) {
-            throw new GlobalException("请退出自己的账号");
+            return new ReturnMessage<>(ReturnState.OK, "请勿登出他人账号");
+        }
+        if (!this.redisCache.exists(safeUser.getId())) {
+            return new ReturnMessage<>(ReturnState.OK, "您已登出，请勿重复操作");
         }
         this.redisCache.remove(safeUser.getId());
         return new ReturnMessage<>(ReturnState.OK, "登出成功");
     }
-
 }
