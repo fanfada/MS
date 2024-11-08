@@ -65,7 +65,7 @@ public class SysRoomController {
     }
 
     /**
-     * 编辑数据
+     * 编辑数据：软删除
      *
      * @param sysRoom 实体
      * @return 编辑结果

@@ -1,6 +1,9 @@
 package com.example.managersystem.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.io.Serializable;
@@ -12,6 +15,9 @@ import java.io.Serializable;
  * @since 2024-11-07 12:36:53
  */
 @Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SysRoom implements Serializable {
     private static final long serialVersionUID = 503330822141613348L;
     /**

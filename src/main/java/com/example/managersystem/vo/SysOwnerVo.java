@@ -1,6 +1,9 @@
 package com.example.managersystem.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -11,6 +14,9 @@ import java.io.Serializable;
  * @since 2024-11-07 12:36:55
  */
 @Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SysOwnerVo implements Serializable {
     private static final long serialVersionUID = -10186319665297682L;
     /**

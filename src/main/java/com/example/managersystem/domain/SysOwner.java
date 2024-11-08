@@ -1,7 +1,10 @@
 package com.example.managersystem.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.io.Serializable;
@@ -13,6 +16,9 @@ import java.io.Serializable;
  * @since 2024-11-07 12:36:55
  */
 @Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SysOwner implements Serializable {
     private static final long serialVersionUID = -10186319665297682L;
     /**
