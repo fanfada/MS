@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class SysUserServiceImpl implements SysUserService {
         List<SysUser> sysUserList = this.sysUserMapper.queryAll();
         log.info("所有用户信息：{}", JsonUtil.toString(sysUserList));
         return sysUserList.stream()
+                .sorted(Comparator.comparing(SysUser::getCreateTime).reversed())
                 .map(SysUser -> SysUserVo.builder()
                         .userId(SysUser.getUserId())
                         .userName(SysUser.getUserName())

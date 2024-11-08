@@ -9,6 +9,7 @@ import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +37,7 @@ public class SysRoomServiceImpl implements SysRoomService {
         List<SysRoom> sysRoomList = this.sysRoomMapper.queryAll();
         log.info("所有房屋信息：{}", JsonUtil.toString(sysRoomList));
         return sysRoomList.stream()
+                .sorted(Comparator.comparing(SysRoom::getCreateTime).reversed())
                 .map(SysRoom -> SysRoomVo.builder()
                         .id(SysRoom.getId())
                         .color(SysRoom.getColor())
