@@ -3,7 +3,7 @@ package com.example.managersystem.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.example.managersystem.cache.RedisCache;
 import com.example.managersystem.common.GlobalConstants;
-import com.example.managersystem.dto.SafeUser;
+import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.util.ThreadLocalMapUtil;
@@ -59,12 +59,12 @@ public class TokenServiceImpl {
         if (StrUtil.isBlank(token)) {
             throw new GlobalException("您未登录，请登录");
         }
-        SafeUser safeUser =
-                (SafeUser) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
-        if (!redisCache.exists(safeUser.getId())) {
+        SafeUserDto safeUserDto =
+                (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+        if (!redisCache.exists(safeUserDto.getId())) {
             throw new GlobalException("未分配token或token已过期");
         }
-        if (!token.equals(redisCache.getCacheObject(safeUser.getId()))) {
+        if (!token.equals(redisCache.getCacheObject(safeUserDto.getId()))) {
             throw new GlobalException("token被篡改");
         }
         return true;

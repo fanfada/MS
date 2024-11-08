@@ -4,10 +4,13 @@ import com.example.managersystem.domain.SysUser;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysUserMapper;
 import com.example.managersystem.service.SysUserService;
+import com.example.managersystem.util.CommonUtil;
 import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.util.UuidUtil;
 import com.example.managersystem.vo.SysUserVo;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -58,7 +61,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @param phonenumber 手机号
      * @return 实例对象
      */
-    public SysUser queryByPhone(String phonenumber){
+    public SysUser queryByPhone(String phonenumber) {
         SysUser sysUser = this.sysUserMapper.queryByPhone(phonenumber);
         if (null == sysUser) {
             throw new GlobalException(String.format("该用户%s不存在", phonenumber));
@@ -66,7 +69,6 @@ public class SysUserServiceImpl implements SysUserService {
         log.info("用户信息：{}", JsonUtil.toString(sysUser));
         return sysUser;
     }
-
 
 
     /**
@@ -91,25 +93,36 @@ public class SysUserServiceImpl implements SysUserService {
      * @return 实例对象
      */
     @Override
-    public Boolean insert(SysUser sysUser) {
-        try {
-            sysUser.setUserId(UuidUtil.uuid());
-            if (sysUser.getNickName() == null) {
-                sysUser.setNickName(UuidUtil.generateRandomString());
-            }
-            sysUser.setUserType("01");
-            sysUser.setCreateTime(new Date());
-            sysUser.setUpdateTime(new Date());
-            sysUser.setLoginDate(new Date());
-            sysUser.setStatus(0);
-            sysUser.setDelFlag("0");
-            log.info("待添加数据sysUser: {}", JsonUtil.toString(sysUser));
-            this.sysUserMapper.insert(sysUser);
-            return true;
-        } catch (Exception e) {
-            log.info("添加用户信息失败：{}", e.getMessage());
+    public SysUserVo insert(SysUser sysUser) {
+        sysUser.setUserId(UuidUtil.uuid());
+        if (sysUser.getNickName() == null) {
+            sysUser.setNickName(UuidUtil.generateRandomString().replace("user_", "nickname_"));
         }
-        return false;
+        sysUser.setUserName(UuidUtil.generateRandomString());
+        sysUser.setUserType("01");
+        sysUser.setCreateTime(new Date());
+        sysUser.setUpdateTime(new Date());
+        sysUser.setLoginDate(new Date());
+        sysUser.setStatus(0);
+        sysUser.setDelFlag("0");
+        if (StringUtil.isNullOrEmpty(sysUser.getPassword())) {
+            throw new GlobalException("密码为空");
+        }
+        if (!CommonUtil.isValidEmail(sysUser.getEmail())) {
+            throw new GlobalException("邮箱地址无效");
+        }
+        SysUser sysUserOld = this.sysUserMapper.queryByPhone(sysUser.getPhonenumber());
+        if (null != sysUserOld) {
+            throw new GlobalException(String.format("该用户%s已存在", sysUser.getPhonenumber()));
+        }
+        if (!CommonUtil.isValidPhoneNumber(sysUser.getPhonenumber())) {
+            throw new GlobalException("手机号码无效");
+        }
+        log.info("待添加数据sysUser: {}", JsonUtil.toString(sysUser));
+        this.sysUserMapper.insert(sysUser);
+        SysUserVo sysUserVo = new SysUserVo();
+        BeanUtils.copyProperties(sysUser, sysUserVo);
+        return sysUserVo;
     }
 
     /**

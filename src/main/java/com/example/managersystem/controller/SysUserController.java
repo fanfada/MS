@@ -63,18 +63,6 @@ public class SysUserController {
     }
 
     /**
-     * 新增用户
-     * 用户注册走新增用户接口
-     *
-     * @param sysUser 实体
-     * @return 新增结果
-     */
-    @PostMapping
-    public ReturnMessage<Boolean> add(@RequestBody SysUser sysUser) {
-        return new ReturnMessage<>(ReturnState.OK, this.sysUserService.insert(sysUser));
-    }
-
-    /**
      * 编辑数据
      *
      * @param sysUser 实体

@@ -3,7 +3,7 @@ package com.example.managersystem.filter;
 import com.example.managersystem.common.GlobalConstants;
 import com.example.managersystem.common.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
-import com.example.managersystem.dto.SafeUser;
+import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.util.ThreadLocalMapUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +26,12 @@ public class UserFilter implements Filter {
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException,
             ServletException {
         try {
-            log.info("开始设置用户信息");
+            log.info("开始设置用户线程信息");
             final HttpServletRequest httpRequest = (HttpServletRequest) request;
             final String userId;
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             final String url = httpServletRequest.getRequestURL().toString();
-            if (!url.contains("/auth")) {
+            if (!url.contains("/login/login") && !url.contains("/login/registry")) {
                 userId = httpRequest.getHeader(GlobalConstants.HttpHeaderConstants.USER_ID);
                 log.info("请求头里用户信息, userId={}", userId);
                 if (StringUtils.isBlank(userId)) {
@@ -45,17 +45,17 @@ public class UserFilter implements Filter {
                     response.getWriter().flush();
                     return;
                 }
-                final SafeUser secUser = new SafeUser();
+                final SafeUserDto secUser = new SafeUserDto();
                 secUser.setId(userId);
                 final String realIP = this.getRealIP(httpRequest);
                 log.info("Real IP: {}", realIP);
                 secUser.setRealIP(realIP);
                 ThreadLocalMapUtil.put(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER, secUser);
-                log.info("设置用户信息完成secUser:{}", JsonUtil.toString(secUser));
+                log.info("设置用户线程信息完成secUser:{}", JsonUtil.toString(secUser));
             }
             chain.doFilter(request, response);
         } finally {
-            log.info("清除SecUserContext用户信息");
+            log.info("清除用户线程信息");
             ThreadLocalMapUtil.remove(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
         }
     }

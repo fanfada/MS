@@ -5,14 +5,18 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class SafeUser implements Serializable {
+public class SafeUserDto implements Serializable {
 
     private static final long serialVersionUID = -8720942077516585405L;
 
+    /**
+     * 用户id
+     */
     private String id;
 
-    private Integer isCustomer;
-
+    /**
+     * 用户名
+     */
     private String userName;
 
     /**

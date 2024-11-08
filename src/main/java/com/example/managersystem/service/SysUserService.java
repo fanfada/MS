@@ -43,7 +43,7 @@ public interface SysUserService {
      * @param sysUser 实例对象
      * @return 实例对象
      */
-    Boolean insert(SysUser sysUser);
+    SysUserVo insert(SysUser sysUser);
 
     /**
      * 修改数据

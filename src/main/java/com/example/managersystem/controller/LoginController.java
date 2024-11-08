@@ -6,12 +6,13 @@ import com.example.managersystem.common.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.domain.SysUser;
 import com.example.managersystem.dto.LoginDto;
-import com.example.managersystem.dto.SafeUser;
+import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.service.SysUserService;
 import com.example.managersystem.service.impl.TokenServiceImpl;
 import com.example.managersystem.util.ThreadLocalMapUtil;
 import com.example.managersystem.vo.LoginVo;
+import com.example.managersystem.vo.SysUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,13 +38,26 @@ public class LoginController {
     @Autowired
     private RedisCache redisCache;
 
+
+
+    /**
+     * 用户注册走新增用户接口
+     *
+     * @param sysUser 实体
+     * @return 新增结果
+     */
+    @PostMapping(value = "/registry")
+    public ReturnMessage<SysUserVo> add(@RequestBody SysUser sysUser) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysUserService.insert(sysUser));
+    }
+
     /**
      * 登录接口
      * 前期支持手机号登录
      * @param loginDto
      * @return
      */
-    @PostMapping(value = "/auth")
+    @PostMapping(value = "/login")
     public ReturnMessage<LoginVo> login(@RequestBody LoginDto loginDto) {
         if (null == loginDto.getPhonenumber()) {
             throw new GlobalException("手机号为空");
@@ -77,15 +91,15 @@ public class LoginController {
         if (null == loginDto.getPhonenumber()) {
             throw new GlobalException("手机号为空");
         }
-        SafeUser safeUser = (SafeUser) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
         SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
-        if (!safeUser.getId().equals(sysUser.getUserId())) {
+        if (!safeUserDto.getId().equals(sysUser.getUserId())) {
             return new ReturnMessage<>(ReturnState.OK, "请勿登出他人账号");
         }
-        if (!this.redisCache.exists(safeUser.getId())) {
+        if (!this.redisCache.exists(safeUserDto.getId())) {
             return new ReturnMessage<>(ReturnState.OK, "您已登出，请勿重复操作");
         }
-        this.redisCache.remove(safeUser.getId());
+        this.redisCache.remove(safeUserDto.getId());
         return new ReturnMessage<>(ReturnState.OK, "登出成功");
     }
 }

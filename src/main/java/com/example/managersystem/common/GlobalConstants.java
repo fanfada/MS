@@ -1,9 +1,15 @@
 package com.example.managersystem.common;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 全局常量定义
  */
 public class GlobalConstants {
+
+    public static final List<String> INGORE_URLS = Arrays.asList("/login", "/registry");
+
     /**
      * 请求header常量
      */
