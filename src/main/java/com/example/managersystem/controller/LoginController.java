@@ -13,12 +13,10 @@ import com.example.managersystem.service.impl.TokenServiceImpl;
 import com.example.managersystem.util.ThreadLocalMapUtil;
 import com.example.managersystem.vo.LoginVo;
 import com.example.managersystem.vo.SysUserVo;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author fanfada@cmss.chinamobile.com
@@ -38,8 +36,6 @@ public class LoginController {
     @Autowired
     private RedisCache redisCache;
 
-
-
     /**
      * 用户注册走新增用户接口
      *
@@ -54,18 +50,23 @@ public class LoginController {
     /**
      * 登录接口
      * 前期支持手机号登录
+     *
      * @param loginDto
      * @return
      */
     @PostMapping(value = "/login")
     public ReturnMessage<LoginVo> login(@RequestBody LoginDto loginDto) {
+        SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
+        if (this.redisCache.exists(sysUser.getUserId())) {
+            String token = this.redisCache.getCacheObject(sysUser.getUserId());
+            throw new GlobalException(String.format("请勿重复登录%s,userid:%s", token, sysUser.getUserId()));
+        }
         if (null == loginDto.getPhonenumber()) {
             throw new GlobalException("手机号为空");
         }
         if (null == loginDto.getPassword()) {
             throw new GlobalException("密码为空");
         }
-        SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
         if (!sysUser.getPassword().equals(loginDto.getPassword())) {
             throw new GlobalException("密码错误");
         }

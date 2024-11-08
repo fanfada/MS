@@ -18,6 +18,11 @@ public class GlobalConstants {
         /**
          * 请求id
          */
+        public static final String TOKEN = "TOKEN";
+
+        /**
+         * 请求id
+         */
         public static final String REQUEST_ID = "requestId";
 
         /**

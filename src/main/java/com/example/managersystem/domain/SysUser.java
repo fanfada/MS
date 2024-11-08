@@ -33,7 +33,7 @@ public class SysUser implements Serializable {
      */
     private String nickName;
     /**
-     * 用户类型（00系统用户）
+     * 用户类型（00系统用户, 01普通用户）
      */
     private String userType;
     /**
