@@ -15,6 +15,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
 
-        registry.addInterceptor(this.loginStatusInterceptor).addPathPatterns("/**");
+//        registry.addInterceptor(this.loginStatusInterceptor).addPathPatterns("/**");
     }
 }

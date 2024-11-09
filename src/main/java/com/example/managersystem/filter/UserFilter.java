@@ -37,13 +37,11 @@ public class UserFilter implements Filter {
             ServletException {
         try {
             log.info("用户信息线程过滤器执行");
-            final HttpServletRequest httpRequest = (HttpServletRequest) request;
             final String userId;
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             final String url = httpServletRequest.getRequestURL().toString();
-            String[] parts = url.split(":");
-            if (CommonUtil.isIgnoredURL(parts[1].substring(parts[1].indexOf("/")))) {
-                userId = httpRequest.getHeader(GlobalConstants.HttpHeaderConstants.USER_ID);
+            if (!CommonUtil.isIgnoredURL(url)) {
+                userId = httpServletRequest.getHeader(GlobalConstants.HttpHeaderConstants.USER_ID);
                 log.info("请求头里用户信息, userId={}", userId);
                 if (StringUtils.isBlank(userId)) {
                     log.info("请求头里用户信息为空");
@@ -58,7 +56,7 @@ public class UserFilter implements Filter {
                 }
                 final SafeUserDto secUser = new SafeUserDto();
                 secUser.setId(userId);
-                final String realIP = this.getRealIP(httpRequest);
+                final String realIP = this.getRealIP(httpServletRequest);
                 log.info("Real IP: {}", realIP);
                 secUser.setRealIP(realIP);
                 ThreadLocalMapUtil.put(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER, secUser);
