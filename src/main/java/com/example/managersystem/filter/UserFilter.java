@@ -22,16 +22,26 @@ public class UserFilter implements Filter {
 
     }
 
+    public static void main(String[] args) {
+        String url = "localhost:8080/login/captchaImage";
+        // 使用 ":" 分割字符串
+        String[] parts = url.split(":");
+        // 获取从第一个 "/" 开始的部分
+        String result = parts[1].substring(parts[1].indexOf("/"));
+        System.out.println(result);  // 输出: /login/login
+    }
+
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException,
             ServletException {
         try {
-            log.info("用户线程信息过滤器执行");
+            log.info("用户信息线程过滤器执行");
             final HttpServletRequest httpRequest = (HttpServletRequest) request;
             final String userId;
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             final String url = httpServletRequest.getRequestURL().toString();
-            if (!url.contains("/login/login") && !url.contains("/login/registry")) {
+            String[] parts = url.split(":");
+            if (!GlobalConstants.INGORE_URLS.contains(parts[1].substring(parts[1].indexOf("/")))) {
                 userId = httpRequest.getHeader(GlobalConstants.HttpHeaderConstants.USER_ID);
                 log.info("请求头里用户信息, userId={}", userId);
                 if (StringUtils.isBlank(userId)) {
@@ -51,7 +61,7 @@ public class UserFilter implements Filter {
                 log.info("Real IP: {}", realIP);
                 secUser.setRealIP(realIP);
                 ThreadLocalMapUtil.put(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER, secUser);
-                log.info("设置用户线程信息完成secUser:{}", JsonUtil.toString(secUser));
+                log.info("设置用户信息线程完成User:{}", JsonUtil.toString(secUser));
             }
             chain.doFilter(request, response);
         } finally {

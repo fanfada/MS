@@ -4,19 +4,31 @@ import com.example.managersystem.cache.RedisCache;
 import com.example.managersystem.common.GlobalConstants;
 import com.example.managersystem.common.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
+import com.example.managersystem.domain.AjaxResult;
 import com.example.managersystem.domain.SysUser;
 import com.example.managersystem.dto.LoginDto;
 import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.service.SysUserService;
 import com.example.managersystem.service.impl.TokenServiceImpl;
+import com.example.managersystem.util.Base64;
 import com.example.managersystem.util.ThreadLocalMapUtil;
+import com.example.managersystem.util.UuidUtil;
 import com.example.managersystem.vo.LoginVo;
 import com.example.managersystem.vo.SysUserVo;
-import io.netty.util.internal.StringUtil;
+import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author fanfada@cmss.chinamobile.com
@@ -35,6 +47,58 @@ public class LoginController {
 
     @Autowired
     private RedisCache redisCache;
+
+    @Resource(name = "captchaProducer")
+    private Producer captchaProducer;
+
+    @Resource(name = "captchaProducerMath")
+    private Producer captchaProducerMath;
+
+    @Value("${server.captchaEnabled}")
+    private boolean captchaEnabled;
+
+    @Value("${server.captchaType}")
+    private String captchaType;
+
+    /**
+     * 生成验证码
+     */
+    @GetMapping("/captchaImage")
+    public AjaxResult getCode(HttpServletResponse response) throws IOException {
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("captchaEnabled", captchaEnabled);
+        if (!captchaEnabled) {
+            return ajax;
+        }
+        // 保存验证码信息
+        String uuid = UuidUtil.uuid();
+        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + uuid;
+        String capStr = null, code = null;
+        BufferedImage image = null;
+        // 生成验证码
+        if ("math".equals(captchaType)) {
+            String capText = captchaProducerMath.createText();
+            capStr = capText.substring(0, capText.lastIndexOf("@"));
+            code = capText.substring(capText.lastIndexOf("@") + 1);
+            image = captchaProducerMath.createImage(capStr);
+        } else if ("char".equals(captchaType)) {
+            capStr = code = captchaProducer.createText();
+            image = captchaProducer.createImage(capStr);
+        }
+
+        redisCache.setCacheObject(verifyKey, code, 2, TimeUnit.MINUTES);
+        // 转换流信息写出
+        FastByteArrayOutputStream os = new FastByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "jpg", os);
+        } catch (IOException e) {
+            return AjaxResult.error(e.getMessage());
+        }
+
+        ajax.put("uuid", uuid);
+        ajax.put("img", Base64.encode(os.toByteArray()));
+        return ajax;
+    }
 
     /**
      * 用户注册走新增用户接口

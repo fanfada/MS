@@ -47,4 +47,9 @@ public class RedisController {
     public ReturnMessage<Boolean> delKey(@PathVariable(value = "key") final String key) {
         return new ReturnMessage<>(ReturnState.OK, this.redisCache.deleteObject(key));
     }
+
+    @GetMapping(value = "/getExpireTime/{key}")
+    public ReturnMessage<Long> getExpireTime(@PathVariable(value = "key") final String key) {
+        return new ReturnMessage<>(ReturnState.OK, this.redisCache.getExpireTime(key));
+    }
 }

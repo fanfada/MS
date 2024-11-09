@@ -19,7 +19,19 @@ public class RedisCache {
     public RedisTemplate redisTemplate;
 
     /**
+     * 获取指定key的过期时间
+     *
+     * @param key
+     * @param <T>
+     * @return
+     */
+    public <T> Long getExpireTime(final String key) {
+        return this.redisTemplate.getExpire(key);
+    }
+
+    /**
      * redis加锁
+     *
      * @param <T>
      * @param key
      * @param value
@@ -35,6 +47,7 @@ public class RedisCache {
 
     /**
      * 执行lua脚本
+     *
      * @param lua_script
      * @param key
      * @param value

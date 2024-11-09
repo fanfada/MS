@@ -67,6 +67,9 @@ public class TokenServiceImpl {
         if (!token.equals(redisCache.getCacheObject(safeUserDto.getId()))) {
             throw new GlobalException("token被篡改");
         }
+        if (this.redisCache.getExpireTime(safeUserDto.getId()) < 300L) {
+            this.redisCache.expire(safeUserDto.getId(), 1800L);
+        }
         return true;
     }
 }
