@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author fanfada@cmss.chinamobile.com
+ * @author fanfada
  * @date 2024/11/08 11:31
  */
 @Builder

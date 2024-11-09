@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author fanfada@cmss.chinamobile.com
+ * @author fanfada
  * @date 2024/11/08 15:19
  */
 public class CommonUtil {

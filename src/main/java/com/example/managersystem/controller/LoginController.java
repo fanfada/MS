@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author fanfada@cmss.chinamobile.com
+ * @author fanfada
  * @date 2024/11/08 11:09
  */
 @Slf4j
@@ -65,10 +65,11 @@ public class LoginController {
      */
     @GetMapping("/captchaImage")
     public AjaxResult getCode(HttpServletResponse response) throws IOException {
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("captchaEnabled", captchaEnabled);
-        if (!captchaEnabled) {
-            return ajax;
+        AjaxResult ajaxResult= AjaxResult.success();
+        ajaxResult.put("captchaEnabled", this.captchaEnabled);
+        log.info("验证码是否开启：{}", this.captchaEnabled);
+        if (!this.captchaEnabled) {
+            return ajaxResult;
         }
         // 保存验证码信息
         String uuid = UuidUtil.uuid();
@@ -77,16 +78,15 @@ public class LoginController {
         BufferedImage image = null;
         // 生成验证码
         if ("math".equals(captchaType)) {
-            String capText = captchaProducerMath.createText();
+            String capText = this.captchaProducerMath.createText();
             capStr = capText.substring(0, capText.lastIndexOf("@"));
             code = capText.substring(capText.lastIndexOf("@") + 1);
-            image = captchaProducerMath.createImage(capStr);
+            image = this.captchaProducerMath.createImage(capStr);
         } else if ("char".equals(captchaType)) {
-            capStr = code = captchaProducer.createText();
-            image = captchaProducer.createImage(capStr);
+            capStr = code = this.captchaProducer.createText();
+            image = this.captchaProducer.createImage(capStr);
         }
-
-        redisCache.setCacheObject(verifyKey, code, 2, TimeUnit.MINUTES);
+        this.redisCache.setCacheObject(verifyKey, code, 2, TimeUnit.MINUTES);
         // 转换流信息写出
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();
         try {
@@ -94,10 +94,9 @@ public class LoginController {
         } catch (IOException e) {
             return AjaxResult.error(e.getMessage());
         }
-
-        ajax.put("uuid", uuid);
-        ajax.put("img", Base64.encode(os.toByteArray()));
-        return ajax;
+        ajaxResult.put("uuid", uuid);
+        ajaxResult.put("img", Base64.encode(os.toByteArray()));
+        return ajaxResult;
     }
 
     /**

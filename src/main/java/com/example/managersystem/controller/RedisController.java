@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author fanfada@cmss.chinamobile.com
+ * @author fanfada
  * @date 2024/11/07 19:15
  */
 @Slf4j

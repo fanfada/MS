@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * 登录传参
  *
- * @author fanfada@cmss.chinamobile.com
+ * @author fanfada
  * @date 2024/11/08 11:12
  */
 @Builder
