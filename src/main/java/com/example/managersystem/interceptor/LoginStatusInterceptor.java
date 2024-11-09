@@ -27,7 +27,7 @@ public class LoginStatusInterceptor implements HandlerInterceptor {
  
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("接口幂等拦截器执行");
+        log.info("登录状态TOKEN校验拦截器执行");
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
@@ -37,6 +37,7 @@ public class LoginStatusInterceptor implements HandlerInterceptor {
         if (methodAnnotation != null) {
             check(request);
         }
+        log.info("登录状态TOKEN校验拦截器执行成功");
         return true;
     }
  

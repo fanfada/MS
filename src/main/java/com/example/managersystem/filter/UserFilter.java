@@ -26,7 +26,7 @@ public class UserFilter implements Filter {
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException,
             ServletException {
         try {
-            log.info("开始设置用户线程信息");
+            log.info("用户线程信息过滤器执行");
             final HttpServletRequest httpRequest = (HttpServletRequest) request;
             final String userId;
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;

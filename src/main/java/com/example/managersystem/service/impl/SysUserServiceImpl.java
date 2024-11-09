@@ -107,6 +107,8 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setLoginDate(new Date());
         sysUser.setStatus(0);
         sysUser.setDelFlag("0");
+        sysUser.setSex("0");
+        sysUser.setRemark("Hello");
         if (StringUtil.isNullOrEmpty(sysUser.getPassword())) {
             throw new GlobalException("密码为空");
         }
