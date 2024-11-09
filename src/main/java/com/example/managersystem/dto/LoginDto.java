@@ -39,4 +39,14 @@ public class LoginDto {
      * 密码
      */
     private String password;
+
+    /**
+     * 验证码结果
+     */
+    private String code;
+
+    /**
+     * 验证码uuid：key
+     */
+    private String uuid;
 }

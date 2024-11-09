@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class GlobalConstants {
 
-    public static final List<String> INGORE_URLS = Arrays.asList("/login/login", "/login/registry", "/login/captchaImage");
+    public static final List<String> IGNORE_URLS = Arrays.asList("/login/login", "/login/registry", "/login/captchaImage");
 
     /**
      * 验证码 redis key

@@ -96,6 +96,10 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public SysUserVo insert(SysUser sysUser) {
+        SysUser sysUserRaw = this.sysUserMapper.queryByPhone(sysUser.getPhonenumber());
+        if (null != sysUserRaw) {
+            throw new GlobalException(String.format("该用户%s已存在", sysUser.getPhonenumber()));
+        }
         sysUser.setUserId(UuidUtil.uuid());
         if (sysUser.getNickName() == null) {
             sysUser.setNickName(UuidUtil.generateRandomString().replace("user_", "nickname_"));

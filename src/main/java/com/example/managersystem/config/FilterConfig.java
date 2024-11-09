@@ -23,15 +23,15 @@ public class FilterConfig {
 
 
 
-    @Bean
-    public FilterRegistrationBean<UserFilter> userFilter() {
-
-        final FilterRegistrationBean<UserFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(new UserFilter());
-        registration.setName("userFilter");
-        registration.addUrlPatterns("/*");
-        registration.setOrder(1);
-        return registration;
-    }
+//    @Bean
+//    public FilterRegistrationBean<UserFilter> userFilter() {
+//
+//        final FilterRegistrationBean<UserFilter> registration = new FilterRegistrationBean<>();
+//        registration.setFilter(new UserFilter());
+//        registration.setName("userFilter");
+//        registration.addUrlPatterns("/*");
+//        registration.setOrder(1);
+//        return registration;
+//    }
 
 }

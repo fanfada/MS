@@ -14,7 +14,7 @@ public class CommonUtil {
 
     public static boolean isIgnoredURL(String url) {
         // 遍历INGORE_URLS，检查url是否包含其中的任意一个元素
-        for (String ignoreUrl : GlobalConstants.INGORE_URLS) {
+        for (String ignoreUrl : GlobalConstants.IGNORE_URLS) {
             if (url.contains(ignoreUrl)) {
                 return true;  // 如果url包含ignoreUrl中的某个字符串，返回true
             }

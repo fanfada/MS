@@ -12,6 +12,7 @@ import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.service.SysUserService;
 import com.example.managersystem.service.impl.TokenServiceImpl;
 import com.example.managersystem.util.Base64;
+import com.example.managersystem.util.StringUtils;
 import com.example.managersystem.util.ThreadLocalMapUtil;
 import com.example.managersystem.util.UuidUtil;
 import com.example.managersystem.vo.LoginVo;
@@ -65,7 +66,7 @@ public class LoginController {
      */
     @GetMapping("/captchaImage")
     public AjaxResult getCode(HttpServletResponse response) throws IOException {
-        AjaxResult ajaxResult= AjaxResult.success();
+        AjaxResult ajaxResult = AjaxResult.success();
         ajaxResult.put("captchaEnabled", this.captchaEnabled);
         log.info("验证码是否开启：{}", this.captchaEnabled);
         if (!this.captchaEnabled) {
@@ -100,7 +101,7 @@ public class LoginController {
     }
 
     /**
-     * 用户注册走新增用户接口
+     * 用户注册
      *
      * @param sysUser 实体
      * @return 新增结果
@@ -140,6 +141,27 @@ public class LoginController {
         loginVo.setToken(token);
         loginVo.setMessage("登陆成功");
         return new ReturnMessage<>(ReturnState.OK, loginVo);
+    }
+
+    /**
+     * 校验验证码
+     *
+     * @param code 验证码
+     * @param uuid 唯一标识
+     * @return 结果
+     */
+    public void validateCaptcha(String code, String uuid) {
+        if (this.captchaEnabled) {
+            String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
+            String captcha = this.redisCache.getCacheObject(verifyKey);
+            if (captcha == null) {
+                throw new GlobalException("请输入验证码");
+            }
+            this.redisCache.deleteObject(verifyKey);
+            if (!code.equalsIgnoreCase(captcha)) {
+                throw new GlobalException("验证码错误");
+            }
+        }
     }
 
 

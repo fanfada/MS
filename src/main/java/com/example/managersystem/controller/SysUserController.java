@@ -37,7 +37,7 @@ public class SysUserController {
      *
      * @return 实例对象集合
      */
-    @LoginStatusVerify
+//    @LoginStatusVerify
     @GetMapping
     public ReturnMessage<PageResultBody<SysUserVo>> queryAll() {
         PageResultBody<SysUserVo> pageResultBody = new PageResultBody<>();

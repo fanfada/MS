@@ -4,6 +4,7 @@ import com.example.managersystem.common.GlobalConstants;
 import com.example.managersystem.common.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.dto.SafeUserDto;
+import com.example.managersystem.util.CommonUtil;
 import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.util.ThreadLocalMapUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ public class UserFilter implements Filter {
     }
 
     public static void main(String[] args) {
-        String url = "localhost:8080/login/captchaImage";
+        String url = "localhost:8080/login/registry";
         // 使用 ":" 分割字符串
         String[] parts = url.split(":");
         // 获取从第一个 "/" 开始的部分
@@ -41,7 +42,7 @@ public class UserFilter implements Filter {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             final String url = httpServletRequest.getRequestURL().toString();
             String[] parts = url.split(":");
-            if (!GlobalConstants.INGORE_URLS.contains(parts[1].substring(parts[1].indexOf("/")))) {
+            if (CommonUtil.isIgnoredURL(parts[1].substring(parts[1].indexOf("/")))) {
                 userId = httpRequest.getHeader(GlobalConstants.HttpHeaderConstants.USER_ID);
                 log.info("请求头里用户信息, userId={}", userId);
                 if (StringUtils.isBlank(userId)) {

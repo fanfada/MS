@@ -67,9 +67,9 @@ public class CaptchaConfig
         // 验证码文本生成器
         properties.setProperty(KAPTCHA_TEXTPRODUCER_IMPL, "com.example.managersystem.config.KaptchaTextCreator");
         // 验证码文本字符间距 默认为2
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_SPACE, "3");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_SPACE, "5");
         // 验证码文本字符长度 默认为5
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, "6");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, "10");
         // 验证码文本字体样式 默认为new Font("Arial", 1, fontSize), new Font("Courier", 1, fontSize)
         properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_NAMES, "Arial,Courier");
         // 验证码噪点颜色 默认为Color.BLACK
