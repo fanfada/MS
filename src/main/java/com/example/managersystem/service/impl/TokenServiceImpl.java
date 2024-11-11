@@ -29,14 +29,13 @@ public class TokenServiceImpl {
      */
     public String createToken(final String key) {
         String str = UuidUtil.uuid();
-        StringBuilder token = new StringBuilder();
         try {
-            token.append("token:").append(str);
+            StringBuilder token = new StringBuilder(str);
             log.info("生成的token:{}", JsonUtil.toString(token));
-            if (redisCache.exists(key)) {
+            if (this.redisCache.exists(key)) {
                 redisCache.remove(key);
             }
-            redisCache.setEx(key, token.toString(), 1800L);
+            this.redisCache.setEx(key, token.toString(), 1800L);
             boolean notEmpty = StrUtil.isNotEmpty(token.toString());
             if (notEmpty) {
                 return token.toString();
@@ -61,10 +60,10 @@ public class TokenServiceImpl {
         }
         SafeUserDto safeUserDto =
                 (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
-        if (!redisCache.exists(safeUserDto.getId())) {
+        if (!this.redisCache.exists(safeUserDto.getId())) {
             throw new GlobalException("未分配token或token已过期");
         }
-        if (!token.equals(redisCache.getCacheObject(safeUserDto.getId()))) {
+        if (!token.equals(this.redisCache.getCacheObject(safeUserDto.getId()))) {
             throw new GlobalException("token被篡改");
         }
         if (this.redisCache.getExpireTime(safeUserDto.getId()) < 300L) {

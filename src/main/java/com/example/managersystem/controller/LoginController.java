@@ -2,9 +2,9 @@ package com.example.managersystem.controller;
 
 import com.example.managersystem.cache.RedisCache;
 import com.example.managersystem.common.GlobalConstants;
-import com.example.managersystem.common.ReturnMessage;
+import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
-import com.example.managersystem.domain.AjaxResult;
+import com.example.managersystem.dto.AjaxResult;
 import com.example.managersystem.domain.SysUser;
 import com.example.managersystem.dto.LoginDto;
 import com.example.managersystem.dto.SafeUserDto;
@@ -75,7 +75,7 @@ public class LoginController {
         // 保存验证码信息
         String uuid = UuidUtil.uuid();
         String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + uuid;
-        String capStr = null, code = null;
+        String capStr, code = null;
         BufferedImage image = null;
         // 生成验证码
         if ("math".equals(captchaType)) {
@@ -120,6 +120,7 @@ public class LoginController {
      */
     @PostMapping(value = "/login")
     public ReturnMessage<LoginVo> login(@RequestBody LoginDto loginDto) {
+//        this.validateCaptcha(loginDto.getCode(), loginDto.getUuid());
         SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
         if (this.redisCache.exists(sysUser.getUserId())) {
             String token = this.redisCache.getCacheObject(sysUser.getUserId());

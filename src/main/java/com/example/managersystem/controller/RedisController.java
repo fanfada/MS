@@ -2,15 +2,12 @@ package com.example.managersystem.controller;
 
 import com.example.managersystem.cache.RedisCache;
 import com.example.managersystem.common.GlobalConstants;
-import com.example.managersystem.common.PageResultBody;
-import com.example.managersystem.common.ReturnMessage;
+import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.service.impl.TokenServiceImpl;
 import com.example.managersystem.util.ThreadLocalMapUtil;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.helpers.ThreadLocalMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

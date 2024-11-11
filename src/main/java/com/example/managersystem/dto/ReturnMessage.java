@@ -1,5 +1,6 @@
-package com.example.managersystem.common;
+package com.example.managersystem.dto;
 
+import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.util.UuidUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.example.managersystem.filter;
 
 import com.example.managersystem.common.GlobalConstants;
-import com.example.managersystem.common.ReturnMessage;
+import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.util.CommonUtil;

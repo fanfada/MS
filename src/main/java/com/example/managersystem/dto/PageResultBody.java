@@ -1,4 +1,4 @@
-package com.example.managersystem.common;
+package com.example.managersystem.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

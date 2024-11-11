@@ -1,8 +1,7 @@
 package com.example.managersystem.controller;
 
-import com.example.managersystem.annotation.LoginStatusVerify;
-import com.example.managersystem.common.PageResultBody;
-import com.example.managersystem.common.ReturnMessage;
+import com.example.managersystem.dto.PageResultBody;
+import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.domain.SysUser;
 import com.example.managersystem.service.SysUserService;
