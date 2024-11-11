@@ -1,6 +1,6 @@
 package com.example.managersystem.domain;
 
-import com.example.managersystem.util.ExcelImport;
+import com.example.managersystem.annotation.ExcelImport;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

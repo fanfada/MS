@@ -1,4 +1,4 @@
-package com.example.managersystem.util;
+package com.example.managersystem.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
