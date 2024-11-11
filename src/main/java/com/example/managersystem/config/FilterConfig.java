@@ -10,9 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FilterConfig {
 
+    /**
+     * 请求Id过滤器
+     * @return
+     */
     @Bean
     public FilterRegistrationBean<RequestIdLogMDCFilter> requestIdLogFilter() {
-
         final FilterRegistrationBean<RequestIdLogMDCFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new RequestIdLogMDCFilter());
         registration.setName("requestIdLogFilter");
@@ -22,16 +25,18 @@ public class FilterConfig {
     }
 
 
-
-//    @Bean
-//    public FilterRegistrationBean<UserFilter> userFilter() {
-//
-//        final FilterRegistrationBean<UserFilter> registration = new FilterRegistrationBean<>();
-//        registration.setFilter(new UserFilter());
-//        registration.setName("userFilter");
-//        registration.addUrlPatterns("/*");
-//        registration.setOrder(1);
-//        return registration;
-//    }
+    /**
+     * 用户id过滤器
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean<UserFilter> userFilter() {
+        final FilterRegistrationBean<UserFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new UserFilter());
+        registration.setName("userFilter");
+        registration.addUrlPatterns("/*");
+        registration.setOrder(1);
+        return registration;
+    }
 
 }

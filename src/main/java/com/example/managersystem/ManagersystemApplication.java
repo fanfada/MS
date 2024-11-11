@@ -10,12 +10,6 @@ public class ManagersystemApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ManagersystemApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  租房信息分享系统启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
-                "######   $$$$$$   $$$$$$   %%   %%   \n" +
-                "##   ## ##   ## ##   ## %%   %%   \n" +
-                "######  ##   ## ##   ## %%   %%   \n" +
-                "##   ## ##   ## ##   ## %%   %%   \n" +
-                "######   $$$$$$   $$$$$$   %%   %%   \n");
-
+        System.out.println("(♥◠‿◠)ﾉﾞ  ManageSystem startup successful   ლ(´ڡ`ლ)ﾞ      \n");
     }
 }

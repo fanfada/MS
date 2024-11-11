@@ -1,4 +1,5 @@
 spring:
+  version: 1.0
   application:
     name: managesystem
   profiles:

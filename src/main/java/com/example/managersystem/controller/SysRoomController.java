@@ -5,13 +5,17 @@ import com.example.managersystem.domain.SysRoom;
 import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.service.SysRoomService;
+import com.example.managersystem.util.ExcelUtils;
 import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 房屋信息表(SysRoom)表控制层
@@ -37,9 +41,25 @@ public class SysRoomController {
      * @throws Exception
      */
     @PostMapping("/import")
-    public ReturnMessage<Boolean> importUser(@RequestPart("file") MultipartFile file) throws Exception {
+    public ReturnMessage<Boolean> importUser(@RequestPart("file") MultipartFile file) {
+        log.info("导入房屋信息");
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.importRoomFile(file));
     }
+
+    /**
+     * 导出房屋信息excel文件
+     *
+     * @param response
+     */
+    @GetMapping("/export")
+    public void export(HttpServletResponse response) {
+        List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll().stream()
+                .sorted(Comparator.comparing(SysRoomVo::getId))
+                .collect(Collectors.toList());
+        log.info("导出房屋信息");
+        ExcelUtils.export(response, "用户表", sysRoomList, SysRoomVo.class);
+    }
+
 
     /**
      * 查询所有数据

@@ -175,6 +175,7 @@ public class LoginController {
      */
     @PostMapping(value = "logout")
     public ReturnMessage<String> logout(@RequestBody LoginDto loginDto) {
+        log.info("开始登出phonenumber: {}", loginDto.getPhonenumber());
         if (null == loginDto.getPhonenumber()) {
             throw new GlobalException("手机号为空");
         }

@@ -1,11 +1,14 @@
 package com.example.managersystem.service.impl;
 
+import com.example.managersystem.common.GlobalConstants;
 import com.example.managersystem.domain.SysRoom;
+import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysRoomMapper;
 import com.example.managersystem.service.SysRoomService;
 import com.example.managersystem.util.ExcelUtils;
 import com.example.managersystem.util.JsonUtil;
+import com.example.managersystem.util.ThreadLocalMapUtil;
 import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,14 +41,14 @@ public class SysRoomServiceImpl implements SysRoomService {
      */
     public Boolean importRoomFile(MultipartFile file){
         int flag = 0;
-        //因为用户过滤器没有执行，所以获取ThreadLocal中获取不到用户信息。会报空指针异常
-//        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+        //因为用户过滤器没有执行，所以获取ThreadLocal中获取不到用户信息，会报空指针异常
+        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
         try {
             List<SysRoom> sysRoomList = ExcelUtils.readMultipartFile(file, SysRoom.class);
             log.info("更新时间信息前：{}", JsonUtil.toString(sysRoomList));
             sysRoomList.forEach(room -> {
                 room.setCreateTime(new Date());
-//                room.setUpdateBy(safeUserDto.getId());
+                room.setUpdateBy(safeUserDto.getId());
                 room.setUpdateTime(new Date());
             });
             log.info("更新时间信息：{}", JsonUtil.toString(sysRoomList));
