@@ -8,6 +8,7 @@ import com.example.managersystem.service.SysRoomService;
 import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import javax.annotation.Resource;
@@ -27,6 +28,18 @@ public class SysRoomController {
      */
     @Resource
     private SysRoomService sysRoomService;
+
+    /**
+     * 导入房屋信息excel文件
+     *
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/import")
+    public ReturnMessage<Boolean> importUser(@RequestPart("file") MultipartFile file) throws Exception {
+        return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.importRoomFile(file));
+    }
 
     /**
      * 查询所有数据

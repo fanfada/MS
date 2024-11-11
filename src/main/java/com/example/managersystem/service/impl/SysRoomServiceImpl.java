@@ -4,10 +4,12 @@ import com.example.managersystem.domain.SysRoom;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysRoomMapper;
 import com.example.managersystem.service.SysRoomService;
+import com.example.managersystem.util.ExcelUtils;
 import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -26,6 +28,34 @@ import javax.annotation.Resource;
 public class SysRoomServiceImpl implements SysRoomService {
     @Resource
     private SysRoomMapper sysRoomMapper;
+
+    /**
+     * 导入房屋信息文件
+     *
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    public Boolean importRoomFile(MultipartFile file){
+        int flag = 0;
+        //因为用户过滤器没有执行，所以获取ThreadLocal中获取不到用户信息。会报空指针异常
+//        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+        try {
+            List<SysRoom> sysRoomList = ExcelUtils.readMultipartFile(file, SysRoom.class);
+            log.info("更新时间信息前：{}", JsonUtil.toString(sysRoomList));
+            sysRoomList.forEach(room -> {
+                room.setCreateTime(new Date());
+//                room.setUpdateBy(safeUserDto.getId());
+                room.setUpdateTime(new Date());
+            });
+            log.info("更新时间信息：{}", JsonUtil.toString(sysRoomList));
+            flag = this.sysRoomMapper.insertBatch(sysRoomList);
+            return flag > 0;
+        } catch (Exception e) {
+            throw new GlobalException("导入房屋信息文件失败", e);
+        }
+    }
+
 
     /**
      * 查询所有数据

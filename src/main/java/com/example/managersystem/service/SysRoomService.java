@@ -2,6 +2,7 @@ package com.example.managersystem.service;
 
 import com.example.managersystem.domain.SysRoom;
 import com.example.managersystem.vo.SysRoomVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,6 +13,14 @@ import java.util.List;
  * @since 2024-11-07 12:36:52
  */
 public interface SysRoomService {
+
+    /**
+     * 导入房屋信息文件
+     *
+     * @param file
+     * @return
+     */
+    Boolean importRoomFile(MultipartFile file);
 
     /**
      * 查询所有数据

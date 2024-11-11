@@ -1,5 +1,6 @@
 package com.example.managersystem.domain;
 
+import com.example.managersystem.util.ExcelImport;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,30 +28,37 @@ public class SysRoom implements Serializable {
     /**
      * 红黑榜：推荐、不推荐、还行
      */
+    @ExcelImport("红黑榜")
     private String color;
     /**
      * 房屋类型：合租、整租
      */
+    @ExcelImport("租赁形式")
     private String roomType;
     /**
      * 国家
      */
+    @ExcelImport("国家")
     private String country;
     /**
      * 省份
      */
+    @ExcelImport("省份")
     private String province;
     /**
      * 城市
      */
+    @ExcelImport("城市")
     private String city;
     /**
      * 房屋地址
      */
+    @ExcelImport("房屋地址")
     private String address;
     /**
      * 状态（0正常 1停用）
      */
+    @ExcelImport("状态")
     private Integer status;
     /**
      * 创建时间
@@ -67,11 +75,15 @@ public class SysRoom implements Serializable {
     /**
      * 备注
      */
+    @ExcelImport(value = "备注", maxLength = 250)
     private String remark;
     /**
      * 房东ID
      */
+    @ExcelImport("房东ID")
     private Integer ownerId;
+
+    private String rowTips;
 
 
     public Integer getId() {
