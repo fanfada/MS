@@ -3,6 +3,9 @@ spring:
     name: managesystem
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 
 server:
   captchaEnabled: true

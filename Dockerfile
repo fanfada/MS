@@ -1,4 +1,5 @@
 FROM nexus.cmss.com:8090/paas-docker/ncndb/ncndb-be/local-openjava8-base:20230506-1
+ENV TZ="Asia/Shanghai"
 ADD target/managesystem.jar /app/myapp.jar
 EXPOSE 8080
 # 运行jar包
