@@ -23,7 +23,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @RestController
-@RequestMapping("/sysUser")
+@RequestMapping("/api/sysUser")
 public class SysUserController {
     /**
      * 服务对象

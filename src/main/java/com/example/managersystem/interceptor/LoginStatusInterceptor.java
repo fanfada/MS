@@ -42,7 +42,7 @@ public class LoginStatusInterceptor implements HandlerInterceptor {
     }
  
     private void check(HttpServletRequest request) throws Exception {
-        tokenService.checkToken(request);
+        this.tokenService.checkToken(request);
     }
  
     @Override

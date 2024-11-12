@@ -18,8 +18,6 @@ public class JsonUtil {
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
 
-    ;
-
     static {
         objectMapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);

@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 public class LoginController {
 
     @Autowired

@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @RestController
-@RequestMapping("/sysOwner")
+@RequestMapping("/api/sysOwner")
 public class SysOwnerController {
     /**
      * 服务对象

@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @RestController
-@RequestMapping("/sysRoom")
+@RequestMapping("/api/sysRoom")
 public class SysRoomController {
     /**
      * 服务对象

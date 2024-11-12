@@ -1,5 +1,6 @@
 package com.example.managersystem.config;
 
+import com.example.managersystem.filter.ActuatorFilter;
 import com.example.managersystem.filter.RequestIdLogMDCFilter;
 import com.example.managersystem.filter.UserFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -12,6 +13,7 @@ public class FilterConfig {
 
     /**
      * 请求Id过滤器
+     *
      * @return
      */
     @Bean
@@ -19,14 +21,14 @@ public class FilterConfig {
         final FilterRegistrationBean<RequestIdLogMDCFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new RequestIdLogMDCFilter());
         registration.setName("requestIdLogFilter");
-        registration.addUrlPatterns("/*");
+        registration.addUrlPatterns("/api/*");
         registration.setOrder(0);
         return registration;
     }
 
-
     /**
      * 用户id过滤器
+     *
      * @return
      */
     @Bean
@@ -34,8 +36,25 @@ public class FilterConfig {
         final FilterRegistrationBean<UserFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new UserFilter());
         registration.setName("userFilter");
-        registration.addUrlPatterns("/*");
+        registration.addUrlPatterns("/api/*");
         registration.setOrder(1);
+        return registration;
+    }
+
+    /**
+     * actuator端点过滤器
+     *
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean<ActuatorFilter> actuatorFilter() {
+
+        final FilterRegistrationBean<ActuatorFilter> registration = new FilterRegistrationBean<>();
+        final ActuatorFilter actuatorFilter = new ActuatorFilter();
+        registration.setFilter(actuatorFilter);
+        registration.addUrlPatterns("/api/*");
+        registration.setName("actuatorFilter");
+        registration.setOrder(2);
         return registration;
     }
 
