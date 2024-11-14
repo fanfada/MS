@@ -2,11 +2,10 @@ package com.example.managersystem.common;
 
 /**
  * 返回状态码
- * 
+ *
  * @author fanfada
  */
-public class HttpStatus
-{
+public class HttpStatus {
     /**
      * 操作成功
      */

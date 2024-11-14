@@ -18,8 +18,8 @@ public class RequestIdLogMDCFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String header = httpServletRequest.getHeader(GlobalConstants.HttpHeaderConstants.REQUEST_ID);
         String requestId = (header == null) ? UuidUtil.uuid() : header;
-        log.info("RequestIdLogMDCFilter设置requestId:{}", requestId);
         MDC.put(GlobalConstants.HttpHeaderConstants.REQUEST_ID, requestId);
+        log.info("RequestIdLogMDCFilter设置requestId:{}", requestId);
         try {
             filterChain.doFilter(servletRequest, servletResponse);
         } finally {

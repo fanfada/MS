@@ -109,6 +109,7 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setCreateTime(new Date());
         sysUser.setUpdateTime(new Date());
         sysUser.setLoginDate(new Date());
+        sysUser.setUpdateBy(sysUser.getUserId());
         sysUser.setStatus(0);
         sysUser.setDelFlag("0");
         sysUser.setSex("0");
