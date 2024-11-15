@@ -50,8 +50,7 @@ INSERT INTO `baddb`.`sys_room` (`color`, `room_type`, `country`, `province`, `ci
 VALUES ('推荐', '合租', '中国', '江苏', '苏州', '龙惠花苑1000', 0, '2024-11-06 16:07:09', NULL, '2024-11-06 16:07:09', '推荐', 2);
 
 
-select count(1)
-from sys_room;
+select count(1) from sys_room;
 
 -- ----------------------------
 -- 3、房东信息表
@@ -74,8 +73,93 @@ CREATE TABLE sys_owner
 
 INSERT INTO `baddb`.`sys_owner` (`phone`, `owner_type`, `color`, `status`, `create_time`, `update_by`, `update_time`,
                                  `remark`)
-VALUES ('19999999999', '二房东', '不推荐', 0, '2024-11-06 16:07:38', NULL, '2024-11-06 16:07:38', '二房东，太坑了，不推荐');
+VALUES ('19999999999', '二房东', '不推荐', 0, '2024-11-06 16:07:38', NULL, '2024-11-06 16:07:38',
+        '二房东，太坑了，不推荐');
 
 
-select *
-from sys_owner;
+select * from sys_owner;
+
+-- ----------------------------
+-- 4、角色信息表
+-- ----------------------------
+drop table if exists sys_role;
+create table sys_role
+(
+    role_id     varchar(32) not null comment '角色ID',
+    role_name   varchar(30) not null comment '角色名称',
+    role_key    varchar(20) not null comment '角色权限字符串',
+    data_scope  char(1)      default '1' comment '数据范围（1：全部数据权限 2：自定数据权限）',
+    status      TINYINT(1) not null comment '角色状态（0正常 1停用）',
+    create_by   varchar(64)  default '' comment '创建者',
+    create_time datetime comment '创建时间',
+    update_by   varchar(64)  default '' comment '更新者',
+    update_time datetime comment '更新时间',
+    remark      varchar(500) default null comment '备注',
+    primary key (role_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '角色信息表';
+
+-- ----------------------------
+-- 初始化-角色信息表数据
+-- ----------------------------
+insert into sys_role values ('1001', '超级管理员', 'admin', '1', 0, 'admin', sysdate(), '', null, '超级管理员');
+insert into sys_role values ('1002', '普通角色', 'common', '2', 0, 'admin', sysdate(), '', null, '普通角色');
+
+
+-- ----------------------------
+-- 5、用户和角色关联表  用户N-1角色
+-- ----------------------------
+drop table if exists sys_user_role;
+create table sys_user_role
+(
+    user_id varchar(32) not null comment '用户ID',
+    role_id varchar(32) not null comment '角色ID',
+    primary key (user_id, role_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '用户和角色关联表';
+
+
+-- ----------------------------
+-- 6、城市邮编表
+-- ----------------------------
+drop table if exists sys_city_code;
+CREATE TABLE sys_city_code
+(
+    city    VARCHAR(100) not null comment '城市中文名称', -- 存储城市名称
+    zipcode VARCHAR(20)  not null comment '城市邮政编码'  -- 存储邮政编码
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '城市邮编表';
+
+INSERT INTO sys_city_code (city, zipcode)
+VALUES ('北京', '100000'), -- 北京
+       ('上海', '200000'), -- 上海
+       ('广州', '510000'), -- 广州
+       ('深圳', '518000'), -- 深圳
+       ('成都', '610000'), -- 成都
+       ('杭州', '310000'), -- 杭州
+       ('南京', '210000'), -- 南京
+       ('武汉', '430000'), -- 武汉
+       ('重庆', '400000'), -- 重庆
+       ('苏州', '215000'), -- 苏州
+       ('天津', '300000'), -- 天津
+       ('长沙', '410000'), -- 长沙
+       ('郑州', '450000'), -- 郑州
+       ('沈阳', '110000'), -- 沈阳
+       ('大连', '116000'), -- 大连
+       ('青岛', '266000'), -- 青岛
+       ('厦门', '361000'); -- 厦门
+
+
+-- ----------------------------
+-- 7、角色和城市关联表  角色1-N部门
+-- ----------------------------
+drop table if exists sys_role_city;
+create table sys_role_city
+(
+   role_id   VARCHAR(32) not null comment '角色ID',
+   zipcode   VARCHAR(20) default '000000' comment '城市邮政编码，000000为超级管理员童用户权限，可看所有城市'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '角色和城市关联表';
+
+-- ----------------------------
+-- 初始化-角色和城市关联表数据
+-- ----------------------------
+INSERT INTO sys_role_city (`role_id`, `zipcode`) VALUES ('1001', '000000');
+INSERT INTO sys_role_city (`role_id`, `zipcode`) VALUES ('1002', '100000');
+INSERT INTO sys_role_city (`role_id`, `zipcode`) VALUES ('1002', '215000');
