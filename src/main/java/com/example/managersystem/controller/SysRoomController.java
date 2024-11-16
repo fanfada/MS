@@ -1,5 +1,6 @@
 package com.example.managersystem.controller;
 
+import com.example.managersystem.annotation.AuthorityCity;
 import com.example.managersystem.dto.PageResultBody;
 import com.example.managersystem.domain.SysRoom;
 import com.example.managersystem.dto.ReturnMessage;
@@ -52,8 +53,9 @@ public class SysRoomController {
      * @param response
      */
     @GetMapping("/export")
-    public void export(HttpServletResponse response) {
-        List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll().stream()
+    public void export(String zipCode, HttpServletResponse response) {
+        log.info("导出{}的房屋信息", zipCode);
+        List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll(zipCode).stream()
                 .sorted(Comparator.comparing(SysRoomVo::getId))
                 .collect(Collectors.toList());
         log.info("导出房屋信息");
@@ -67,9 +69,10 @@ public class SysRoomController {
      * @return 实例对象集合
      */
     @GetMapping
-    public ReturnMessage<PageResultBody<SysRoomVo>> queryAll() {
+    @AuthorityCity
+    public ReturnMessage<PageResultBody<SysRoomVo>> queryAll(final String zipCode) {
         PageResultBody<SysRoomVo> pageResultBody = new PageResultBody<>();
-        List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll();
+        List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll(zipCode);
         pageResultBody.setContent(sysRoomList);
         pageResultBody.setTotal(sysRoomList.size());
         return new ReturnMessage<>(ReturnState.OK, pageResultBody);

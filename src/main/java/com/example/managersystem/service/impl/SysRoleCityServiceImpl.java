@@ -3,6 +3,7 @@ package com.example.managersystem.service.impl;
 import com.example.managersystem.domain.SysRoleCity;
 import com.example.managersystem.mapper.SysRoleCityMapper;
 import com.example.managersystem.service.SysRoleCityService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class SysRoleCityServiceImpl implements SysRoleCityService {
      * @return 实例对象
      */
     @Override
-    public SysRoleCity queryByRoleId(final String roleId) {
+    public List<SysRoleCity> queryByRoleId(final String roleId) {
         return this.sysRoleCityMapper.queryByRoleId(roleId);
     }
 
@@ -49,6 +50,26 @@ public class SysRoleCityServiceImpl implements SysRoleCityService {
     @Override
     public Boolean insert(SysRoleCity sysRoleCity) {
         return this.sysRoleCityMapper.insert(sysRoleCity) > 0;
+    }
+
+    /**
+     * 批量新增数据
+     *
+     * @param entities 实例对象列表
+     * @return 实例对象
+     */
+    public Boolean insertBatch(@Param("entities") List<SysRoleCity> entities) {
+        return this.sysRoleCityMapper.insertBatch(entities) > 0;
+    }
+
+    /**
+     * 批量新增数据
+     *
+     * @param entities 实例对象列表
+     * @return 实例对象
+     */
+    public Boolean insertOrUpdateBatch(@Param("entities") List<SysRoleCity> entities) {
+        return this.sysRoleCityMapper.insertOrUpdateBatch(entities) > 0;
     }
 
     /**

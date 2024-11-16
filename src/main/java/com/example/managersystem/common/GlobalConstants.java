@@ -8,12 +8,20 @@ import java.util.List;
  */
 public class GlobalConstants {
 
+    /**
+     * 用户过滤器忽略的请求
+     */
     public static final List<String> IGNORE_URLS = Arrays.asList("/login/login", "/login/registry", "/login/captchaImage");
 
     /**
      * 验证码 redis key
      */
-    public static final String CAPTCHA_CODE_KEY = "captcha_codes:";
+    public static final String CAPTCHA_CODE_KEY = "Captcha_codes:";
+
+    /**
+     * 授权城市redis key
+     */
+    public static final String AUTHORITY = "Authority:";
 
     /**
      * 请求header常量

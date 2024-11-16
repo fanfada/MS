@@ -28,6 +28,12 @@
         where role_id = #{roleId}
     </select>
 
+    <select id="queryByUserId" resultMap="SysRoleMap">
+        select role_id, role_name, role_key, data_scope, status, create_by, create_time, update_by, update_time, remark
+        from sys_role
+        where role_id = #{userId}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="SysRoleMap">
         select
@@ -116,7 +122,7 @@
         insert into sys_role(role_id, role_name, role_key, data_scope, status, create_by, create_time, update_by, update_time, remark)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{roleId}, #{entity.roleName}, #{entity.roleKey}, #{entity.dataScope}, #{entity.status}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime}, #{entity.remark})
+            (#{entity.roleId}, #{entity.roleName}, #{entity.roleKey}, #{entity.dataScope}, #{entity.status}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime}, #{entity.remark})
         </foreach>
     </insert>
 

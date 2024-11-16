@@ -36,11 +36,6 @@ public class SysRoomVo implements Serializable {
     @ExcelExport(value = "租赁类型", sort = 5)
     private String roomType;
     /**
-     * 省份
-     */
-    @ExcelExport(value = "省份", sort = 2)
-    private String province;
-    /**
      * 城市
      */
     @ExcelExport(value = "城市", sort = 3)
@@ -84,14 +79,6 @@ public class SysRoomVo implements Serializable {
 
     public void setRoomType(String roomType) {
         this.roomType = roomType;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
     }
 
     public String getCity() {

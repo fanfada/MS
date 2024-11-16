@@ -20,7 +20,7 @@ public interface SysRoomMapper {
      *
      * @return 实例对象集合
      */
-    List<SysRoom> queryAll();
+    List<SysRoom> queryAll(final String zipCode);
 
     /**
      * 通过ID查询单条数据

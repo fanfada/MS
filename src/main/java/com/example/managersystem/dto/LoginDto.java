@@ -36,6 +36,11 @@ public class LoginDto {
     private String phonenumber;
 
     /**
+     * 角色ID
+     */
+    private String roleId;
+
+    /**
      * 密码
      */
     private String password;

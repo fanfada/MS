@@ -1,11 +1,17 @@
 package com.example.managersystem.service.impl;
 
+import com.example.managersystem.common.GlobalConstants;
+import com.example.managersystem.domain.SysRole;
+import com.example.managersystem.domain.SysRoleCity;
 import com.example.managersystem.domain.SysUser;
+import com.example.managersystem.domain.SysUserRole;
+import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysUserMapper;
 import com.example.managersystem.service.SysUserService;
 import com.example.managersystem.util.CommonUtil;
 import com.example.managersystem.util.JsonUtil;
+import com.example.managersystem.util.ThreadLocalMapUtil;
 import com.example.managersystem.util.UuidUtil;
 import com.example.managersystem.vo.SysUserVo;
 import io.netty.util.internal.StringUtil;
@@ -13,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +37,13 @@ import javax.annotation.Resource;
 public class SysUserServiceImpl implements SysUserService {
     @Resource
     private SysUserMapper sysUserMapper;
+
+    @Resource
+    private SysRoleCityServiceImpl sysRoleCityService;
+
+    @Resource
+    private SysRoleServiceImpl sysRoleService;
+
 
     /**
      * 查询所有数据
@@ -114,6 +128,7 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setDelFlag("0");
         sysUser.setSex("0");
         sysUser.setRemark("Hello");
+        sysUser.setRoleId("admin");//注册用户先给一个admin角色，默认拥有所有权限，后期如果需要做权限控制，新加用户无任何城市查看权限
         if (StringUtil.isNullOrEmpty(sysUser.getPassword())) {
             throw new GlobalException("密码为空");
         }
@@ -142,10 +157,26 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public Boolean update(SysUser sysUser) {
+        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
         try {
             sysUser.setUpdateTime(new Date());
             log.info("待修改数据sysUser: {}", JsonUtil.toString(sysUser));
             this.sysUserMapper.update(sysUser);
+            SysRole sysRole = this.sysRoleService.queryById(safeUserDto.getId());
+            if (!sysUser.getCities().isEmpty()) {
+                this.sysRoleCityService.deleteById(sysRole.getRoleId());
+                List<String> authorityCities = sysUser.getCities();
+                log.info("授权的城市：{}", JsonUtil.toString(authorityCities));
+                List<SysRoleCity> sysRoleCities = new ArrayList<>();
+                for (String city : authorityCities) {
+                    SysRoleCity sysRoleCity = SysRoleCity.builder()
+                            .roleId(sysRole.getRoleId())
+                            .zipcode(city)
+                            .build();
+                    sysRoleCities.add(sysRoleCity);
+                }
+                this.sysRoleCityService.insertBatch(sysRoleCities);
+            }
             return true;
         } catch (Exception e) {
             log.info("编辑用户信息失败：{}", e.getMessage());
@@ -159,6 +190,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @return 是否成功
      */
     public boolean deleteByIdSoft(String userId) {
+        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
         SysUser sysUser = this.queryById(userId);
         if (null == sysUser) {
             log.info("userId = {} 不存在", userId);
@@ -171,6 +203,8 @@ public class SysUserServiceImpl implements SysUserService {
             sysUser.setDelFlag("1");
             log.info("要删除的sysUser: {}", JsonUtil.toString(sysUser));
             this.sysUserMapper.update(sysUser);
+            SysRole sysRole = this.sysRoleService.queryById(safeUserDto.getId());
+            this.sysRoleCityService.deleteById(sysRole.getRoleId());
             return true;
         } catch (Exception e) {
             log.info("删除用户信息失败：{}", e.getMessage());

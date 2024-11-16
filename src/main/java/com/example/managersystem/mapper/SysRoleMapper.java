@@ -1,4 +1,5 @@
 package com.example.managersystem.mapper;
+
 import com.example.managersystem.domain.SysRole;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,6 +30,13 @@ public interface SysRoleMapper {
      */
     SysRole queryById(String roleId);
 
+    /**
+     * 通过userid查询单条数据
+     *
+     * @param userId 主键
+     * @return 实例对象
+     */
+    SysRole queryByUserId(String userId);
     /**
      * 统计总行数
      *

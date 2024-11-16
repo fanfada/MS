@@ -35,16 +35,7 @@ public class SysRoom implements Serializable {
      */
     @ExcelImport("租赁形式")
     private String roomType;
-    /**
-     * 国家
-     */
-    @ExcelImport("国家")
-    private String country;
-    /**
-     * 省份
-     */
-    @ExcelImport("省份")
-    private String province;
+
     /**
      * 城市
      */
@@ -108,22 +99,6 @@ public class SysRoom implements Serializable {
 
     public void setRoomType(String roomType) {
         this.roomType = roomType;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
     }
 
     public String getCity() {

@@ -6,8 +6,6 @@
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="color" column="color" jdbcType="VARCHAR"/>
         <result property="roomType" column="room_type" jdbcType="VARCHAR"/>
-        <result property="country" column="country" jdbcType="VARCHAR"/>
-        <result property="province" column="province" jdbcType="VARCHAR"/>
         <result property="city" column="city" jdbcType="VARCHAR"/>
         <result property="address" column="address" jdbcType="VARCHAR"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
@@ -23,8 +21,6 @@
         select id,
                color,
                room_type,
-               country,
-               province,
                city,
                address,
                status,
@@ -35,6 +31,7 @@
                owner_id
         from sys_room
         where status = 0
+        and city = #{zipCode}
     </select>
 
     <!--查询单个-->
@@ -42,8 +39,7 @@
         select id,
                color,
                room_type,
-               country,
-               province,
+
                city,
                address,
                status,
@@ -60,7 +56,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="SysRoomMap">
         select
-        id, color, room_type, country, province, city, address, status, create_time, update_by, update_time, remark,
+        id, color, room_type,  city, address, status, create_time, update_by, update_time, remark,
         owner_id
         from sys_room
         <where>
@@ -72,12 +68,6 @@
             </if>
             <if test="roomType != null and roomType != ''">
                 and room_type = #{roomType}
-            </if>
-            <if test="country != null and country != ''">
-                and country = #{country}
-            </if>
-            <if test="province != null and province != ''">
-                and province = #{province}
             </if>
             <if test="city != null and city != ''">
                 and city = #{city}
@@ -121,12 +111,7 @@
             <if test="roomType != null and roomType != ''">
                 and room_type = #{roomType}
             </if>
-            <if test="country != null and country != ''">
-                and country = #{country}
-            </if>
-            <if test="province != null and province != ''">
-                and province = #{province}
-            </if>
+
             <if test="city != null and city != ''">
                 and city = #{city}
             </if>
@@ -156,37 +141,36 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into sys_room(color, room_type, country, province, city, address, status, create_time, update_by,
+        insert into sys_room(color, room_type,  city, address, status, create_time, update_by,
                              update_time, remark, owner_id)
-        values (#{color}, #{roomType}, #{country}, #{province}, #{city}, #{address}, #{status}, #{createTime},
+        values (#{color}, #{roomType}, #{city}, #{address}, #{status}, #{createTime},
                 #{updateBy}, #{updateTime}, #{remark}, #{ownerId})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into sys_room(color, room_type, country, province, city, address, status, create_time, update_by,
+        insert into sys_room(color, room_type, city, address, status, create_time, update_by,
         update_time, remark, owner_id)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.color}, #{entity.roomType}, #{entity.country}, #{entity.province}, #{entity.city},
+            (#{entity.color}, #{entity.roomType},  #{entity.city},
             #{entity.address}, #{entity.status}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime},
             #{entity.remark}, #{entity.ownerId})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into sys_room(color, room_type, country, province, city, address, status, create_time, update_by,
+        insert into sys_room(color, room_type, city, address, status, create_time, update_by,
         update_time, remark, owner_id)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.color}, #{entity.roomType}, #{entity.country}, #{entity.province}, #{entity.city},
+            (#{entity.color}, #{entity.roomType}, #{entity.city},
             #{entity.address}, #{entity.status}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime},
             #{entity.remark}, #{entity.ownerId})
         </foreach>
         on duplicate key update
         color = values(color),
         room_type = values(room_type),
-        country = values(country),
-        province = values(province),
+
         city = values(city),
         address = values(address),
         status = values(status),
@@ -206,12 +190,6 @@
             </if>
             <if test="roomType != null and roomType != ''">
                 room_type = #{roomType},
-            </if>
-            <if test="country != null and country != ''">
-                country = #{country},
-            </if>
-            <if test="province != null and province != ''">
-                province = #{province},
             </if>
             <if test="city != null and city != ''">
                 city = #{city},

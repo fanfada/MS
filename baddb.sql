@@ -22,6 +22,7 @@ create table sys_user
     primary key (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '用户信息表';
 
+alter table sys_user add role_id  varchar(32) not null comment '角色ID';
 
 -- ----------------------------
 -- 2、房屋信息表
@@ -32,8 +33,6 @@ CREATE TABLE sys_room
     room_id     INT          NOT NULL AUTO_INCREMENT COMMENT '房屋ID',
     color       VARCHAR(10)  NOT NULL COMMENT '红黑榜：推荐、不推荐、还行',
     room_type   VARCHAR(50)  DEFAULT NULL COMMENT '房屋类型：合租、整租',
-    country     VARCHAR(50)  DEFAULT NULL COMMENT '国家',
-    province    VARCHAR(50)  DEFAULT NULL COMMENT '省份',
     city        VARCHAR(50)  DEFAULT NULL COMMENT '城市',
     address     VARCHAR(100) NOT NULL COMMENT '房屋地址',
     status      TINYINT(1) DEFAULT 0 COMMENT '状态（0正常 1停用）',
@@ -101,24 +100,11 @@ create table sys_role
 -- ----------------------------
 -- 初始化-角色信息表数据
 -- ----------------------------
-insert into sys_role values ('1001', '超级管理员', 'admin', '1', 0, 'admin', sysdate(), '', null, '超级管理员');
-insert into sys_role values ('1002', '普通角色', 'common', '2', 0, 'admin', sysdate(), '', null, '普通角色');
+insert into sys_role values ('admin', '超级管理员', 'admin', '1', 0, 'admin', sysdate(), '', null, '超级管理员');
 
 
 -- ----------------------------
--- 5、用户和角色关联表  用户N-1角色
--- ----------------------------
-drop table if exists sys_user_role;
-create table sys_user_role
-(
-    user_id varchar(32) not null comment '用户ID',
-    role_id varchar(32) not null comment '角色ID',
-    primary key (user_id, role_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '用户和角色关联表';
-
-
--- ----------------------------
--- 6、城市邮编表
+-- 5、城市邮编表
 -- ----------------------------
 drop table if exists sys_city_code;
 CREATE TABLE sys_city_code
@@ -148,7 +134,7 @@ VALUES ('北京', '100000'), -- 北京
 
 
 -- ----------------------------
--- 7、角色和城市关联表  角色1-N部门
+-- 6、角色和城市关联表
 -- ----------------------------
 drop table if exists sys_role_city;
 create table sys_role_city
@@ -157,9 +143,3 @@ create table sys_role_city
    zipcode   VARCHAR(20) default '000000' comment '城市邮政编码，000000为超级管理员童用户权限，可看所有城市'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '角色和城市关联表';
 
--- ----------------------------
--- 初始化-角色和城市关联表数据
--- ----------------------------
-INSERT INTO sys_role_city (`role_id`, `zipcode`) VALUES ('1001', '000000');
-INSERT INTO sys_role_city (`role_id`, `zipcode`) VALUES ('1002', '100000');
-INSERT INTO sys_role_city (`role_id`, `zipcode`) VALUES ('1002', '215000');

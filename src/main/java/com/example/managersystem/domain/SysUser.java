@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户信息表(SysUser)实体类
@@ -80,6 +81,16 @@ public class SysUser implements Serializable {
      * 备注
      */
     private String remark;
+
+    /**
+     * 授权的城市
+     */
+    private List<String> cities;
+
+    /**
+     * 角色ID
+     */
+    private String roleId;
 
 
     public String getUserId() {

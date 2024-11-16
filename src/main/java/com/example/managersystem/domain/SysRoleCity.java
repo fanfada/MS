@@ -1,4 +1,7 @@
 package com.example.managersystem.domain;
+
+import lombok.Builder;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +10,7 @@ import java.io.Serializable;
  * @author fanfada
  * @since 2024-11-15 16:34:35
  */
+@Builder
 public class SysRoleCity implements Serializable {
     private static final long serialVersionUID = 847432655637436613L;
     /**

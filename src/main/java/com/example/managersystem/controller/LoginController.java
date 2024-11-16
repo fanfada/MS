@@ -2,6 +2,9 @@ package com.example.managersystem.controller;
 
 import com.example.managersystem.cache.RedisCache;
 import com.example.managersystem.common.GlobalConstants;
+import com.example.managersystem.domain.SysRole;
+import com.example.managersystem.domain.SysRoleCity;
+import com.example.managersystem.domain.SysUserRole;
 import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.dto.AjaxResult;
@@ -10,14 +13,14 @@ import com.example.managersystem.dto.LoginDto;
 import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.service.SysUserService;
+import com.example.managersystem.service.impl.SysRoleCityServiceImpl;
+import com.example.managersystem.service.impl.SysRoleServiceImpl;
 import com.example.managersystem.service.impl.TokenServiceImpl;
-import com.example.managersystem.util.Base64;
-import com.example.managersystem.util.StringUtils;
-import com.example.managersystem.util.ThreadLocalMapUtil;
-import com.example.managersystem.util.UuidUtil;
+import com.example.managersystem.util.*;
 import com.example.managersystem.vo.LoginVo;
 import com.example.managersystem.vo.SysUserVo;
 import com.google.code.kaptcha.Producer;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +32,12 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author fanfada
@@ -54,6 +62,11 @@ public class LoginController {
 
     @Resource(name = "captchaProducerMath")
     private Producer captchaProducerMath;
+    @Resource
+    private SysRoleCityServiceImpl sysRoleCityService;
+    @Resource
+    private SysRoleServiceImpl sysRoleService;
+
 
     @Value("${server.captchaEnabled}")
     private boolean captchaEnabled;
@@ -137,6 +150,18 @@ public class LoginController {
         }
         //密码正确，分配token并存入redis
         final String token = this.tokenService.createToken(sysUser.getUserId());
+        SysRole sysRole = this.sysRoleService.queryById(sysUser.getRoleId());
+        if (sysRole == null) {
+            throw new GlobalException(String.format("用户%s未分配角色", sysUser.getPhonenumber()));
+        }
+        if (!sysRole.getRoleId().equals("admin")) {
+            String sysRoleCities = this.sysRoleCityService.queryByRoleId(sysRole.getRoleId()).stream()
+                    .map(SysRoleCity::getZipcode)
+                    .collect(Collectors.joining(", "));
+            this.redisCache.setEx(GlobalConstants.AUTHORITY, sysRoleCities, 1800L);
+        } else {
+            this.redisCache.setEx(GlobalConstants.AUTHORITY, "admin", 1800L);
+        }
         LoginVo loginVo = new LoginVo();
         loginVo.setUserId(sysUser.getUserId());
         loginVo.setToken(token);
@@ -188,6 +213,7 @@ public class LoginController {
             return new ReturnMessage<>(ReturnState.OK, "您已登出，请勿重复操作");
         }
         this.redisCache.remove(safeUserDto.getId());
+        this.redisCache.remove(GlobalConstants.AUTHORITY);
         return new ReturnMessage<>(ReturnState.OK, "登出成功");
     }
 }

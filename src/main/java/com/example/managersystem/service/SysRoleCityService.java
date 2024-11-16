@@ -1,5 +1,6 @@
 package com.example.managersystem.service;
 import com.example.managersystem.domain.SysRoleCity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface SysRoleCityService {
      * @param roleId
      * @return 实例对象
      */
-    SysRoleCity queryByRoleId(final String roleId);
+    List<SysRoleCity> queryByRoleId(final String roleId);
 
     /**
      * 新增数据
@@ -33,6 +34,14 @@ public interface SysRoleCityService {
      * @return 实例对象
      */
     Boolean insert(SysRoleCity sysRoleCity);
+
+    /**
+     * 批量新增数据
+     *
+     * @param entities 实例对象列表
+     * @return 实例对象
+     */
+    Boolean insertBatch(@Param("entities") List<SysRoleCity> entities);
 
     /**
      * 修改数据

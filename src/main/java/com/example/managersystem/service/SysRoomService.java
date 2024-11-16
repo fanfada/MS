@@ -27,7 +27,7 @@ public interface SysRoomService {
      *
      * @return 实例对象集合
      */
-    List<SysRoomVo> queryAll();
+    List<SysRoomVo> queryAll(final String zipCode);
 
     /**
      * 通过ID查询单条数据

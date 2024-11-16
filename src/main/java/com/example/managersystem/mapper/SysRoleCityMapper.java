@@ -27,7 +27,7 @@ public interface SysRoleCityMapper {
      * @param roleId
      * @return 实例对象
      */
-    SysRoleCity queryByRoleId(final String roleId);
+    List<SysRoleCity> queryByRoleId(final String roleId);
 
     /**
      * 统计总行数

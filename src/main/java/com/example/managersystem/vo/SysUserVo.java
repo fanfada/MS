@@ -44,6 +44,11 @@ public class SysUserVo implements Serializable {
      * 手机号码
      */
     private String phonenumber;
+
+    /**
+     * 角色ID
+     */
+    private String roleId;
     /**
      * 用户性别（0男 1女 2未知）
      */

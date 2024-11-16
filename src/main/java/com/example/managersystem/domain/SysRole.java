@@ -1,6 +1,13 @@
 package com.example.managersystem.domain;
+
+import lombok.Data;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 角色信息表(SysRole)实体类
@@ -8,6 +15,9 @@ import java.io.Serializable;
  * @author fanfada
  * @since 2024-11-15 16:34:34
  */
+@Data
+@Getter
+@Setter
 public class SysRole implements Serializable {
     private static final long serialVersionUID = 432054699763982597L;
     /**
@@ -30,6 +40,11 @@ public class SysRole implements Serializable {
      * 角色状态（0正常 1停用）
      */
     private Integer status;
+
+    /**
+     * 授权的城市
+     */
+    private List<String> authorityCities;
     /**
      * 创建者
      */
