@@ -9,6 +9,56 @@ import java.util.List;
 public class GlobalConstants {
 
     /**
+     * GBK 字符集
+     */
+    public static final String GBK = "GBK";
+
+    /**
+     * UTF-8 字符集
+     */
+    public static final String UTF8 = "UTF-8";
+
+    /**
+     * 通用成功标识
+     */
+    public static final String SUCCESS = "0";
+
+    /**
+     * 通用失败标识
+     */
+    public static final String FAIL = "1";
+
+    /**
+     * 登录成功
+     */
+    public static final String LOGIN_SUCCESS = "Login_Success";
+
+    /**
+     * 登出成功
+     */
+    public static final String LOGOUT_SUCCESS = "Logout_Success";
+
+    /**
+     * 注销
+     */
+    public static final String LOGOUT = "Logout";
+
+    /**
+     * 注册
+     */
+    public static final String REGISTER = "Register";
+
+    /**
+     * 登录失败
+     */
+    public static final String LOGIN_FAIL = "Login_Error";
+
+    /**
+     * 登录失败
+     */
+    public static final String LOGOUT_FAIL = "Logout_Error";
+
+    /**
      * 用户过滤器忽略的请求
      */
     public static final List<String> IGNORE_URLS = Arrays.asList("/login/login", "/login/registry", "/login/captchaImage");

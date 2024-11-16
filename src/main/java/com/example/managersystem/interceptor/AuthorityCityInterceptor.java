@@ -38,7 +38,6 @@ public class AuthorityCityInterceptor implements HandlerInterceptor {
         if (methodAnnotation != null) {
             this.tokenService.checkAuthorityCities(request);
         }
-        log.info("授权城市校验拦截器执行结束");
         return true;
     }
 

@@ -37,7 +37,6 @@ public class LoginStatusInterceptor implements HandlerInterceptor {
         if (methodAnnotation != null) {
             check(request);
         }
-        log.info("登录状态TOKEN校验拦截器执行成功");
         return true;
     }
  
