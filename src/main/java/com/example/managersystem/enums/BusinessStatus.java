@@ -2,12 +2,10 @@ package com.example.managersystem.enums;
 
 /**
  * 操作状态
- * 
- * @author fanfada
  *
+ * @author fanfada
  */
-public enum BusinessStatus
-{
+public enum BusinessStatus {
     /**
      * 成功
      */

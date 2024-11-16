@@ -1,9 +1,11 @@
 package com.example.managersystem.controller;
 
+import com.example.managersystem.annotation.Log;
 import com.example.managersystem.dto.PageResultBody;
 import com.example.managersystem.domain.SysOwner;
 import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
+import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.service.SysOwnerService;
 import com.example.managersystem.vo.SysOwnerVo;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,7 @@ public class SysOwnerController {
      * @return 实例对象集合
      */
     @GetMapping
+    @Log(title = "查询房东信息", businessType = BusinessType.QUERY)
     public ReturnMessage<PageResultBody<SysOwnerVo>> queryAll() {
         PageResultBody<SysOwnerVo> pageResultBody = new PageResultBody<>();
         List<SysOwnerVo> sysOwnerList = this.sysOwnerService.queryAll();
@@ -49,6 +52,7 @@ public class SysOwnerController {
      * @return 单条数据
      */
     @GetMapping("{id}")
+    @Log(title = "查询房东信息", businessType = BusinessType.QUERY)
     public ReturnMessage<SysOwner> queryById(@PathVariable("id") Integer id) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.queryById(id));
     }
@@ -60,6 +64,7 @@ public class SysOwnerController {
      * @return 新增结果
      */
     @PostMapping
+    @Log(title = "新增房东信息", businessType = BusinessType.INSERT)
     public ReturnMessage<Boolean> add(@RequestBody SysOwner sysOwner) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.insert(sysOwner));
     }
@@ -71,6 +76,7 @@ public class SysOwnerController {
      * @return 编辑结果
      */
     @PutMapping
+    @Log(title = "编辑房东信息", businessType = BusinessType.UPDATE)
     public ReturnMessage<Boolean> edit(@RequestBody SysOwner sysOwner) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.update(sysOwner));
     }
@@ -82,6 +88,7 @@ public class SysOwnerController {
      * @return 删除是否成功
      */
     @GetMapping("/delete/{id}")
+    @Log(title = "删除房东信息", businessType = BusinessType.DELETE)
     public ReturnMessage<Boolean> deleteById(@PathVariable(value = "id") Integer id) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.deleteByIdSoft(id));
     }

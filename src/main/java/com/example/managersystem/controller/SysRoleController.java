@@ -1,5 +1,7 @@
 package com.example.managersystem.controller;
+import com.example.managersystem.annotation.Log;
 import com.example.managersystem.domain.SysRole;
+import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.service.SysRoleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,7 @@ public class SysRoleController {
      * @return 实例对象集合
      */
     @GetMapping
+    @Log(title = "查询角色信息", businessType = BusinessType.QUERY)
     public ResponseEntity<List> queryAll() {
         return ResponseEntity.ok(this.sysRoleService.queryAll());
     }
@@ -39,6 +42,7 @@ public class SysRoleController {
      * @return 单条数据
      */
     @GetMapping("{id}")
+    @Log(title = "查询角色信息", businessType = BusinessType.QUERY)
     public ResponseEntity<SysRole> queryById(@PathVariable("id") String id) {
         return ResponseEntity.ok(this.sysRoleService.queryById(id));
     }
@@ -50,6 +54,7 @@ public class SysRoleController {
      * @return 新增结果
      */
     @PostMapping
+    @Log(title = "新增角色信息", businessType = BusinessType.INSERT)
     public ResponseEntity<Boolean> add(@RequestBody SysRole sysRole) {
         return ResponseEntity.ok(this.sysRoleService.insert(sysRole));
     }
@@ -61,6 +66,7 @@ public class SysRoleController {
      * @return 编辑结果
      */
     @PutMapping
+    @Log(title = "编辑角色信息", businessType = BusinessType.UPDATE)
     public ResponseEntity<Boolean> edit(@RequestBody SysRole sysRole) {
         return ResponseEntity.ok(this.sysRoleService.update(sysRole));
     }
@@ -72,6 +78,7 @@ public class SysRoleController {
      * @return 删除是否成功
      */
     @DeleteMapping
+    @Log(title = "彻底删除角色信息", businessType = BusinessType.DELETE)
     public ResponseEntity<Boolean> deleteById(@RequestParam(value = "roleId") String roleId) {
         return ResponseEntity.ok(this.sysRoleService.deleteById(roleId));
     }

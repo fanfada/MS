@@ -28,15 +28,18 @@ public class AuthorityCityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        long startTime = System.currentTimeMillis();
         log.info("授权城市校验拦截器执行");
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
+        String methodName = method.getName();
+        String className = method.getDeclaringClass().getName();
         AuthorityCity methodAnnotation = method.getAnnotation(AuthorityCity.class);
         if (methodAnnotation != null) {
-            this.tokenService.checkAuthorityCities(request);
+            this.tokenService.checkAuthorityCities(request, className, methodName, startTime);
         }
         return true;
     }

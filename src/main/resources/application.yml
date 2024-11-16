@@ -1,9 +1,9 @@
 spring:
+  version: 1.0
   # 获取ip地址开关
   addressEnabled: false
-  version: 1.0
   application:
-    name: managesystem
+    name: manageSystem
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
   jackson:

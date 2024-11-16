@@ -1,9 +1,11 @@
 package com.example.managersystem.controller;
 
+import com.example.managersystem.annotation.Log;
 import com.example.managersystem.dto.PageResultBody;
 import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.domain.SysUser;
+import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.service.SysUserService;
 import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.vo.SysUserVo;
@@ -38,6 +40,7 @@ public class SysUserController {
      */
 //    @LoginStatusVerify
     @GetMapping
+    @Log(title = "查询用户信息", businessType = BusinessType.QUERY)
     public ReturnMessage<PageResultBody<SysUserVo>> queryAll() {
         PageResultBody<SysUserVo> pageResultBody = new PageResultBody<>();
         List<SysUserVo> sysUserList = this.sysUserService.queryAll();
@@ -53,6 +56,7 @@ public class SysUserController {
      * @return 单条数据
      */
     @GetMapping("{userId}")
+    @Log(title = "查询用户信息", businessType = BusinessType.QUERY)
     public ReturnMessage<SysUserVo> queryById(@PathVariable("userId") String userId) {
         SysUser sysUser = this.sysUserService.queryById(userId);
         SysUserVo sysUserVo = new SysUserVo();
@@ -68,6 +72,7 @@ public class SysUserController {
      * @return 编辑结果
      */
     @PutMapping
+    @Log(title = "编辑用户信息", businessType = BusinessType.UPDATE)
     public ReturnMessage<Boolean> edit(@RequestBody SysUser sysUser) {
         return new ReturnMessage<>(ReturnState.OK, this.sysUserService.update(sysUser));
     }
@@ -79,6 +84,7 @@ public class SysUserController {
      * @return 删除是否成功
      */
     @GetMapping("/delete/{userId}")
+    @Log(title = "删除用户信息", businessType = BusinessType.DELETE)
     public ReturnMessage<Boolean> deleteByIdSoft(@PathVariable(value = "userId") String userId) {
         return new ReturnMessage<>(ReturnState.OK, this.sysUserService.deleteByIdSoft(userId));
     }
@@ -91,6 +97,7 @@ public class SysUserController {
      * @return 删除是否成功
      */
     @DeleteMapping
+    @Log(title = "彻底删除用户信息", businessType = BusinessType.DELETE)
     public ResponseEntity<Boolean> deleteById(String userId) {
         return ResponseEntity.ok(this.sysUserService.deleteById(userId));
     }

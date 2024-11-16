@@ -4,16 +4,12 @@ import com.alibaba.fastjson2.JSON;
 import com.example.managersystem.annotation.Log;
 import com.example.managersystem.common.GlobalConstants;
 import com.example.managersystem.domain.SysOperLog;
-import com.example.managersystem.domain.SysUser;
 import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.enums.BusinessStatus;
 import com.example.managersystem.filter.PropertyPreExcludeFilter;
 import com.example.managersystem.manager.AsyncFactory;
 import com.example.managersystem.manager.AsyncManager;
-import com.example.managersystem.util.IpUtils;
-import com.example.managersystem.util.ServletUtils;
-import com.example.managersystem.util.StringUtils;
-import com.example.managersystem.util.ThreadLocalMapUtil;
+import com.example.managersystem.util.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -23,6 +19,7 @@ import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -86,8 +83,6 @@ public class LogAspect {
         try {
             // 获取当前的用户
             SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
-
-
             // *========数据库日志=========*//
             SysOperLog operLog = new SysOperLog();
             operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
@@ -96,9 +91,8 @@ public class LogAspect {
             operLog.setOperIp(ip);
             operLog.setOperUrl(StringUtils.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
             if (safeUserDto != null) {
-                operLog.setOperName(safeUserDto.getUserName());
+                operLog.setOperName(safeUserDto.getId());
             }
-
             if (e != null) {
                 operLog.setStatus(BusinessStatus.FAIL.ordinal());
                 operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
@@ -117,7 +111,7 @@ public class LogAspect {
             AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
         } catch (Exception exp) {
             // 记录本地异常日志
-            log.error("异常信息:{}", exp.getMessage());
+            log.info("异常信息:{}", exp.getMessage());
             exp.printStackTrace();
         } finally {
             TIME_THREADLOCAL.remove();

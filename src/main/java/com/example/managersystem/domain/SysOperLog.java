@@ -23,7 +23,7 @@ public class SysOperLog extends BaseEntity {
     private String title;
 
     /**
-     * 业务类型（0其它 1新增 2修改 3删除）
+     * 业务类型（0其它 1查询 2新增 3修改 4删除 5授权 6导出 7导入 8强退 9清空数据）
      */
     private Integer businessType;
 

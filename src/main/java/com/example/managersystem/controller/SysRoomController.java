@@ -1,10 +1,12 @@
 package com.example.managersystem.controller;
 
 import com.example.managersystem.annotation.AuthorityCity;
+import com.example.managersystem.annotation.Log;
 import com.example.managersystem.dto.PageResultBody;
 import com.example.managersystem.domain.SysRoom;
 import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
+import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.service.SysRoomService;
 import com.example.managersystem.util.ExcelUtils;
 import com.example.managersystem.vo.SysRoomVo;
@@ -41,6 +43,7 @@ public class SysRoomController {
      * @return
      * @throws Exception
      */
+    @Log(title = "导入房屋信息", businessType = BusinessType.IMPORT)
     @PostMapping("/import")
     public ReturnMessage<Boolean> importUser(@RequestPart("file") MultipartFile file) {
         log.info("导入房屋信息");
@@ -52,6 +55,7 @@ public class SysRoomController {
      *
      * @param response
      */
+    @Log(title = "导出房屋信息", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(String zipCode, HttpServletResponse response) {
         log.info("导出{}的房屋信息", zipCode);
@@ -70,6 +74,7 @@ public class SysRoomController {
      */
     @GetMapping
     @AuthorityCity
+    @Log(title = "查询房屋信息", businessType = BusinessType.QUERY)
     public ReturnMessage<PageResultBody<SysRoomVo>> queryAll(final String zipCode) {
         PageResultBody<SysRoomVo> pageResultBody = new PageResultBody<>();
         List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll(zipCode);
@@ -85,6 +90,7 @@ public class SysRoomController {
      * @return 单条数据
      */
     @GetMapping("{id}")
+    @Log(title = "查询房屋信息", businessType = BusinessType.QUERY)
     public ReturnMessage<SysRoom> queryById(@PathVariable("id") Integer id) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.queryById(id));
     }
@@ -96,6 +102,7 @@ public class SysRoomController {
      * @return 新增结果
      */
     @PostMapping
+    @Log(title = "新增房屋信息", businessType = BusinessType.INSERT)
     public ReturnMessage<Boolean> add(@RequestBody SysRoom sysRoom) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.insert(sysRoom));
     }
@@ -107,6 +114,7 @@ public class SysRoomController {
      * @return 编辑结果
      */
     @PutMapping
+    @Log(title = "删除房屋信息", businessType = BusinessType.DELETE)
     public ReturnMessage<Boolean> edit(@RequestBody SysRoom sysRoom) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.update(sysRoom));
     }
@@ -118,6 +126,7 @@ public class SysRoomController {
      * @return 删除是否成功
      */
     @GetMapping("/delete/{id}")
+    @Log(title = "彻底删除房屋信息", businessType = BusinessType.DELETE)
     public ReturnMessage<Boolean> deleteById(@PathVariable(value = "id") Integer id) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.deleteByIdSoft(id));
     }
