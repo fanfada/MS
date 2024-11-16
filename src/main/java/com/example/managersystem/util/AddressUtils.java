@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.validation.Valid;
-
 /**
  * 获取地址类
  *
@@ -17,7 +15,8 @@ import javax.validation.Valid;
 public class AddressUtils {
 
     @Value("${spring.addressEnabled}")
-    private static Boolean addressEnabled;
+    private static Boolean addressEnabled = true;//无法注入直接true
+
     private static final Logger log = LoggerFactory.getLogger(AddressUtils.class);
 
     // IP地址查询
@@ -27,6 +26,7 @@ public class AddressUtils {
     public static final String UNKNOWN = "XX XX";
 
     public static String getRealAddressByIP(String ip) {
+        log.info("addressEnabled:{}", addressEnabled);
         // 内网不查询
         if (IpUtils.internalIp(ip)) {
             return "内网IP";

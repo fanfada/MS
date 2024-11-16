@@ -1,16 +1,17 @@
 package com.example.managersystem.controller;
 
+import com.example.managersystem.annotation.Log;
 import com.example.managersystem.cache.RedisCache;
 import com.example.managersystem.common.GlobalConstants;
 import com.example.managersystem.domain.SysRole;
 import com.example.managersystem.domain.SysRoleCity;
-import com.example.managersystem.domain.SysUserRole;
 import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.dto.AjaxResult;
 import com.example.managersystem.domain.SysUser;
 import com.example.managersystem.dto.LoginDto;
 import com.example.managersystem.dto.SafeUserDto;
+import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.manager.AsyncFactory;
 import com.example.managersystem.manager.AsyncManager;
@@ -22,7 +23,6 @@ import com.example.managersystem.util.*;
 import com.example.managersystem.vo.LoginVo;
 import com.example.managersystem.vo.SysUserVo;
 import com.google.code.kaptcha.Producer;
-import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,6 +80,7 @@ public class LoginController {
      * 生成验证码
      */
     @GetMapping("/captchaImage")
+    @Log(title = "生成验证码", businessType = BusinessType.OTHER)
     public AjaxResult getCode(HttpServletResponse response) throws IOException {
         AjaxResult ajaxResult = AjaxResult.success();
         ajaxResult.put("captchaEnabled", this.captchaEnabled);
@@ -122,6 +123,7 @@ public class LoginController {
      * @return 新增结果
      */
     @PostMapping(value = "/registry")
+    @Log(title = "用户注册", businessType = BusinessType.INSERT)
     public ReturnMessage<SysUserVo> add(@RequestBody SysUser sysUser) {
         return new ReturnMessage<>(ReturnState.OK, this.sysUserService.insert(sysUser));
     }
@@ -140,7 +142,7 @@ public class LoginController {
         try {
             if (this.redisCache.exists(sysUser.getUserId())) {
                 String token = this.redisCache.getCacheObject(sysUser.getUserId());
-                throw new RuntimeException(String.format("请勿重复登录token: %s, userid: %s", token, sysUser.getUserId()));
+                throw new GlobalException(String.format("请勿重复登录token: %s, userid: %s", token, sysUser.getUserId()));
             }
             if (null == loginDto.getPhonenumber()) {
                 throw new GlobalException("手机号为空");
@@ -207,6 +209,7 @@ public class LoginController {
      * @return
      */
     @PostMapping(value = "logout")
+    @Log(title = "用户登出", businessType = BusinessType.OTHER)
     public ReturnMessage<String> logout(@RequestBody LoginDto loginDto) {
         SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
         SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());

@@ -1,7 +1,7 @@
 spring:
   version: 1.0
   # 获取ip地址开关
-  addressEnabled: false
+  addressEnabled: true
   application:
     name: manageSystem
   profiles:
