@@ -14,7 +14,9 @@ public class RequestIdLogMDCFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        String path = httpRequest.getServletPath();
+        log.info("RequestIdLogMDCFilter.ServletPath:{}", path);
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String header = httpServletRequest.getHeader(GlobalConstants.HttpHeaderConstants.REQUEST_ID);
         String requestId = (header == null) ? UuidUtil.uuid() : header;

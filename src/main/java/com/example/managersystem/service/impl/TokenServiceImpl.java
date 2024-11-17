@@ -65,7 +65,7 @@ public class TokenServiceImpl {
      * 校验授权城市
      */
     public void checkAuthorityCities(HttpServletRequest request, final String className, final String methodName, long startTime) {
-        String msg = "查询未授权的城市，请联系管理员授权";
+        final String msg = "查询未授权的城市，请联系管理员授权";
         String authStr = this.redisCache.getCacheObject(GlobalConstants.AUTHORITY);
         List<String> authorityCities = Arrays.stream(authStr.split(",")).collect(Collectors.toList());
         String city = request.getParameter("zipCode");

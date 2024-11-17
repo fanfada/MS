@@ -28,6 +28,8 @@ public class LoginStatusInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("登录状态TOKEN校验拦截器执行");
+        String path = request.getServletPath();
+        log.info("LoginStatusInterceptor.ServletPath:{}", path);
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }

@@ -30,6 +30,8 @@ public class AuthorityCityInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         long startTime = System.currentTimeMillis();
         log.info("授权城市校验拦截器执行");
+        String path = request.getServletPath();
+        log.info("AuthorityCityInterceptor.ServletPath:{}", path);
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }

@@ -21,6 +21,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
 
 //        registry.addInterceptor(this.loginStatusInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(this.authorityCityInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(this.authorityCityInterceptor)
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/actuator/**", "/swagger-ui/**", "/health");;
     }
 }

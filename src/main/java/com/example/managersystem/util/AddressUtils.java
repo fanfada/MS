@@ -3,8 +3,7 @@ package com.example.managersystem.util;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.example.managersystem.common.GlobalConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
@@ -12,12 +11,11 @@ import org.springframework.beans.factory.annotation.Value;
  *
  * @author fanfada
  */
+@Slf4j
 public class AddressUtils {
 
     @Value("${spring.addressEnabled}")
     private static Boolean addressEnabled = true;//无法注入直接true
-
-    private static final Logger log = LoggerFactory.getLogger(AddressUtils.class);
 
     // IP地址查询
     public static final String IP_URL = "http://whois.pconline.com.cn/ipJson.jsp";
@@ -26,7 +24,7 @@ public class AddressUtils {
     public static final String UNKNOWN = "XX XX";
 
     public static String getRealAddressByIP(String ip) {
-        log.info("addressEnabled:{}", addressEnabled);
+//        log.info("addressEnabled:{}", addressEnabled);
         // 内网不查询
         if (IpUtils.internalIp(ip)) {
             return "内网IP";

@@ -22,7 +22,7 @@ public class FilterConfig {
         registration.setFilter(new RequestIdLogMDCFilter());
         registration.setName("requestIdLogFilter");
         registration.addUrlPatterns("/api/*");
-        registration.setOrder(0);
+        registration.setOrder(1);
         return registration;
     }
 
@@ -37,7 +37,7 @@ public class FilterConfig {
         registration.setFilter(new UserFilter());
         registration.setName("userFilter");
         registration.addUrlPatterns("/api/*");
-        registration.setOrder(1);
+        registration.setOrder(2);
         return registration;
     }
 
@@ -52,9 +52,9 @@ public class FilterConfig {
         final FilterRegistrationBean<ActuatorFilter> registration = new FilterRegistrationBean<>();
         final ActuatorFilter actuatorFilter = new ActuatorFilter();
         registration.setFilter(actuatorFilter);
-        registration.addUrlPatterns("/api/*");
+        registration.addUrlPatterns("/*");
         registration.setName("actuatorFilter");
-        registration.setOrder(2);
+        registration.setOrder(0);
         return registration;
     }
 

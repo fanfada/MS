@@ -1,30 +1,23 @@
 package com.example.managersystem.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.*;
 
 /**
  * 线程相关工具类.
- * 
+ *
  * @author fanfada
  */
-public class Threads
-{
-    private static final Logger logger = LoggerFactory.getLogger(Threads.class);
-
+@Slf4j
+public class Threads {
     /**
      * sleep等待,单位为毫秒
      */
-    public static void sleep(long milliseconds)
-    {
-        try
-        {
+    public static void sleep(long milliseconds) {
+        try {
             Thread.sleep(milliseconds);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             return;
         }
     }
@@ -36,24 +29,17 @@ public class Threads
      * 如果仍然超時，則強制退出.
      * 另对在shutdown时线程本身被调用中断做了处理.
      */
-    public static void shutdownAndAwaitTermination(ExecutorService pool)
-    {
-        if (pool != null && !pool.isShutdown())
-        {
+    public static void shutdownAndAwaitTermination(ExecutorService pool) {
+        if (pool != null && !pool.isShutdown()) {
             pool.shutdown();
-            try
-            {
-                if (!pool.awaitTermination(120, TimeUnit.SECONDS))
-                {
+            try {
+                if (!pool.awaitTermination(120, TimeUnit.SECONDS)) {
                     pool.shutdownNow();
-                    if (!pool.awaitTermination(120, TimeUnit.SECONDS))
-                    {
-                        logger.info("Pool did not terminate");
+                    if (!pool.awaitTermination(120, TimeUnit.SECONDS)) {
+                        log.info("Pool did not terminate");
                     }
                 }
-            }
-            catch (InterruptedException ie)
-            {
+            } catch (InterruptedException ie) {
                 pool.shutdownNow();
                 Thread.currentThread().interrupt();
             }
@@ -63,34 +49,23 @@ public class Threads
     /**
      * 打印线程异常信息
      */
-    public static void printException(Runnable r, Throwable t)
-    {
-        if (t == null && r instanceof Future<?>)
-        {
-            try
-            {
+    public static void printException(Runnable r, Throwable t) {
+        if (t == null && r instanceof Future<?>) {
+            try {
                 Future<?> future = (Future<?>) r;
-                if (future.isDone())
-                {
+                if (future.isDone()) {
                     future.get();
                 }
-            }
-            catch (CancellationException ce)
-            {
+            } catch (CancellationException ce) {
                 t = ce;
-            }
-            catch (ExecutionException ee)
-            {
+            } catch (ExecutionException ee) {
                 t = ee.getCause();
-            }
-            catch (InterruptedException ie)
-            {
+            } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
             }
         }
-        if (t != null)
-        {
-            logger.error(t.getMessage(), t);
+        if (t != null) {
+            log.error(t.getMessage(), t);
         }
     }
 }

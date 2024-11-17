@@ -37,6 +37,9 @@ public class UserFilter implements Filter {
             ServletException {
         try {
             log.info("用户信息线程过滤器执行");
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            String path = httpRequest.getServletPath();
+            log.info("UserFilter.ServletPath:{}", path);
             final String userId;
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             final String url = httpServletRequest.getRequestURL().toString();
