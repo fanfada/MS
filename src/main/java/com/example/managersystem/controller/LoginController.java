@@ -81,7 +81,7 @@ public class LoginController {
      */
     @GetMapping("/captchaImage")
     @Log(title = "生成验证码", businessType = BusinessType.OTHER)
-    public AjaxResult getCode(HttpServletResponse response) throws IOException {
+    public AjaxResult getCaptchaCode(HttpServletResponse response) {
         AjaxResult ajaxResult = AjaxResult.success();
         ajaxResult.put("captchaEnabled", this.captchaEnabled);
         log.info("验证码是否开启：{}", this.captchaEnabled);

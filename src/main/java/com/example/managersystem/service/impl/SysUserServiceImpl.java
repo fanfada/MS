@@ -118,7 +118,7 @@ public class SysUserServiceImpl implements SysUserService {
         if (sysUser.getNickName() == null) {
             sysUser.setNickName(UuidUtil.generateRandomString().replace("user_", "nickname_"));
         }
-        sysUser.setUserName(UuidUtil.generateRandomString());
+        sysUser.setUserName(sysUser.getUserName() == null ? UuidUtil.generateRandomString() : sysUser.getUserName());
         sysUser.setUserType("01");
         sysUser.setCreateTime(new Date());
         sysUser.setUpdateTime(new Date());

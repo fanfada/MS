@@ -209,7 +209,7 @@
         insert into sys_user(user_id, user_name, nick_name, user_type, email, phonenumber, sex, password, status, del_flag,
                              login_date, create_time, update_by, update_time, remark, role_id)
         values (#{userId}, #{userName}, #{nickName}, #{userType}, #{email}, #{phonenumber}, #{sex}, #{password}, #{status},
-                #{delFlag}, #{loginDate}, #{createTime}, #{updateBy}, #{updateTime}, #{remark}, #{entity.roleId})
+                #{delFlag}, #{loginDate}, #{createTime}, #{updateBy}, #{updateTime}, #{remark}, #{roleId})
     </insert>
 
     <insert id="insertBatch" keyProperty="userId" useGeneratedKeys="true">

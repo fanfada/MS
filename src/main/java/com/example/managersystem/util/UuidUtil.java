@@ -7,7 +7,7 @@ import java.util.UUID;
 public class UuidUtil {
 
     public static String uuid() {
-        return StringUtils.replace(UUID.randomUUID().toString(), "-", "");
+        return StringUtils.replace(UUID.randomUUID().toString(), "-", "").substring(0, 11);
     }
 
     // 生成以"user_"开头，总长度为8位的随机字符串
