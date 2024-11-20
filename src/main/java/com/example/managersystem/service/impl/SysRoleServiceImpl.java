@@ -5,6 +5,7 @@ import com.example.managersystem.domain.SysRole;
 import com.example.managersystem.domain.SysRoleCity;
 import com.example.managersystem.domain.SysUserRole;
 import com.example.managersystem.dto.SafeUserDto;
+import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysRoleMapper;
 import com.example.managersystem.service.SysRoleService;
 import com.example.managersystem.util.JsonUtil;
@@ -40,7 +41,8 @@ public class SysRoleServiceImpl implements SysRoleService {
      */
     @Override
     public List<SysRole> queryAll() {
-        return this.sysRoleMapper.queryAll();
+        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+        return this.sysRoleMapper.queryAll(safeUserDto.getId());
     }
 
     /**
@@ -51,7 +53,8 @@ public class SysRoleServiceImpl implements SysRoleService {
      */
     @Override
     public SysRole queryById(String roleId) {
-        return this.sysRoleMapper.queryById(roleId);
+        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+        return this.sysRoleMapper.queryById(roleId, safeUserDto.getId());
     }
 
     /**
@@ -94,6 +97,9 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public Boolean update(SysRole sysRole) {
         SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+        if (!sysRole.getCreateBy().equals(safeUserDto.getId())) {
+            throw new GlobalException("请操作自己创建的角色");
+        }
         sysRole.setUpdateBy(safeUserDto.getId());
         sysRole.setUpdateTime(new Date());
         this.sysRoleMapper.update(sysRole);
@@ -120,6 +126,10 @@ public class SysRoleServiceImpl implements SysRoleService {
      */
     @Override
     public boolean deleteById(String roleId) {
+        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+        if (!roleId.equals(safeUserDto.getId())) {
+            throw new GlobalException("请操作自己创建的角色");
+        }
         return this.sysRoleMapper.deleteById(roleId) > 0;
     }
 }

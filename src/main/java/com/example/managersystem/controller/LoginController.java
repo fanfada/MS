@@ -171,10 +171,10 @@ public class LoginController {
             loginVo.setUserId(sysUser.getUserId());
             loginVo.setToken(token);
             loginVo.setMessage("登陆成功");
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserId(), GlobalConstants.LOGIN_SUCCESS, "登陆成功"));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]" +sysUser.getUserId(), GlobalConstants.LOGIN_SUCCESS, "登陆成功"));
             return new ReturnMessage<>(ReturnState.OK, loginVo);
         } catch (GlobalException e) {
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserId(), GlobalConstants.LOGIN_FAIL, e.getMessage()));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]" +sysUser.getUserId(), GlobalConstants.LOGIN_FAIL, e.getMessage()));
             throw new GlobalException(e.getMessage());
         }
     }

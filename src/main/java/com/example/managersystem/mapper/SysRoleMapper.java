@@ -20,7 +20,7 @@ public interface SysRoleMapper {
      *
      * @return 实例对象集合
      */
-    List<SysRole> queryAll();
+    List<SysRole> queryAll(String userId);
 
     /**
      * 通过ID查询单条数据
@@ -28,7 +28,7 @@ public interface SysRoleMapper {
      * @param roleId 主键
      * @return 实例对象
      */
-    SysRole queryById(String roleId);
+    SysRole queryById(String roleId, String userId);
 
     /**
      * 通过userid查询单条数据
