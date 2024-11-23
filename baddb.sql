@@ -136,11 +136,11 @@ VALUES ('北京', '100000'), -- 北京
 -- ----------------------------
 -- 6、角色和城市关联表
 -- ----------------------------
-drop table if exists sys_role_city;
-create table sys_role_city
+drop table if exists sys_role_auth;
+create table sys_role_auth
 (
    role_id   VARCHAR(32) not null comment '角色ID',
-   zipcode   VARCHAR(20) default '000000' comment '城市邮政编码，000000为超级管理员童用户权限，可看所有城市'
+   zipcode   VARCHAR(20) default '000000' comment '城市邮政编码，000000为超级管理员用户权限，可看所有城市'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '角色和城市关联表';
 
 -- ----------------------------

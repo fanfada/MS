@@ -5,16 +5,14 @@ import com.example.managersystem.cache.RedisCache;
 import com.example.managersystem.common.GlobalConstants;
 import com.example.managersystem.domain.SysRole;
 import com.example.managersystem.domain.SysRoleCity;
-import com.example.managersystem.dto.ReturnMessage;
+import com.example.managersystem.dto.*;
 import com.example.managersystem.common.ReturnState;
-import com.example.managersystem.dto.AjaxResult;
 import com.example.managersystem.domain.SysUser;
-import com.example.managersystem.dto.LoginDto;
-import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.manager.AsyncFactory;
 import com.example.managersystem.manager.AsyncManager;
+import com.example.managersystem.security.AuthenticationContextHolder;
 import com.example.managersystem.service.SysUserService;
 import com.example.managersystem.service.impl.SysRoleCityServiceImpl;
 import com.example.managersystem.service.impl.SysRoleServiceImpl;
@@ -24,8 +22,14 @@ import com.example.managersystem.vo.LoginVo;
 import com.example.managersystem.vo.SysUserVo;
 import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.helpers.ThreadLocalMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.ui.context.Theme;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,10 +38,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/login")
 public class LoginController {
 
     @Autowired
@@ -68,6 +69,9 @@ public class LoginController {
     private SysRoleCityServiceImpl sysRoleCityService;
     @Resource
     private SysRoleServiceImpl sysRoleService;
+
+    @Resource
+    private AuthenticationManager authenticationManager;
 
 
     @Value("${server.captchaEnabled}")
@@ -139,43 +143,86 @@ public class LoginController {
     public ReturnMessage<LoginVo> login(@RequestBody LoginDto loginDto) {
 //        this.validateCaptcha(loginDto.getCode(), loginDto.getUuid());
         SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
+        if (sysUser == null) {
+            throw new GlobalException(String.format("不存在该用户%s", loginDto.getPhonenumber()));
+        }
+        SysRole sysRole = this.sysRoleService.queryById(sysUser.getRoleId());
+        // 登录前置校验
+        loginPreCheck(loginDto.getPhonenumber(), loginDto.getPassword(), sysUser, sysRole);
+        // 用户验证
+        Authentication authentication = null;
+        final String token;
+        final String auth = GlobalConstants.AUTHORITY + sysUser.getUserId();
+        log.info("auth: {} ", auth);
+        String sysRoleCities = "";
         try {
-            if (this.redisCache.exists(sysUser.getUserId())) {
-                String token = this.redisCache.getCacheObject(sysUser.getUserId());
-                throw new GlobalException(String.format("请勿重复登录token: %s, userid: %s", token, sysUser.getUserId()));
-            }
-            if (null == loginDto.getPhonenumber()) {
-                throw new GlobalException("手机号为空");
-            }
-            if (null == loginDto.getPassword()) {
-                throw new GlobalException("密码为空");
-            }
-            if (!sysUser.getPassword().equals(loginDto.getPassword())) {
-                throw new GlobalException("密码错误");
-            }
-            //密码正确，分配token并存入redis
-            final String token = this.tokenService.createToken(sysUser.getUserId());
-            SysRole sysRole = this.sysRoleService.queryById(sysUser.getRoleId());
-            if (sysRole == null) {
-                throw new GlobalException(String.format("用户%s未分配角色", sysUser.getPhonenumber()));
-            }
             if (!sysRole.getRoleId().equals("admin")) {
-                String sysRoleCities = this.sysRoleCityService.queryByRoleId(sysRole.getRoleId()).stream()
-                        .map(SysRoleCity::getZipcode)
-                        .collect(Collectors.joining(", "));
-                this.redisCache.setEx(GlobalConstants.AUTHORITY, sysRoleCities, 1800L);
+                 sysRoleCities = this.sysRoleCityService.queryByRoleId(sysRole.getRoleId()).stream().map(SysRoleCity::getZipcode).collect(Collectors.joining(", "));
+                this.redisCache.setEx(auth, sysRoleCities, 1800L);
             } else {
-                this.redisCache.setEx(GlobalConstants.AUTHORITY, "admin", 1800L);
+                this.redisCache.setEx(auth, "admin", 1800L);
             }
-            LoginVo loginVo = new LoginVo();
-            loginVo.setUserId(sysUser.getUserId());
-            loginVo.setToken(token);
-            loginVo.setMessage("登陆成功");
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserId(), GlobalConstants.LOGIN_SUCCESS, "登陆成功"));
-            return new ReturnMessage<>(ReturnState.OK, loginVo);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getPhonenumber(), loginDto.getPassword());
+            AuthenticationContextHolder.setContext(authenticationToken);
+            // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
+            authentication = authenticationManager.authenticate(authenticationToken);
+            //密码正确，分配token并存入redis
         } catch (GlobalException e) {
             AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserId(), GlobalConstants.LOGIN_FAIL, e.getMessage()));
             throw new GlobalException(e.getMessage());
+        } catch (Exception e) {
+            this.redisCache.deleteObject(auth);
+            if (e instanceof BadCredentialsException) {
+                AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserId(), GlobalConstants.LOGIN_FAIL, e.getMessage()));
+                throw new GlobalException(e.getMessage());
+            } else {
+                AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserId(), GlobalConstants.LOGIN_FAIL, e.getMessage()));
+                throw new GlobalException(e.getMessage());
+            }
+        } finally {
+            AuthenticationContextHolder.clearContext();
+        }
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        token = this.tokenService.createToken(loginUser);
+        LoginVo loginVo = new LoginVo();
+        loginVo.setUserId(sysUser.getUserId());
+        loginVo.setToken(token);
+        loginVo.setAuthorities(Arrays.asList(sysRoleCities.split(",")));
+        loginVo.setMessage("登录成功");
+        AsyncManager.me().execute(AsyncFactory.recordLoginInfo(loginUser.getUserId(), GlobalConstants.LOGIN_SUCCESS, "登录成功"));
+        return new ReturnMessage<>(ReturnState.OK, loginVo);
+    }
+
+    /**
+     * 登录前置校验
+     *
+     * @param username 用户名
+     * @param password 用户密码
+     */
+    public void loginPreCheck(String username, String password, SysUser sysUser, SysRole sysRole) {
+        log.info("开始进行前置校验");
+        //重复登录校验
+        if (this.redisCache.exists(sysUser.getUserId())) {
+            String token = this.redisCache.getCacheObject(sysUser.getUserId());
+            throw new GlobalException(String.format("请勿重复登录token: %s, userid: %s", token, sysUser.getUserId()));
+        }
+        // 用户名或密码为空 错误
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, GlobalConstants.LOGIN_FAIL, "用户名或密码为空"));
+            throw new GlobalException("用户名或密码为空");
+        }
+        // 密码如果不在指定范围内 错误
+        if (password.length() < GlobalConstants.PASSWORD_MIN_LENGTH || password.length() > GlobalConstants.PASSWORD_MAX_LENGTH) {
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, GlobalConstants.LOGIN_FAIL, "密码长度错误"));
+            throw new GlobalException("密码长度错误");
+        }
+        // 用户名不在指定范围内 错误
+        if (username.length() < GlobalConstants.USERNAME_MIN_LENGTH || username.length() > GlobalConstants.USERNAME_MAX_LENGTH) {
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, GlobalConstants.LOGIN_FAIL, "用户名长度错误"));
+            throw new GlobalException("用户名长度错误");
+        }
+        if (sysRole == null) {
+            throw new GlobalException(String.format("用户%s未分配角色", sysUser.getPhonenumber()));
         }
     }
 
@@ -201,36 +248,36 @@ public class LoginController {
     }
 
 
-    /**
-     * 登出接口
-     * 前期只支持手机号登出
-     *
-     * @param loginDto
-     * @return
-     */
-    @PostMapping(value = "logout")
-    @Log(title = "用户登出", businessType = BusinessType.OTHER)
-    public ReturnMessage<String> logout(@RequestBody LoginDto loginDto) {
-        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
-        SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
-        try {
-            log.info("开始登出phonenumber: {}", loginDto.getPhonenumber());
-            if (null == loginDto.getPhonenumber()) {
-                throw new GlobalException("手机号为空");
-            }
-            if (!safeUserDto.getId().equals(sysUser.getUserId())) {
-                return new ReturnMessage<>(ReturnState.OK, "请勿登出他人账号");
-            }
-            if (!this.redisCache.exists(safeUserDto.getId())) {
-                return new ReturnMessage<>(ReturnState.OK, "您已登出，请勿重复操作");
-            }
-            this.redisCache.remove(safeUserDto.getId());
-            this.redisCache.remove(GlobalConstants.AUTHORITY);
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserName(), GlobalConstants.LOGOUT_SUCCESS, "登出成功"));
-            return new ReturnMessage<>(ReturnState.OK, "登出成功");
-        } catch (Exception e) {
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserName(), GlobalConstants.LOGOUT_FAIL, e.getMessage()));
-            throw new GlobalException(e.getMessage());
-        }
-    }
+//    /**
+//     * 登出接口
+//     * 前期只支持手机号登出
+//     *
+//     * @param loginDto
+//     * @return
+//     */
+//    @PostMapping(value = "logout")
+//    @Log(title = "用户登出", businessType = BusinessType.OTHER)
+//    public ReturnMessage<String> logout(@RequestBody LoginDto loginDto) {
+//        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+//        SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
+//        try {
+//            log.info("开始登出phonenumber: {}", loginDto.getPhonenumber());
+//            if (null == loginDto.getPhonenumber()) {
+//                throw new GlobalException("手机号为空");
+//            }
+//            if (!safeUserDto.getId().equals(sysUser.getUserId())) {
+//                return new ReturnMessage<>(ReturnState.OK, "请勿登出他人账号");
+//            }
+//            if (!this.redisCache.exists(safeUserDto.getId())) {
+//                return new ReturnMessage<>(ReturnState.OK, "您已登出，请勿重复操作");
+//            }
+//            this.redisCache.remove(safeUserDto.getId());
+//            this.redisCache.remove(GlobalConstants.AUTHORITY);
+//            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserName(), GlobalConstants.LOGOUT_SUCCESS, "登出成功"));
+//            return new ReturnMessage<>(ReturnState.OK, "登出成功");
+//        } catch (Exception e) {
+//            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserName(), GlobalConstants.LOGOUT_FAIL, e.getMessage()));
+//            throw new GlobalException(e.getMessage());
+//        }
+//    }
 }

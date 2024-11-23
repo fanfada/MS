@@ -1,0 +1,30 @@
+spring:
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: Saas@9883
+    connect-timeout: 3000
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/security?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
+    password: Saas@9883
+    hikari:
+      minimum-idle: 3
+      maximum-pool-size: 20
+      #单位ms
+      max-lifetime: 1200000
+      connection-test-query: SELECT 1
+  main:
+    allow-bean-definition-overriding: true
+
+### mybatis-plus
+mybatis-plus:
+  # 映射文件所在路径
+  mapper-locations: classpath:mapper/*.xml
+  # po类所在包路径
+  type-aliases-package: com.example.managersystem.entity

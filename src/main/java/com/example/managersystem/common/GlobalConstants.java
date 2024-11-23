@@ -7,6 +7,40 @@ import java.util.List;
  * 全局常量定义
  */
 public class GlobalConstants {
+    /**
+     * 自动识别json对象白名单配置（仅允许解析的包名，范围越小越安全）
+     */
+    public static final String[] JSON_WHITELIST_STR = { "org.springframework", "com.example" };
+    /**
+     * 令牌前缀
+     */
+    public static final String TOKEN_PREFIX = "Bearer ";
+    /**
+     * 令牌前缀
+     */
+    public static final String LOGIN_USER_KEY = "Login_user_key";
+    /**
+     * 登录用户 redis key
+     */
+    public static final String LOGIN_TOKEN_KEY = "Login_token:";
+
+    /**
+     * 管理员角色权限标识
+     */
+    public static final String SUPER_ADMIN = "admin";
+
+    public static final int UNAUTHORIZED = 401;
+    /**
+     * 用户名长度限制
+     */
+    public static final int USERNAME_MIN_LENGTH = 2;
+    public static final int USERNAME_MAX_LENGTH = 20;
+
+    /**
+     * 密码长度限制
+     */
+    public static final int PASSWORD_MIN_LENGTH = 5;
+    public static final int PASSWORD_MAX_LENGTH = 20;
 
     /**
      * GBK 字符集
