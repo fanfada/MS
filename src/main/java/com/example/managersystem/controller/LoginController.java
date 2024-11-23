@@ -157,7 +157,7 @@ public class LoginController {
         String sysRoleCities = "";
         try {
             if (!sysRole.getRoleId().equals("admin")) {
-                 sysRoleCities = this.sysRoleCityService.queryByRoleId(sysRole.getRoleId()).stream().map(SysRoleCity::getZipcode).collect(Collectors.joining(", "));
+                 sysRoleCities = this.sysRoleCityService.queryByRoleId(sysRole.getRoleId()).stream().map(SysRoleCity::getZipcode).collect(Collectors.joining(","));
                 this.redisCache.setEx(auth, sysRoleCities, 1800L);
             } else {
                 this.redisCache.setEx(auth, "admin", 1800L);

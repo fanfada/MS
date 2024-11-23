@@ -1,6 +1,5 @@
 package com.example.managersystem.controller;
 
-import com.example.managersystem.annotation.AuthorityCity;
 import com.example.managersystem.annotation.Log;
 import com.example.managersystem.dto.PageResultBody;
 import com.example.managersystem.domain.SysRoom;
@@ -62,9 +61,7 @@ public class SysRoomController {
     @GetMapping("/export")
     public void export(String zipCode, HttpServletResponse response) {
         log.info("导出{}的房屋信息", zipCode);
-        List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll(zipCode).stream()
-                .sorted(Comparator.comparing(SysRoomVo::getId))
-                .collect(Collectors.toList());
+        List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll(zipCode).stream().sorted(Comparator.comparing(SysRoomVo::getId)).collect(Collectors.toList());
         log.info("导出房屋信息");
         ExcelUtils.export(response, "用户表", sysRoomList, SysRoomVo.class);
     }

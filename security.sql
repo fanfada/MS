@@ -154,3 +154,33 @@ create table sys_oper_log (
       cost_time         bigint(20)      default 0                  comment '消耗时间',
       primary key (oper_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '操作日志记录';
+
+
+-- ----------------------------
+-- 9、权限字典表
+-- ----------------------------
+drop table if exists sys_auth_dict;
+create table sys_auth_dict
+(
+    dict_code        int             not null auto_increment    comment '字典编码',
+    dict_label       varchar(100)    default ''                 comment '字典标签',
+    dict_value       varchar(100)    default ''                 comment '字典键值',
+    status           char(1)         default '0'                comment '状态（0正常 1停用）',
+    create_by        varchar(64)     default ''                 comment '创建者',
+    create_time      datetime                                   comment '创建时间',
+    update_by        varchar(64)     default ''                 comment '更新者',
+    update_time      datetime                                   comment '更新时间',
+    remark           varchar(255)    default null               comment '备注',
+    primary key (dict_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '字典数据表';
+
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('room', 'room:all', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('room', 'room:query', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('room', 'room:add', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('room', 'room:edit', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('room', 'room:delete', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('owner', 'owner:all', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('owner', 'owner:query', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('owner', 'owner:add', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('owner', 'owner:edit', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
+INSERT INTO sys_auth_dict (dict_label, dict_value, status, create_by, create_time, update_by, update_time, remark) VALUES ('owner', 'owner:delete', '0', 'super', '2024-11-23 22:39:43', 'super', '2024-11-23 22:39:49', '内置权限字符');
