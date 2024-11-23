@@ -23,4 +23,19 @@ public class SafeUserDto implements Serializable {
      * 用户登录真实ip
      */
     private String realIP;
+
+    /**
+     * 手机号码
+     */
+    private String phonenumber;
+
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 权限字符
+     */
+    private String auth;
 }

@@ -29,15 +29,10 @@ public class RedisController {
     @Autowired
     private RedisCache redisCache;
 
-    @GetMapping("/genToken/{key}")
-    public ReturnMessage<String> genToken(@PathVariable(value = "key")final String key){
-        return new ReturnMessage<>(ReturnState.OK, this.tokenService.createToken(key));
-    }
-
     @GetMapping(value = "/getValue")
     public ReturnMessage<String> getValue() {
         SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
-        return new ReturnMessage<>(ReturnState.OK,this.redisCache.getCacheObject(safeUserDto.getId()));
+        return new ReturnMessage<>(ReturnState.OK,this.redisCache.getCacheObject(GlobalConstants.AUTHORITY + safeUserDto.getId()));
     }
 
     @GetMapping(value = "/delKey/{key}")
