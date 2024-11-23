@@ -9,10 +9,7 @@ import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysUserMapper;
 import com.example.managersystem.service.SysUserService;
-import com.example.managersystem.util.CommonUtil;
-import com.example.managersystem.util.JsonUtil;
-import com.example.managersystem.util.ThreadLocalMapUtil;
-import com.example.managersystem.util.UuidUtil;
+import com.example.managersystem.util.*;
 import com.example.managersystem.vo.SysUserVo;
 import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -132,6 +129,7 @@ public class SysUserServiceImpl implements SysUserService {
         if (StringUtil.isNullOrEmpty(sysUser.getPassword())) {
             throw new GlobalException("密码为空");
         }
+        sysUser.setPassword(SecurityUtils.encryptPassword(sysUser.getPassword()));
         if (!CommonUtil.isValidEmail(sysUser.getEmail())) {
             throw new GlobalException("邮箱地址无效");
         }

@@ -11,6 +11,7 @@ import com.example.managersystem.service.SysRoomService;
 import com.example.managersystem.util.ExcelUtils;
 import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +45,7 @@ public class SysRoomController {
      * @throws Exception
      */
     @Log(title = "导入房屋信息", businessType = BusinessType.IMPORT)
+    @PreAuthorize("@ss.hasPermi('room:import')")
     @PostMapping("/import")
     public ReturnMessage<Boolean> importUser(@RequestPart("file") MultipartFile file) {
         log.info("导入房屋信息");
@@ -56,6 +58,7 @@ public class SysRoomController {
      * @param response
      */
     @Log(title = "导出房屋信息", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('room:export')")
     @GetMapping("/export")
     public void export(String zipCode, HttpServletResponse response) {
         log.info("导出{}的房屋信息", zipCode);
@@ -73,7 +76,8 @@ public class SysRoomController {
      * @return 实例对象集合
      */
     @GetMapping
-    @AuthorityCity
+//    @AuthorityCity
+    @PreAuthorize("@ss.hasPermi('room:query')")
     @Log(title = "查询房屋信息", businessType = BusinessType.QUERY)
     public ReturnMessage<PageResultBody<SysRoomVo>> queryAll(final String zipCode) {
         PageResultBody<SysRoomVo> pageResultBody = new PageResultBody<>();
@@ -90,6 +94,7 @@ public class SysRoomController {
      * @return 单条数据
      */
     @GetMapping("{id}")
+    @PreAuthorize("@ss.hasPermi('room:query')")
     @Log(title = "查询房屋信息", businessType = BusinessType.QUERY)
     public ReturnMessage<SysRoom> queryById(@PathVariable("id") Integer id) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.queryById(id));
@@ -102,30 +107,33 @@ public class SysRoomController {
      * @return 新增结果
      */
     @PostMapping
+    @PreAuthorize("@ss.hasPermi('room:add')")
     @Log(title = "新增房屋信息", businessType = BusinessType.INSERT)
     public ReturnMessage<Boolean> add(@RequestBody SysRoom sysRoom) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.insert(sysRoom));
     }
 
     /**
-     * 编辑数据：软删除
+     * 编辑数据
      *
      * @param sysRoom 实体
      * @return 编辑结果
      */
-    @PutMapping
+    @PostMapping(value = "/edit")
+    @PreAuthorize("@ss.hasPermi('room:edit')")
     @Log(title = "删除房屋信息", businessType = BusinessType.DELETE)
     public ReturnMessage<Boolean> edit(@RequestBody SysRoom sysRoom) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.update(sysRoom));
     }
 
     /**
-     * 删除数据
+     * 删除数据-软删除
      *
      * @param id 主键
      * @return 删除是否成功
      */
     @GetMapping("/delete/{id}")
+    @PreAuthorize("@ss.hasPermi('room:delete')")
     @Log(title = "彻底删除房屋信息", businessType = BusinessType.DELETE)
     public ReturnMessage<Boolean> deleteById(@PathVariable(value = "id") Integer id) {
         return new ReturnMessage<>(ReturnState.OK, this.sysRoomService.deleteByIdSoft(id));

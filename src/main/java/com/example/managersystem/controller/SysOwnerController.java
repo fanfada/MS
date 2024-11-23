@@ -9,6 +9,7 @@ import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.service.SysOwnerService;
 import com.example.managersystem.vo.SysOwnerVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class SysOwnerController {
      * @return 实例对象集合
      */
     @GetMapping
+    @PreAuthorize("@ss.hasPermi('owner:query')")
     @Log(title = "查询房东信息", businessType = BusinessType.QUERY)
     public ReturnMessage<PageResultBody<SysOwnerVo>> queryAll() {
         PageResultBody<SysOwnerVo> pageResultBody = new PageResultBody<>();
@@ -52,6 +54,7 @@ public class SysOwnerController {
      * @return 单条数据
      */
     @GetMapping("{id}")
+    @PreAuthorize("@ss.hasPermi('owner:query')")
     @Log(title = "查询房东信息", businessType = BusinessType.QUERY)
     public ReturnMessage<SysOwner> queryById(@PathVariable("id") Integer id) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.queryById(id));
@@ -64,6 +67,7 @@ public class SysOwnerController {
      * @return 新增结果
      */
     @PostMapping
+    @PreAuthorize("@ss.hasPermi('owner:add')")
     @Log(title = "新增房东信息", businessType = BusinessType.INSERT)
     public ReturnMessage<Boolean> add(@RequestBody SysOwner sysOwner) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.insert(sysOwner));
@@ -76,6 +80,7 @@ public class SysOwnerController {
      * @return 编辑结果
      */
     @PutMapping
+    @PreAuthorize("@ss.hasPermi('owner:edit')")
     @Log(title = "编辑房东信息", businessType = BusinessType.UPDATE)
     public ReturnMessage<Boolean> edit(@RequestBody SysOwner sysOwner) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.update(sysOwner));
@@ -88,6 +93,7 @@ public class SysOwnerController {
      * @return 删除是否成功
      */
     @GetMapping("/delete/{id}")
+    @PreAuthorize("@ss.hasPermi('owner:delete')")
     @Log(title = "删除房东信息", businessType = BusinessType.DELETE)
     public ReturnMessage<Boolean> deleteById(@PathVariable(value = "id") Integer id) {
         return new ReturnMessage<>(ReturnState.OK, this.sysOwnerService.deleteByIdSoft(id));

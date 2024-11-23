@@ -12,6 +12,7 @@ import com.example.managersystem.vo.SysUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class SysUserController {
      */
 //    @LoginStatusVerify
     @GetMapping
+    @PreAuthorize("@ss.hasPermi('admin')")
     @Log(title = "查询用户信息", businessType = BusinessType.QUERY)
     public ReturnMessage<PageResultBody<SysUserVo>> queryAll() {
         PageResultBody<SysUserVo> pageResultBody = new PageResultBody<>();
@@ -56,6 +58,7 @@ public class SysUserController {
      * @return 单条数据
      */
     @GetMapping("{userId}")
+    @PreAuthorize("@ss.hasPermi('admin')")
     @Log(title = "查询用户信息", businessType = BusinessType.QUERY)
     public ReturnMessage<SysUserVo> queryById(@PathVariable("userId") String userId) {
         SysUser sysUser = this.sysUserService.queryById(userId);
@@ -72,6 +75,7 @@ public class SysUserController {
      * @return 编辑结果
      */
     @PutMapping
+    @PreAuthorize("@ss.hasPermi('admin')")
     @Log(title = "编辑用户信息", businessType = BusinessType.UPDATE)
     public ReturnMessage<Boolean> edit(@RequestBody SysUser sysUser) {
         return new ReturnMessage<>(ReturnState.OK, this.sysUserService.update(sysUser));
@@ -84,6 +88,7 @@ public class SysUserController {
      * @return 删除是否成功
      */
     @GetMapping("/delete/{userId}")
+    @PreAuthorize("@ss.hasPermi('admin')")
     @Log(title = "删除用户信息", businessType = BusinessType.DELETE)
     public ReturnMessage<Boolean> deleteByIdSoft(@PathVariable(value = "userId") String userId) {
         return new ReturnMessage<>(ReturnState.OK, this.sysUserService.deleteByIdSoft(userId));
@@ -97,6 +102,7 @@ public class SysUserController {
      * @return 删除是否成功
      */
     @DeleteMapping
+    @PreAuthorize("@ss.hasPermi('admin')")
     @Log(title = "彻底删除用户信息", businessType = BusinessType.DELETE)
     public ResponseEntity<Boolean> deleteById(String userId) {
         return ResponseEntity.ok(this.sysUserService.deleteById(userId));

@@ -51,7 +51,9 @@ public class SysRoleServiceImpl implements SysRoleService {
      */
     @Override
     public SysRole queryById(String roleId) {
-        return this.sysRoleMapper.queryById(roleId);
+        SysRole sysRole = this.sysRoleMapper.queryById(roleId);
+        log.info("该用户的角色信息：{}", JsonUtil.toString(sysRole));
+        return sysRole;
     }
 
     /**

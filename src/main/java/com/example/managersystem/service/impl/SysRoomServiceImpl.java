@@ -127,6 +127,7 @@ public class SysRoomServiceImpl implements SysRoomService {
     public Boolean update(SysRoom sysRoom) {
         try {
             sysRoom.setUpdateTime(new Date());
+            sysRoom.setStatus(0);
             log.info("待修改数据sysRoom: {}", JsonUtil.toString(sysRoom));
             this.sysRoomMapper.update(sysRoom);
             return true;

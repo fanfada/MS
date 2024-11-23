@@ -4,6 +4,7 @@ import com.example.managersystem.domain.SysRole;
 import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.service.SysRoleService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class SysRoleController {
      * @return 实例对象集合
      */
     @GetMapping
+    @PreAuthorize("@ss.hasPermi('admin')")
     @Log(title = "查询角色信息", businessType = BusinessType.QUERY)
     public ResponseEntity<List> queryAll() {
         return ResponseEntity.ok(this.sysRoleService.queryAll());
@@ -42,6 +44,7 @@ public class SysRoleController {
      * @return 单条数据
      */
     @GetMapping("{id}")
+    @PreAuthorize("@ss.hasPermi('admin')")
     @Log(title = "查询角色信息", businessType = BusinessType.QUERY)
     public ResponseEntity<SysRole> queryById(@PathVariable("id") String id) {
         return ResponseEntity.ok(this.sysRoleService.queryById(id));
@@ -55,6 +58,7 @@ public class SysRoleController {
      */
     @PostMapping
     @Log(title = "新增角色信息", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('admin')")
     public ResponseEntity<Boolean> add(@RequestBody SysRole sysRole) {
         return ResponseEntity.ok(this.sysRoleService.insert(sysRole));
     }
@@ -67,6 +71,7 @@ public class SysRoleController {
      */
     @PutMapping
     @Log(title = "编辑角色信息", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('admin')")
     public ResponseEntity<Boolean> edit(@RequestBody SysRole sysRole) {
         return ResponseEntity.ok(this.sysRoleService.update(sysRole));
     }
@@ -79,6 +84,7 @@ public class SysRoleController {
      */
     @DeleteMapping
     @Log(title = "彻底删除角色信息", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('admin')")
     public ResponseEntity<Boolean> deleteById(@RequestParam(value = "roleId") String roleId) {
         return ResponseEntity.ok(this.sysRoleService.deleteById(roleId));
     }

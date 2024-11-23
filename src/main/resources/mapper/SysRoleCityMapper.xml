@@ -10,13 +10,13 @@
     <!--查询所有-->
     <select id="queryAll" resultMap="SysRoleCityMap">
         select role_id, zipcode
-        from sys_role_city
+        from sys_role_auth
     </select>
 
     <!--查询单个-->
     <select id="queryByRoleId" resultMap="SysRoleCityMap">
         select role_id, zipcode
-        from sys_role_city
+        from sys_role_auth
         where role_id = #{roleId}
     </select>
 
@@ -24,7 +24,7 @@
     <select id="queryAllByLimit" resultMap="SysRoleCityMap">
         select
         role_id, zipcode
-        from sys_role_city
+        from sys_role_auth
         <where>
             <if test="roleId != null and roleId != ''">
                 and role_id = #{roleId}
@@ -39,7 +39,7 @@
     <!--统计总行数-->
     <select id="count" resultType="java.lang.Long">
         select count(1)
-        from sys_role_city
+        from sys_role_auth
         <where>
             <if test="roleId != null and roleId != ''">
                 and role_id = #{roleId}
@@ -52,12 +52,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="" useGeneratedKeys="true">
-        insert into sys_role_city(role_id, zipcode)
+        insert into sys_role_auth(role_id, zipcode)
         values (#{roleId}, #{zipcode})
     </insert>
 
     <insert id="insertBatch" keyProperty="" useGeneratedKeys="true">
-        insert into sys_role_city(role_id, zipcode)
+        insert into sys_role_auth(role_id, zipcode)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.roleId}, #{entity.zipcode})
@@ -65,7 +65,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="" useGeneratedKeys="true">
-        insert into sys_role_city(role_id, zipcode)
+        insert into sys_role_auth(role_id, zipcode)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.roleId}, #{entity.zipcode})
@@ -76,7 +76,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update sys_role_city
+        update sys_role_auth
         <set>
             <if test="roleId != null and roleId != ''">
                 role_id = #{roleId},
@@ -91,7 +91,7 @@
     <!--通过主键删除-->
     <delete id="deleteById">
         delete
-        from sys_role_city
+        from sys_role_auth
         where role_id = #{roleId}
     </delete>
 
