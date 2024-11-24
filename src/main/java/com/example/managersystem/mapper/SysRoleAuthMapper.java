@@ -12,7 +12,7 @@ import java.util.List;
  * @since 2024-11-15 16:34:35
  */
 @Mapper
-public interface SysRoleCityMapper {
+public interface SysRoleAuthMapper {
 
     /**
      * 查询所有数据

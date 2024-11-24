@@ -1,7 +1,7 @@
 package com.example.managersystem.service.impl;
 
 import com.example.managersystem.domain.SysRoleCity;
-import com.example.managersystem.mapper.SysRoleCityMapper;
+import com.example.managersystem.mapper.SysRoleAuthMapper;
 import com.example.managersystem.service.SysRoleCityService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 @Service("sysRoleCityService")
 public class SysRoleCityServiceImpl implements SysRoleCityService {
     @Resource
-    private SysRoleCityMapper sysRoleCityMapper;
+    private SysRoleAuthMapper sysRoleAuthMapper;
 
     /**
      * 查询所有数据
@@ -27,7 +27,7 @@ public class SysRoleCityServiceImpl implements SysRoleCityService {
      */
     @Override
     public List<SysRoleCity> queryAll() {
-        return this.sysRoleCityMapper.queryAll();
+        return this.sysRoleAuthMapper.queryAll();
     }
 
     /**
@@ -38,7 +38,7 @@ public class SysRoleCityServiceImpl implements SysRoleCityService {
      */
     @Override
     public List<SysRoleCity> queryByRoleId(final String roleId) {
-        return this.sysRoleCityMapper.queryByRoleId(roleId);
+        return this.sysRoleAuthMapper.queryByRoleId(roleId);
     }
 
     /**
@@ -49,7 +49,7 @@ public class SysRoleCityServiceImpl implements SysRoleCityService {
      */
     @Override
     public Boolean insert(SysRoleCity sysRoleCity) {
-        return this.sysRoleCityMapper.insert(sysRoleCity) > 0;
+        return this.sysRoleAuthMapper.insert(sysRoleCity) > 0;
     }
 
     /**
@@ -59,7 +59,7 @@ public class SysRoleCityServiceImpl implements SysRoleCityService {
      * @return 实例对象
      */
     public Boolean insertBatch(@Param("entities") List<SysRoleCity> entities) {
-        return this.sysRoleCityMapper.insertBatch(entities) > 0;
+        return this.sysRoleAuthMapper.insertBatch(entities) > 0;
     }
 
     /**
@@ -69,7 +69,7 @@ public class SysRoleCityServiceImpl implements SysRoleCityService {
      * @return 实例对象
      */
     public Boolean insertOrUpdateBatch(@Param("entities") List<SysRoleCity> entities) {
-        return this.sysRoleCityMapper.insertOrUpdateBatch(entities) > 0;
+        return this.sysRoleAuthMapper.insertOrUpdateBatch(entities) > 0;
     }
 
     /**
@@ -80,7 +80,7 @@ public class SysRoleCityServiceImpl implements SysRoleCityService {
      */
     @Override
     public Boolean update(SysRoleCity sysRoleCity) {
-        return this.sysRoleCityMapper.update(sysRoleCity) > 0;
+        return this.sysRoleAuthMapper.update(sysRoleCity) > 0;
     }
 
     /**
@@ -91,6 +91,6 @@ public class SysRoleCityServiceImpl implements SysRoleCityService {
      */
     @Override
     public boolean deleteById(final String roleId) {
-        return this.sysRoleCityMapper.deleteById(roleId) > 0;
+        return this.sysRoleAuthMapper.deleteById(roleId) > 0;
     }
 }

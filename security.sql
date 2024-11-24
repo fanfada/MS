@@ -44,9 +44,9 @@ CREATE TABLE sys_room
     PRIMARY KEY (room_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '房屋信息表';
 
-INSERT INTO `baddb`.`sys_room` (`color`, `room_type`, `country`, `province`, `city`, `address`, `status`, `create_time`,
+INSERT INTO `baddb`.`sys_room` (`color`, `room_type`,  `province`, `city`, `address`, `status`, `create_time`,
                                 `update_by`, `update_time`, `remark`, `owner_id`)
-VALUES ('推荐', '合租', '中国', '江苏', '苏州', '龙惠花苑1000', 0, '2024-11-06 16:07:09', NULL, '2024-11-06 16:07:09', '推荐', 2);
+VALUES ('推荐', '合租',  '江苏', '苏州', '龙惠花苑1000', 0, '2024-11-06 16:07:09', NULL, '2024-11-06 16:07:09', '推荐', 2);
 
 
 select count(1) from sys_room;
@@ -104,7 +104,7 @@ insert into sys_role values ('admin', '超级管理员', 'admin', '1', 0, 'admin
 
 
 -- ----------------------------
--- 6、角色和城市关联表
+-- 6、角色权限关联表
 -- ----------------------------
 drop table if exists sys_role_auth;
 create table sys_role_auth
