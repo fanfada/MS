@@ -1,8 +1,9 @@
-FROM nexus.cmss.com:8090/paas-docker/ncndb/ncndb-be/local-openjava8-base:20230506-1
+#FROM nexus.cmss.com:8090/paas-docker/ncndb/ncndb-be/local-openjava8-base:20230506-1
+FROM openjdk:8-jdk
 #FROM openjdk:8-jdk-slim
 #FROM openjdk:8-jre
 #FROM openjdk:8-alpine
-MAINTAINER develop
+MAINTAINER fanfada
 ENV TZ="Asia/Shanghai"
 ADD target/managesystem.jar /app/myapp.jar
 EXPOSE 8080

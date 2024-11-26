@@ -19,8 +19,10 @@
     <select id="queryAll" resultMap="SysRoleMap">
         select role_id, role_name, role_key, data_scope, status, create_by, create_time, update_by, update_time, remark
         from sys_role
-        where create_by = #{userId}
-        and status = 0
+        where status = 0
+        <if test="roleId != 'admin'">
+            and create_by = #{userId}
+        </if>
     </select>
 
     <!--查询单个-->
@@ -28,14 +30,16 @@
         select role_id, role_name, role_key, data_scope, status, create_by, create_time, update_by, update_time, remark
         from sys_role
         where role_id = #{roleId}
-        and create_by = #{userId}
+        <if test="roleId != 'admin'">
+            and create_by = #{userId}
+        </if>
         and status = 0
     </select>
 
     <select id="queryByUserId" resultMap="SysRoleMap">
         select role_id, role_name, role_key, data_scope, status, create_by, create_time, update_by, update_time, remark
         from sys_role
-        where role_id = #{userId}
+        where create_by = #{userId}
         and status = 0
     </select>
 
