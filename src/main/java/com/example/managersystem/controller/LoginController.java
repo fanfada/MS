@@ -221,10 +221,10 @@ public class LoginController {
             if (!safeUserDto.getId().equals(sysUser.getUserId())) {
                 return new ReturnMessage<>(ReturnState.OK, "请勿登出他人账号");
             }
-            if (!this.redisCache.exists(safeUserDto.getId())) {
+            if (!this.redisCache.exists(GlobalConstants.AUTHORITY + safeUserDto.getId())) {
                 return new ReturnMessage<>(ReturnState.OK, "您已登出，请勿重复操作");
             }
-            this.redisCache.remove(safeUserDto.getId());
+            this.redisCache.remove(GlobalConstants.AUTHORITY + safeUserDto.getId());
             this.redisCache.remove(GlobalConstants.AUTHORITY + sysUser.getUserId());
             AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGOUT_SUCCESS, "登出成功"));
             return new ReturnMessage<>(ReturnState.OK, "登出成功");
