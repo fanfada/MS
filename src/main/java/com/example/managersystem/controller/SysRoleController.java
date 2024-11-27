@@ -44,7 +44,7 @@ public class SysRoleController {
     @GetMapping("{id}")
     @Log(title = "查询角色信息", businessType = BusinessType.QUERY)
     public ResponseEntity<SysRole> queryById(@PathVariable("id") String id) {
-        return ResponseEntity.ok(this.sysRoleService.queryById(id));
+        return ResponseEntity.ok(this.sysRoleService.queryById(id,""));
     }
 
     /**

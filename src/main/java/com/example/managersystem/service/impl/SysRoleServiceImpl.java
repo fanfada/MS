@@ -52,9 +52,8 @@ public class SysRoleServiceImpl implements SysRoleService {
      * @return 实例对象
      */
     @Override
-    public SysRole queryById(String roleId) {
-        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
-        return this.sysRoleMapper.queryById(roleId, safeUserDto.getId());
+    public SysRole queryById(String roleId, String userId) {
+        return this.sysRoleMapper.queryById(roleId, userId);
     }
 
     /**

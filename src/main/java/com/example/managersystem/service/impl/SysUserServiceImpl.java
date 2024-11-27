@@ -162,7 +162,7 @@ public class SysUserServiceImpl implements SysUserService {
             sysUser.setUpdateTime(new Date());
             log.info("待修改数据sysUser: {}", JsonUtil.toString(sysUser));
             this.sysUserMapper.update(sysUser);
-            SysRole sysRole = this.sysRoleService.queryById(safeUserDto.getId());
+            SysRole sysRole = this.sysRoleService.queryById(safeUserDto.getId(), "");
             if (!sysUser.getCities().isEmpty()) {
                 this.sysRoleCityService.deleteById(sysRole.getRoleId());
                 List<String> authorityCities = sysUser.getCities();
@@ -203,7 +203,7 @@ public class SysUserServiceImpl implements SysUserService {
             sysUser.setDelFlag("1");
             log.info("要删除的sysUser: {}", JsonUtil.toString(sysUser));
             this.sysUserMapper.update(sysUser);
-            SysRole sysRole = this.sysRoleService.queryById(safeUserDto.getId());
+            SysRole sysRole = this.sysRoleService.queryById(safeUserDto.getId(), "");
             this.sysRoleCityService.deleteById(sysRole.getRoleId());
             return true;
         } catch (Exception e) {

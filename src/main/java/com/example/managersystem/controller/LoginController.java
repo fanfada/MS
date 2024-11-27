@@ -66,7 +66,7 @@ public class LoginController {
     private Producer captchaProducerMath;
     @Resource
     private SysRoleCityServiceImpl sysRoleCityService;
-    @Resource
+    @Autowired
     private SysRoleServiceImpl sysRoleService;
 
 
@@ -154,8 +154,8 @@ public class LoginController {
                 throw new GlobalException("密码错误");
             }
             //密码正确，分配token并存入redis
-            final String token = this.tokenService.createToken(sysUser.getUserId());
-            SysRole sysRole = this.sysRoleService.queryById(sysUser.getRoleId());
+            SysRole sysRole = this.sysRoleService.queryById(sysUser.getRoleId(), sysUser.getUserId());
+            log.info("用户的角色为“{}", sysRole);
             if (sysRole == null) {
                 throw new GlobalException(String.format("用户%s未分配角色", sysUser.getPhonenumber()));
             }
@@ -163,18 +163,19 @@ public class LoginController {
                 String sysRoleCities = this.sysRoleCityService.queryByRoleId(sysRole.getRoleId()).stream()
                         .map(SysRoleCity::getZipcode)
                         .collect(Collectors.joining(", "));
-                this.redisCache.setEx(GlobalConstants.AUTHORITY, sysRoleCities, 1800L);
+                this.redisCache.setEx(GlobalConstants.AUTHORITY + sysUser.getUserId(), sysRoleCities, 1800L);
             } else {
-                this.redisCache.setEx(GlobalConstants.AUTHORITY, "admin", 1800L);
+                this.redisCache.setEx(GlobalConstants.AUTHORITY + sysUser.getUserId(), "admin", 1800L);
             }
+            final String token = this.tokenService.createToken(sysUser.getUserId());
             LoginVo loginVo = new LoginVo();
             loginVo.setUserId(sysUser.getUserId());
             loginVo.setToken(token);
             loginVo.setMessage("登陆成功");
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]" +sysUser.getUserId(), GlobalConstants.LOGIN_SUCCESS, "登陆成功"));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGIN_SUCCESS, "登陆成功"));
             return new ReturnMessage<>(ReturnState.OK, loginVo);
         } catch (GlobalException e) {
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]" +sysUser.getUserId(), GlobalConstants.LOGIN_FAIL, e.getMessage()));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGIN_FAIL, e.getMessage()));
             throw new GlobalException(e.getMessage());
         }
     }
@@ -209,7 +210,6 @@ public class LoginController {
      * @return
      */
     @PostMapping(value = "logout")
-    @Log(title = "用户登出", businessType = BusinessType.OTHER)
     public ReturnMessage<String> logout(@RequestBody LoginDto loginDto) {
         SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
         SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
@@ -226,10 +226,10 @@ public class LoginController {
             }
             this.redisCache.remove(safeUserDto.getId());
             this.redisCache.remove(GlobalConstants.AUTHORITY);
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserName(), GlobalConstants.LOGOUT_SUCCESS, "登出成功"));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGOUT_SUCCESS, "登出成功"));
             return new ReturnMessage<>(ReturnState.OK, "登出成功");
         } catch (Exception e) {
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(sysUser.getUserName(), GlobalConstants.LOGOUT_FAIL, e.getMessage()));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGOUT_FAIL, e.getMessage()));
             throw new GlobalException(e.getMessage());
         }
     }

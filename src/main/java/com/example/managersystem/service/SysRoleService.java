@@ -24,7 +24,7 @@ public interface SysRoleService {
      * @param roleId 主键
      * @return 实例对象
      */
-    SysRole queryById(String roleId);
+    SysRole queryById(String roleId, String userId);
 
     /**
      * 新增数据

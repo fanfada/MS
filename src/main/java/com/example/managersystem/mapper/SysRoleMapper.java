@@ -28,7 +28,7 @@ public interface SysRoleMapper {
      * @param roleId 主键
      * @return 实例对象
      */
-    SysRole queryById(String roleId, String userId);
+    SysRole queryById(@Param("roleId") String roleId, @Param("userId") String userId);
 
     /**
      * 通过userid查询单条数据
@@ -37,6 +37,7 @@ public interface SysRoleMapper {
      * @return 实例对象
      */
     SysRole queryByUserId(String userId);
+
     /**
      * 统计总行数
      *
