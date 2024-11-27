@@ -9,6 +9,7 @@ import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.service.SysRoomService;
 import com.example.managersystem.util.ExcelUtils;
+import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.vo.SysRoomVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -58,11 +59,10 @@ public class SysRoomController {
     @Log(title = "导出房屋信息", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public void export(String zipCode, HttpServletResponse response) {
-        log.info("导出{}的房屋信息", zipCode);
         List<SysRoomVo> sysRoomList = this.sysRoomService.queryAll(zipCode).stream()
                 .sorted(Comparator.comparing(SysRoomVo::getId))
                 .collect(Collectors.toList());
-        log.info("导出房屋信息");
+        log.info("导出房屋信息:{}", JsonUtil.toString(sysRoomList));
         ExcelUtils.export(response, "用户表", sysRoomList, SysRoomVo.class);
     }
 

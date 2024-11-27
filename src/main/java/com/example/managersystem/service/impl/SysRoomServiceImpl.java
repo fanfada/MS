@@ -68,7 +68,7 @@ public class SysRoomServiceImpl implements SysRoomService {
     @Override
     public List<SysRoomVo> queryAll(final String zipCode) {
         List<SysRoom> sysRoomList = this.sysRoomMapper.queryAll(zipCode);
-        log.info("{}地区所有房屋信息：{}", zipCode, JsonUtil.toString(sysRoomList));
+        log.info("{} 地区所有房屋信息：{}", zipCode, JsonUtil.toString(sysRoomList));
         return sysRoomList.stream()
                 .sorted(Comparator.comparing(SysRoom::getCreateTime).reversed())
                 .map(SysRoom -> SysRoomVo.builder()
