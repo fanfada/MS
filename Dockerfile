@@ -8,4 +8,4 @@ ENV TZ="Asia/Shanghai"
 ADD target/managesystem.jar /app/myapp.jar
 EXPOSE 8080
 # 运行jar包
-ENTRYPOINT ["java", "-Xms128m","-Xmx256m","-XX:PermSize=128M","-XX:MaxPermSize=256M","-jar", "/app/myapp.jar", "--spring.profiles.active=dev"]
+ENTRYPOINT ["java", "-Xms128m","-Xmx256m","-XX:MetaspaceSize=128M","-XX:MaxMetaspaceSize=256M","-jar", "/app/myapp.jar", "--spring.profiles.active=dev"]
