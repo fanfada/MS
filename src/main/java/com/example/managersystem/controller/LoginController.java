@@ -140,8 +140,8 @@ public class LoginController {
 //        this.validateCaptcha(loginDto.getCode(), loginDto.getUuid());
         SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
         try {
-            if (this.redisCache.exists(sysUser.getUserId())) {
-                String token = this.redisCache.getCacheObject(sysUser.getUserId());
+            if (this.redisCache.exists(GlobalConstants.AUTHORITY + sysUser.getUserId())) {
+                String token = this.redisCache.getCacheObject(GlobalConstants.AUTHORITY + sysUser.getUserId());
                 throw new GlobalException(String.format("请勿重复登录token: %s, userid: %s", token, sysUser.getUserId()));
             }
             if (null == loginDto.getPhonenumber()) {
@@ -225,7 +225,7 @@ public class LoginController {
                 return new ReturnMessage<>(ReturnState.OK, "您已登出，请勿重复操作");
             }
             this.redisCache.remove(GlobalConstants.AUTHORITY + safeUserDto.getId());
-            this.redisCache.remove(GlobalConstants.AUTHORITY + sysUser.getUserId());
+            this.redisCache.remove(GlobalConstants.AUTHORITY + safeUserDto.getId());
             AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGOUT_SUCCESS, "登出成功"));
             return new ReturnMessage<>(ReturnState.OK, "登出成功");
         } catch (Exception e) {
