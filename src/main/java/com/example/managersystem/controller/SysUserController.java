@@ -11,7 +11,6 @@ import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.vo.SysUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -98,8 +97,8 @@ public class SysUserController {
      */
     @DeleteMapping
     @Log(title = "彻底删除用户信息", businessType = BusinessType.DELETE)
-    public ResponseEntity<Boolean> deleteById(String userId) {
-        return ResponseEntity.ok(this.sysUserService.deleteById(userId));
+    public ReturnMessage<Boolean> deleteById(String userId) {
+        return new ReturnMessage<>(ReturnState.OK, this.sysUserService.deleteById(userId));
     }
 
 }

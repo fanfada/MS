@@ -2,8 +2,10 @@ package com.example.managersystem.controller;
 
 import com.example.managersystem.annotation.Log;
 import com.example.managersystem.common.GlobalConstants;
+import com.example.managersystem.common.ReturnState;
 import com.example.managersystem.domain.SysRole;
 import com.example.managersystem.domain.SysUser;
+import com.example.managersystem.dto.ReturnMessage;
 import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.service.SysRoleService;
@@ -11,7 +13,6 @@ import com.example.managersystem.service.SysUserService;
 import com.example.managersystem.util.ThreadLocalMapUtil;
 import com.example.managersystem.vo.SysRoleVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,10 +43,10 @@ public class SysRoleController {
      */
     @GetMapping
     @Log(title = "查询角色信息", businessType = BusinessType.QUERY)
-    public ResponseEntity<List<SysRoleVo>> queryAll() {
+    public ReturnMessage<List<SysRoleVo>> queryAll() {
         SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
         SysUser sysUser = this.sysUserService.queryById(safeUserDto.getId());
-        return ResponseEntity.ok(this.sysRoleService.queryAll(sysUser.getRoleId(), safeUserDto.getId()));
+        return new ReturnMessage<>(ReturnState.OK,this.sysRoleService.queryAll(sysUser.getRoleId(), safeUserDto.getId()));
     }
 
     /**
@@ -56,8 +57,8 @@ public class SysRoleController {
      */
     @GetMapping("{id}")
     @Log(title = "查询角色信息", businessType = BusinessType.QUERY)
-    public ResponseEntity<SysRoleVo> queryById(@PathVariable("id") String id) {
-        return ResponseEntity.ok(this.sysRoleService.queryById(id, ""));
+    public ReturnMessage<SysRoleVo> queryById(@PathVariable("id") String id) {
+        return new ReturnMessage<>(ReturnState.OK,this.sysRoleService.queryById(id, ""));
     }
 
     /**
@@ -68,8 +69,8 @@ public class SysRoleController {
      */
     @PostMapping
     @Log(title = "新增角色信息", businessType = BusinessType.INSERT)
-    public ResponseEntity<Boolean> add(@RequestBody SysRole sysRole) {
-        return ResponseEntity.ok(this.sysRoleService.insert(sysRole));
+    public ReturnMessage<Boolean> add(@RequestBody SysRole sysRole) {
+        return new ReturnMessage<>(ReturnState.OK,this.sysRoleService.insert(sysRole));
     }
 
     /**
@@ -80,8 +81,8 @@ public class SysRoleController {
      */
     @PutMapping
     @Log(title = "编辑角色信息", businessType = BusinessType.UPDATE)
-    public ResponseEntity<Boolean> edit(@RequestBody SysRole sysRole) {
-        return ResponseEntity.ok(this.sysRoleService.update(sysRole));
+    public ReturnMessage<Boolean> edit(@RequestBody SysRole sysRole) {
+        return new ReturnMessage<>(ReturnState.OK,this.sysRoleService.update(sysRole));
     }
 
     /**
@@ -92,8 +93,8 @@ public class SysRoleController {
      */
     @DeleteMapping
     @Log(title = "彻底删除角色信息", businessType = BusinessType.DELETE)
-    public ResponseEntity<Boolean> deleteById(@RequestParam(value = "roleId") String roleId) {
-        return ResponseEntity.ok(this.sysRoleService.deleteById(roleId));
+    public ReturnMessage<Boolean> deleteById(@RequestParam(value = "roleId") String roleId) {
+        return new ReturnMessage<>(ReturnState.OK,this.sysRoleService.deleteById(roleId));
     }
 
 }
