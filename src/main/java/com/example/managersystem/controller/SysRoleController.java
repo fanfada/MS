@@ -1,8 +1,16 @@
 package com.example.managersystem.controller;
+
 import com.example.managersystem.annotation.Log;
+import com.example.managersystem.common.GlobalConstants;
 import com.example.managersystem.domain.SysRole;
+import com.example.managersystem.domain.SysUser;
+import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.enums.BusinessType;
 import com.example.managersystem.service.SysRoleService;
+import com.example.managersystem.service.SysUserService;
+import com.example.managersystem.util.ThreadLocalMapUtil;
+import com.example.managersystem.vo.SysRoleVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +32,9 @@ public class SysRoleController {
     @Resource
     private SysRoleService sysRoleService;
 
+    @Autowired
+    private SysUserService sysUserService;
+
     /**
      * 查询所有数据
      *
@@ -31,8 +42,10 @@ public class SysRoleController {
      */
     @GetMapping
     @Log(title = "查询角色信息", businessType = BusinessType.QUERY)
-    public ResponseEntity<List> queryAll() {
-        return ResponseEntity.ok(this.sysRoleService.queryAll());
+    public ResponseEntity<List<SysRoleVo>> queryAll() {
+        SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
+        SysUser sysUser = this.sysUserService.queryById(safeUserDto.getId());
+        return ResponseEntity.ok(this.sysRoleService.queryAll(sysUser.getRoleId(), safeUserDto.getId()));
     }
 
     /**
@@ -43,8 +56,8 @@ public class SysRoleController {
      */
     @GetMapping("{id}")
     @Log(title = "查询角色信息", businessType = BusinessType.QUERY)
-    public ResponseEntity<SysRole> queryById(@PathVariable("id") String id) {
-        return ResponseEntity.ok(this.sysRoleService.queryById(id,""));
+    public ResponseEntity<SysRoleVo> queryById(@PathVariable("id") String id) {
+        return ResponseEntity.ok(this.sysRoleService.queryById(id, ""));
     }
 
     /**

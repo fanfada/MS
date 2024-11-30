@@ -21,6 +21,7 @@ import com.example.managersystem.service.impl.SysRoleServiceImpl;
 import com.example.managersystem.service.impl.TokenServiceImpl;
 import com.example.managersystem.util.*;
 import com.example.managersystem.vo.LoginVo;
+import com.example.managersystem.vo.SysRoleVo;
 import com.example.managersystem.vo.SysUserVo;
 import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
@@ -154,7 +155,7 @@ public class LoginController {
                 throw new GlobalException("密码错误");
             }
             //密码正确，分配token并存入redis
-            SysRole sysRole = this.sysRoleService.queryById(sysUser.getRoleId(), sysUser.getUserId());
+            SysRoleVo sysRole = this.sysRoleService.queryById(sysUser.getRoleId(), sysUser.getUserId());
             log.info("用户的角色为“{}", sysRole);
             if (sysRole == null) {
                 throw new GlobalException(String.format("用户%s未分配角色", sysUser.getPhonenumber()));

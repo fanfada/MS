@@ -1,5 +1,6 @@
 package com.example.managersystem.service;
 import com.example.managersystem.domain.SysRole;
+import com.example.managersystem.vo.SysRoleVo;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface SysRoleService {
      *
      * @return 实例对象集合
      */
-    List<SysRole> queryAll();
+    List<SysRoleVo> queryAll(String roleId, String userId);
 
     /**
      * 通过ID查询单条数据
@@ -24,7 +25,7 @@ public interface SysRoleService {
      * @param roleId 主键
      * @return 实例对象
      */
-    SysRole queryById(String roleId, String userId);
+    SysRoleVo queryById(String roleId, String userId);
 
     /**
      * 新增数据

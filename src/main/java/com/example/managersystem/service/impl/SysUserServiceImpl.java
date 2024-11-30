@@ -13,6 +13,7 @@ import com.example.managersystem.util.CommonUtil;
 import com.example.managersystem.util.JsonUtil;
 import com.example.managersystem.util.ThreadLocalMapUtil;
 import com.example.managersystem.util.UuidUtil;
+import com.example.managersystem.vo.SysRoleVo;
 import com.example.managersystem.vo.SysUserVo;
 import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -162,7 +163,7 @@ public class SysUserServiceImpl implements SysUserService {
             sysUser.setUpdateTime(new Date());
             log.info("待修改数据sysUser: {}", JsonUtil.toString(sysUser));
             this.sysUserMapper.update(sysUser);
-            SysRole sysRole = this.sysRoleService.queryById(safeUserDto.getId(), "");
+            SysRoleVo sysRole = this.sysRoleService.queryById(safeUserDto.getId(), "");
             if (!sysUser.getCities().isEmpty()) {
                 this.sysRoleCityService.deleteById(sysRole.getRoleId());
                 List<String> authorityCities = sysUser.getCities();
@@ -203,7 +204,7 @@ public class SysUserServiceImpl implements SysUserService {
             sysUser.setDelFlag("1");
             log.info("要删除的sysUser: {}", JsonUtil.toString(sysUser));
             this.sysUserMapper.update(sysUser);
-            SysRole sysRole = this.sysRoleService.queryById(safeUserDto.getId(), "");
+            SysRoleVo sysRole = this.sysRoleService.queryById(safeUserDto.getId(), "");
             this.sysRoleCityService.deleteById(sysRole.getRoleId());
             return true;
         } catch (Exception e) {

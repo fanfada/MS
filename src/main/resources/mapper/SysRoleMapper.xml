@@ -20,7 +20,7 @@
         select role_id, role_name, role_key, data_scope, status, create_by, create_time, update_by, update_time, remark
         from sys_role
         where status = 0
-        <if test="roleId != 'admin'">
+        <if test="roleId != 'admin' and userId != ''">
             and create_by = #{userId}
         </if>
     </select>
@@ -30,7 +30,7 @@
         select role_id, role_name, role_key, data_scope, status, create_by, create_time, update_by, update_time, remark
         from sys_role
         where role_id = #{roleId}
-        <if test="roleId != 'admin'">
+        <if test="roleId != 'admin' and userId != ''">
             and create_by = #{userId}
         </if>
         and status = 0
