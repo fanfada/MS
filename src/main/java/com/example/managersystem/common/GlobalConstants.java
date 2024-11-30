@@ -74,6 +74,11 @@ public class GlobalConstants {
     public static final String AUTHORITY = "Authority:";
 
     /**
+     * TOKEN
+     */
+    public static final String TOKEN = "TOKEN:";
+
+    /**
      * 请求header常量
      */
     public static class HttpHeaderConstants {
@@ -88,10 +93,6 @@ public class GlobalConstants {
          */
         public static final String HTTPS = "https://";
 
-        /**
-         * 请求id
-         */
-        public static final String TOKEN = "TOKEN";
 
         /**
          * 请求id

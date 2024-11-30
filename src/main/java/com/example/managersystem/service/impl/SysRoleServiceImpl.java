@@ -76,7 +76,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     public SysRoleVo queryById(String roleId, String userId) {
         SysRole sysRole = this.sysRoleMapper.queryById(roleId, userId);
         SysRoleVo sysRoleVo = new SysRoleVo();
-        BeanUtils.copyProperties(sysRoleVo, sysRole);
+        BeanUtils.copyProperties(sysRole, sysRoleVo);
         return sysRoleVo;
     }
 

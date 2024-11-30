@@ -43,15 +43,14 @@ public class TokenServiceImpl {
      * @return
      */
     public String createToken(final String key) {
-        final String tokenKey = "Token:" + key;
         String str = UuidUtil.uuid();
         try {
             StringBuilder token = new StringBuilder(str);
             log.info("生成的token:{}", JsonUtil.toString(token));
-            if (this.redisCache.exists(tokenKey)) {
-                redisCache.remove(tokenKey);
+            if (this.redisCache.exists(GlobalConstants.TOKEN + key)) {
+                redisCache.remove(GlobalConstants.TOKEN + key);
             }
-            this.redisCache.setEx(tokenKey, token.toString(), 1800L);
+            this.redisCache.setEx(GlobalConstants.TOKEN + key, token.toString(), 1800L);
             boolean notEmpty = StrUtil.isNotEmpty(token.toString());
             if (notEmpty) {
                 return token.toString();

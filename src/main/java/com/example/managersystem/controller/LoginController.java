@@ -141,8 +141,8 @@ public class LoginController {
 //        this.validateCaptcha(loginDto.getCode(), loginDto.getUuid());
         SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
         try {
-            if (this.redisCache.exists(GlobalConstants.AUTHORITY + sysUser.getUserId())) {
-                String token = this.redisCache.getCacheObject(GlobalConstants.AUTHORITY + sysUser.getUserId());
+            if (this.redisCache.exists(GlobalConstants.TOKEN + sysUser.getUserId())) {
+                String token = this.redisCache.getCacheObject(GlobalConstants.TOKEN + sysUser.getUserId());
                 throw new GlobalException(String.format("请勿重复登录token: %s, userid: %s", token, sysUser.getUserId()));
             }
             if (null == loginDto.getPhonenumber()) {
@@ -163,7 +163,7 @@ public class LoginController {
             if (!sysRole.getRoleId().equals("admin")) {
                 String sysRoleCities = this.sysRoleCityService.queryByRoleId(sysRole.getRoleId()).stream()
                         .map(SysRoleCity::getZipcode)
-                        .collect(Collectors.joining(", "));
+                        .collect(Collectors.joining(","));
                 this.redisCache.setEx(GlobalConstants.AUTHORITY + sysUser.getUserId(), sysRoleCities, 1800L);
             } else {
                 this.redisCache.setEx(GlobalConstants.AUTHORITY + sysUser.getUserId(), "admin", 1800L);
