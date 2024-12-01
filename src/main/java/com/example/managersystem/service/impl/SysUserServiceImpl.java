@@ -1,10 +1,9 @@
 package com.example.managersystem.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.managersystem.common.GlobalConstants;
-import com.example.managersystem.domain.SysRole;
 import com.example.managersystem.domain.SysRoleCity;
 import com.example.managersystem.domain.SysUser;
-import com.example.managersystem.domain.SysUserRole;
 import com.example.managersystem.dto.SafeUserDto;
 import com.example.managersystem.excepion.GlobalException;
 import com.example.managersystem.mapper.SysUserMapper;
@@ -96,7 +95,10 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public SysUser queryById(String userId) {
-        SysUser sysUser = this.sysUserMapper.queryById(userId);
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        SysUser sysUser = queryWrapper.getEntity();
+//        SysUser sysUser = this.sysUserMapper.queryById(userId);
         if (null == sysUser) {
             throw new GlobalException(String.format("该用户%s不存在", userId));
         }
