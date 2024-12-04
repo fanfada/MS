@@ -1,6 +1,7 @@
 package com.example.managersystem.mapper;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.managersystem.domain.SysLoginInfo;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author fanfada
  */
-public interface SysLoginInfoMapper {
+public interface SysLoginInfoMapper extends BaseMapper<SysLoginInfo> {
     /**
      * 新增系统登录日志
      *

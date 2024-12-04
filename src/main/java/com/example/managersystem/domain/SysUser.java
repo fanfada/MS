@@ -1,5 +1,6 @@
 package com.example.managersystem.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,62 +25,77 @@ public class SysUser implements Serializable {
     /**
      * 用户ID
      */
+    @TableId("user_id")
     private String userId;
     /**
      * 用户账号
      */
+    @TableId("user_name")
     private String userName;
     /**
      * 用户昵称
      */
+    @TableId("nick_name")
     private String nickName;
     /**
      * 用户类型（00系统用户, 01普通用户）
      */
+    @TableId("user_type")
     private String userType;
     /**
      * 用户邮箱
      */
+    @TableId("email")
     private String email;
     /**
      * 手机号码
      */
+    @TableId("phonenumber")
     private String phonenumber;
     /**
      * 用户性别（0男 1女 2未知）
      */
+    @TableId("sex")
     private String sex;
     /**
      * 密码
      */
+    @TableId("password")
     private String password;
     /**
      * 帐号状态（0正常 1停用）
      */
+    @TableId("status")
     private Integer status;
     /**
      * 删除标志（0代表存在 2代表删除）
      */
+    @TableId("del_flag")
     private String delFlag;
     /**
      * 最后登录时间
      */
+    @TableId("login_date")
     private Date loginDate;
     /**
      * 创建时间
      */
+    @TableId("create_time")
     private Date createTime;
     /**
      * 更新者
      */
+    @TableId("update_by")
     private String updateBy;
     /**
      * 更新时间
      */
+    @TableId("update_time")
     private Date updateTime;
     /**
      * 备注
      */
+    @TableId("remark")
     private String remark;
 
     /**
@@ -90,6 +106,7 @@ public class SysUser implements Serializable {
     /**
      * 角色ID
      */
+    @TableId("role_id")
     private String roleId;
 
 

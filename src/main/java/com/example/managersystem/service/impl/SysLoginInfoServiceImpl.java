@@ -1,5 +1,6 @@
 package com.example.managersystem.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.managersystem.domain.SysLoginInfo;
 import com.example.managersystem.mapper.SysLoginInfoMapper;
 import com.example.managersystem.service.ISysLoginInfoService;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author fanfada
  */
 @Service
-public class SysLoginInfoServiceImpl implements ISysLoginInfoService {
+public class SysLoginInfoServiceImpl extends ServiceImpl<SysLoginInfoMapper, SysLoginInfo> implements ISysLoginInfoService {
 
     @Autowired
     private SysLoginInfoMapper logininforMapper;

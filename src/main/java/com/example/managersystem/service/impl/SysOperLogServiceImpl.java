@@ -1,5 +1,6 @@
 package com.example.managersystem.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.managersystem.domain.SysOperLog;
 import com.example.managersystem.mapper.SysOperLogMapper;
 import com.example.managersystem.service.ISysOperLogService;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author fanfada
  */
 @Service
-public class SysOperLogServiceImpl implements ISysOperLogService {
+public class SysOperLogServiceImpl extends ServiceImpl<SysOperLogMapper, SysOperLog> implements ISysOperLogService {
     @Autowired
     private SysOperLogMapper operLogMapper;
 

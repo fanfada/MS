@@ -1,5 +1,6 @@
 package com.example.managersystem.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.managersystem.domain.SysUser;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,7 +14,7 @@ import java.util.List;
  * @since 2024-11-08 09:27:46
  */
 @Mapper
-public interface SysUserMapper {
+public interface SysUserMapper extends BaseMapper<SysUser> {
 
     /**
      * 查询所有数据

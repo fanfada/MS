@@ -1,6 +1,8 @@
 package com.example.managersystem.mapper;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.managersystem.domain.SysLoginInfo;
 import com.example.managersystem.domain.SysOperLog;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
  *
  * @author fanfada
  */
-public interface SysOperLogMapper {
+public interface SysOperLogMapper extends BaseMapper<SysOperLog> {
     /**
      * 新增操作日志
      *

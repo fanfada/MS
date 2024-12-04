@@ -1,6 +1,12 @@
 package com.example.managersystem.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -9,12 +15,18 @@ import java.util.Date;
  *
  * @author fanfada
  */
+@Setter
+@Getter
+@EqualsAndHashCode(callSuper = true)
+@Data
+@TableName("sys_oper_log")
 public class SysOperLog extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 日志主键
      */
+    @TableId("info_id")
     private Long operId;
 
     /**
