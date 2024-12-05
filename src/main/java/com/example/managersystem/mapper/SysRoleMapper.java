@@ -1,5 +1,6 @@
 package com.example.managersystem.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.managersystem.domain.SysRole;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,7 +14,7 @@ import java.util.List;
  * @since 2024-11-15 16:34:34
  */
 @Mapper
-public interface SysRoleMapper {
+public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     /**
      * 查询所有数据

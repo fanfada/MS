@@ -35,7 +35,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Service("sysUserService")
-public class SysUserServiceImpl  extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
     @Resource
     private SysUserMapper sysUserMapper;
 

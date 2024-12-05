@@ -1,5 +1,6 @@
 package com.example.managersystem.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.managersystem.common.GlobalConstants;
 import com.example.managersystem.domain.SysRole;
 import com.example.managersystem.domain.SysRoleCity;
@@ -31,7 +32,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Service("sysRoleService")
-public class SysRoleServiceImpl implements SysRoleService {
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
     @Resource
     private SysRoleMapper sysRoleMapper;
 

@@ -1,5 +1,6 @@
 package com.example.managersystem.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.managersystem.domain.SysRoleCity;
 import com.example.managersystem.mapper.SysRoleCityMapper;
 import com.example.managersystem.service.SysRoleCityService;
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
  * @since 2024-11-15 16:34:34
  */
 @Service("sysRoleCityService")
-public class SysRoleCityServiceImpl implements SysRoleCityService {
+public class SysRoleCityServiceImpl extends ServiceImpl<SysRoleCityMapper, SysRoleCity> implements SysRoleCityService {
     @Resource
     private SysRoleCityMapper sysRoleCityMapper;
 
