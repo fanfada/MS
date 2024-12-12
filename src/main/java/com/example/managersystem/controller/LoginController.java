@@ -226,7 +226,7 @@ public class LoginController {
                 return new ReturnMessage<>(ReturnState.OK, "您已登出，请勿重复操作");
             }
             this.redisCache.remove(GlobalConstants.AUTHORITY + safeUserDto.getId());
-            this.redisCache.remove(GlobalConstants.AUTHORITY + safeUserDto.getId());
+            this.redisCache.remove(GlobalConstants.TOKEN + safeUserDto.getId());
             AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGOUT_SUCCESS, "登出成功"));
             return new ReturnMessage<>(ReturnState.OK, "登出成功");
         } catch (Exception e) {
