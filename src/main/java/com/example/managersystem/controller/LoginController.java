@@ -207,21 +207,14 @@ public class LoginController {
      * 登出接口
      * 前期只支持手机号登出
      *
-     * @param loginDto
      * @return
      */
     @PostMapping(value = "logout")
-    public ReturnMessage<String> logout(@RequestBody LoginDto loginDto) {
+    public ReturnMessage<String> logout() {
         SafeUserDto safeUserDto = (SafeUserDto) ThreadLocalMapUtil.get(GlobalConstants.ThreadLocalConstants.SAFE_SMP_USER);
-        SysUser sysUser = this.sysUserService.queryByPhone(loginDto.getPhonenumber());
+        SysUser sysUser = this.sysUserService.queryById(safeUserDto.getId());
         try {
-            log.info("开始登出phonenumber: {}", loginDto.getPhonenumber());
-            if (null == loginDto.getPhonenumber()) {
-                throw new GlobalException("手机号为空");
-            }
-            if (!safeUserDto.getId().equals(sysUser.getUserId())) {
-                return new ReturnMessage<>(ReturnState.OK, "请勿登出他人账号");
-            }
+            log.info("开始登出phonenumber: {}", sysUser.getPhonenumber());
             if (!this.redisCache.exists(GlobalConstants.AUTHORITY + safeUserDto.getId())) {
                 return new ReturnMessage<>(ReturnState.OK, "您已登出，请勿重复操作");
             }
