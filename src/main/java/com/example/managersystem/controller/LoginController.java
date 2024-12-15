@@ -82,12 +82,12 @@ public class LoginController {
      */
     @GetMapping("/captchaImage")
     @Log(title = "生成验证码", businessType = BusinessType.OTHER)
-    public AjaxResult getCaptchaCode(HttpServletResponse response) {
+    public ReturnMessage<AjaxResult> getCaptchaCode(HttpServletResponse response) {
         AjaxResult ajaxResult = AjaxResult.success();
         ajaxResult.put("captchaEnabled", this.captchaEnabled);
         log.info("验证码是否开启：{}", this.captchaEnabled);
         if (!this.captchaEnabled) {
-            return ajaxResult;
+            return new ReturnMessage<>(ReturnState.ERROR, ajaxResult);
         }
         // 保存验证码信息
         String uuid = UuidUtil.uuid();
@@ -110,11 +110,12 @@ public class LoginController {
         try {
             ImageIO.write(image, "jpg", os);
         } catch (IOException e) {
-            return AjaxResult.error(e.getMessage());
+            return new ReturnMessage<>(ReturnState.ERROR, "400", e.getMessage());
+
         }
         ajaxResult.put("uuid", uuid);
         ajaxResult.put("img", Base64.encode(os.toByteArray()));
-        return ajaxResult;
+        return new ReturnMessage<>(ReturnState.OK, ajaxResult);
     }
 
     /**
@@ -173,10 +174,10 @@ public class LoginController {
             loginVo.setUserId(sysUser.getUserId());
             loginVo.setToken(token);
             loginVo.setMessage("登陆成功");
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGIN_SUCCESS, "登陆成功"));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" + sysUser.getUserId(), GlobalConstants.LOGIN_SUCCESS, "登陆成功"));
             return new ReturnMessage<>(ReturnState.OK, loginVo);
         } catch (GlobalException e) {
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGIN_FAIL, e.getMessage()));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" + sysUser.getUserId(), GlobalConstants.LOGIN_FAIL, e.getMessage()));
             throw new GlobalException(e.getMessage());
         }
     }
@@ -220,10 +221,10 @@ public class LoginController {
             }
             this.redisCache.remove(GlobalConstants.AUTHORITY + safeUserDto.getId());
             this.redisCache.remove(GlobalConstants.TOKEN + safeUserDto.getId());
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGOUT_SUCCESS, "登出成功"));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" + sysUser.getUserId(), GlobalConstants.LOGOUT_SUCCESS, "登出成功"));
             return new ReturnMessage<>(ReturnState.OK, "登出成功");
         } catch (Exception e) {
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" +sysUser.getUserId(), GlobalConstants.LOGOUT_FAIL, e.getMessage()));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo("[" + sysUser.getPhonenumber() + "]:" + sysUser.getUserId(), GlobalConstants.LOGOUT_FAIL, e.getMessage()));
             throw new GlobalException(e.getMessage());
         }
     }
