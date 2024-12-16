@@ -70,7 +70,6 @@ public class LoginController {
     @Autowired
     private SysRoleServiceImpl sysRoleService;
 
-
     @Value("${server.captchaEnabled}")
     private boolean captchaEnabled;
 
